@@ -11,6 +11,7 @@ class MyModel extends CI_Model {
 
   public function __construct(){
     parent:: __construct();
+    $this->load->library("unirest");
 
   }
 
@@ -406,18 +407,26 @@ class MyModel extends CI_Model {
 
     public function bin_checker($bin){
       // These code snippets use an open-source library. http://unirest.io/php
-      $response = Unirest\Request::post("https://neutrinoapi-bin-lookup.p.mashape.com/bin-lookup",
-        array(
-          "X-Mashape-Key" => "wrHFEnNcydmsh5iQylcOaqKzWlEXp1zthIzjsn2Zbh1HPddeNR",
-          "Content-Type" => "application/x-www-form-urlencoded",
-          "Accept" => "application/json"
-        ),
-        array(
-          "bin-number" => $bin,
-          "customer-ip" => "60.234.81.148"
-        )
-      );
+      // $response = Unirest\Request::post("https://neutrinoapi-bin-lookup.p.mashape.com/bin-lookup",
+      //   array(
+      //     "X-Mashape-Key" => "wrHFEnNcydmsh5iQylcOaqKzWlEXp1zthIzjsn2Zbh1HPddeNR",
+      //     "Content-Type" => "application/x-www-form-urlencoded",
+      //     "Accept" => "application/json"
+      //   ),
+      //   array(
+      //     "bin-number" => $bin,
+      //     "customer-ip" => "60.234.81.148"
+      //   )
+      // );
 
+      $response = $this->unirest->post("https://neutrinoapi-bin-lookup.p.mashape.com/bin-lookup", $headers = array(
+        "X-Mashape-Key" => "wrHFEnNcydmsh5iQylcOaqKzWlEXp1zthIzjsn2Zbh1HPddeNR",
+        "Content-Type" => "application/x-www-form-urlencoded",
+        "Accept" => "application/json"
+      ), $body = array(
+        "bin-number" => $bin,
+        "customer-ip" => "60.234.81.148"
+      ));
       return $response;
     }
 }
