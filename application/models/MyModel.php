@@ -44,7 +44,8 @@ class MyModel extends CI_Model {
             if ($hashed_password == md5($password)) {
 
                $last_login = date('Y-m-d H:i:s');
-               $token = crypt(substr( md5(rand()), 0, 7));
+               $token_set = substr( md5(rand()), 0, 7);
+               $token = hash('sha256', $token_set);
                $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
                $this->db->trans_start();
                $this->db->where('user_id',$id)->update('ts_user',array('last_login' => $last_login));
@@ -288,6 +289,7 @@ class MyModel extends CI_Model {
         return array('status' => 204,'message' => 'Error inserting data.', 'query'=>$q);
       }
     }
+
     private function generate_auth_key($email){
       $q  = $this->db->select()->from('ts_user')->where('user_email',$email)->get()->row();
       if($q != ""){
