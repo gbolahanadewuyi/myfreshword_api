@@ -319,38 +319,6 @@ class App extends REST_Controller {
   }
 
 
-  //run this first without the api key
-  // public function momo_post(){
-  //
-  //   $_POST = json_decode(file_get_contents('php://input'), TRUE);
-  //   $this->form_validation->set_rules('network', 'Mobile Network', 'trim|required');
-  //   $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]');
-  //   $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-  //   if ($this->form_validation->run() === FALSE){
-  //       foreach($_POST as $key =>$value){
-  //           $data['messages'][$key] = form_error($key);
-  //       }
-  //   }
-  //   else {//if this return correct results then we need to show success message and store  data locally on phone
-  //
-  //     $query = $this->MyModel->phone_momo($_POST['number']);
-  //     if($query['valid'] === false){
-  //       $data['error'] = array(
-  //         'status'=>false,
-  //         'message'=> 'Invalid Mobile Money Number'
-  //       );
-  //     }else if($query['valid'] === true){
-  //       $data['success']= array(
-  //         'status'=> true,
-  //         'message'=>'Valid Mobile Money Number',
-  //         'results'=>$query
-  //       );
-  //     }
-  //     //ends here for the numerify validation
-  //   }
-  //   $this->response($data, REST_Controller::HTTP_OK);
-  // }
-
 
   public function mobile_money_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
@@ -380,6 +348,12 @@ class App extends REST_Controller {
       //ends here for the numerify validation
     }
     $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+
+  public function credit_card_post(){
+    $data = json_decode(file_get_contents('php://input'), TRUE);
+    $this->MyModel->bin_checker($data['bin']);
   }
 
 }//end of class
