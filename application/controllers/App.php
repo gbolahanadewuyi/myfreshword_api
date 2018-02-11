@@ -353,8 +353,8 @@ class App extends REST_Controller {
 
   public function credit_card_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
-    $this->MyModel->bin_checker($data['bin']);
-    echo $data['bin'];
+    $query = $this->MyModel->bin_checker($data['bin']);
+    $this->response($query, REST_Controller::HTTP_NOT_FOUND);
   }
 
 }//end of class

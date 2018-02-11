@@ -11,7 +11,6 @@ class MyModel extends CI_Model {
 
   public function __construct(){
     parent:: __construct();
-    $this->load->library("unirest");
 
   }
 
@@ -406,27 +405,31 @@ class MyModel extends CI_Model {
     }
 
     public function bin_checker($bin){
-      // These code snippets use an open-source library. http://unirest.io/php
-      // $response = Unirest\Request::post("https://neutrinoapi-bin-lookup.p.mashape.com/bin-lookup",
-      //   array(
-      //     "X-Mashape-Key" => "wrHFEnNcydmsh5iQylcOaqKzWlEXp1zthIzjsn2Zbh1HPddeNR",
-      //     "Content-Type" => "application/x-www-form-urlencoded",
-      //     "Accept" => "application/json"
-      //   ),
-      //   array(
-      //     "bin-number" => $bin,
-      //     "customer-ip" => "60.234.81.148"
-      //   )
-      // );
+        $curl = curl_init();
 
-      $response = $this->unirest->post("https://neutrinoapi-bin-lookup.p.mashape.com/bin-lookup", $headers = array(
-        "X-Mashape-Key" => "wrHFEnNcydmsh5iQylcOaqKzWlEXp1zthIzjsn2Zbh1HPddeNR",
-        "Content-Type" => "application/x-www-form-urlencoded",
-        "Accept" => "application/json"
-      ), $body = array(
-        "bin-number" => $bin,
-        "customer-ip" => "60.234.81.148"
-      ));
-      return $response;
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.freebinchecker.com/bin/".$bin,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache"
+            //"postman-token: 8f957757-094d-6903-f2e2-f0dbb9d1ee06"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          echo "cURL Error #:" . $err;
+        } else {
+          return  $responseResult = json_decode($response, true);
+        }
     }
 }
