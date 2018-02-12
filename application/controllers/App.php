@@ -357,9 +357,9 @@ class App extends REST_Controller {
     $this->response($query, REST_Controller::HTTP_NOT_FOUND);
   }
 
-  public function check_header(){
-
-    $headers = $this->input->request_headers();
-    $this->response($headers,REST_Controller::HTTP_OK)
-  }
+  // public function check_header(){
+  //
+  //   $headers = $this->input->request_headers();
+  //   $this->response($headers,REST_Controller::HTTP_OK)
+  // }
 }//end of class
