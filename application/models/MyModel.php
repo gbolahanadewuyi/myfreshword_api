@@ -406,7 +406,6 @@ class MyModel extends CI_Model {
 
     public function bin_checker($bin){
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://api.freebinchecker.com/bin/".$bin,
           CURLOPT_RETURNTRANSFER => true,
