@@ -358,8 +358,8 @@ class App extends REST_Controller {
   }
 
   public function check_header(){
-    
+
     $headers = $this->input->request_headers();
-    print_r($headers);
+    $this->response($headers,REST_Controller::HTTP_OK)
   }
 }//end of class
