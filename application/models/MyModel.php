@@ -16,10 +16,10 @@ class MyModel extends CI_Model {
 
 
   public function check_auth_client(){
-        $client_service = $this->input->get_request_header('Client-Service', TRUE);
-        $auth_key  = $this->input->get_request_header('Auth-Key', TRUE);
+        $client_service = $this->input->get_request_header('User-ID', TRUE);
+        $auth_key  = $this->input->get_request_header('Authorization', TRUE);
         if($client_service == $this->client_service && $auth_key == $this->auth_key){
-            return true;
+            return array('status' => 200,'message' => 'Authorized.');
         } else {
             //return json_output(401,array('status' => 401,'message' => 'Unauthorized.'));
             //instead return the rest keyword

@@ -354,15 +354,11 @@ class App extends REST_Controller {
   public function credit_card_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
     $query = $this->MyModel->bin_checker($data['bin']);
-    $this->response($query, REST_Controller::HTTP_NOT_FOUND);
+    $this->response($query, REST_Controller::HTTP_OK);
   }
 
-  // public function check_header(){
-  //   $users_id  = $this->input->get_request_header('User-ID', TRUE);
-  //   $token     = $this->input->get_request_header('Authorization', TRUE);
-  //   $data = array(
-  //     $user_id,$token
-  //   );
-  //   $this->response($data, REST_Controller::HTTP_OK;
-  // }
+  public function head_post(){
+    $query = $this->MyModel->check_auth_client();
+    $this->response($query, REST_Controller::HTTP_OK);
+  }
 }//end of class
