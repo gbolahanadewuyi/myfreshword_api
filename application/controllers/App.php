@@ -325,7 +325,7 @@ class App extends REST_Controller {
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $this->form_validation->set_rules('network', 'Mobile Network', 'trim|required');
-      $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]|is_unique[momo.number');
+      $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]|is_unique[momo.payin_number]');
       $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
       if ($this->form_validation->run() === FALSE){
           foreach($_POST as $key =>$value){
@@ -351,7 +351,7 @@ class App extends REST_Controller {
           //now save momo details into the table
           $dB = array(
             'network' =>  $_POST['network'],
-            'number'  =>  $_POST['number'],
+            'payin_number'  =>  $_POST['number'],
             'unique_acc'  =>  $_POST['email']
           );
           $dBquery = $this->MyModel->insert_momo($dB);
