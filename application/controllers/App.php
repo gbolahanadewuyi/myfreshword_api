@@ -325,7 +325,7 @@ class App extends REST_Controller {
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $this->form_validation->set_rules('network', 'Mobile Network', 'trim|required');
-      $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]');
+      $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]|is_unique[momo.number');
       $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
       if ($this->form_validation->run() === FALSE){
           foreach($_POST as $key =>$value){
@@ -350,24 +350,17 @@ class App extends REST_Controller {
 
           //now save momo details into the table
           $dB = array(
-            'network' =>      $_POST['network'],
-            'number'  =>      $_POST['number'],
+            'network' =>  $_POST['network'],
+            'number'  =>  $_POST['number'],
             'unique_acc'  =>  $_POST['email']
           );
-
-          //this line we check if number has already been used to set up any account in the payment side
-          $dbDup = $this->MyModel->check_momo_exist($db);
-          if($dbDup != true){//if there are duplicates
-            $dupData['Duplicate'] =  $dbDup;
-          }else{
-            $dBquery = $this->MyModel->insert_momo($dB);
-          }
+          $dBquery = $this->MyModel->insert_momo($dB);
         }
 
 
         //ends here for the numerify validation
       }
-      $this->response(array('momoQuery'=> $data, 'DuplicateQuery'=>$dupData), REST_Controller::HTTP_OK);
+      $this->response($data, REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
