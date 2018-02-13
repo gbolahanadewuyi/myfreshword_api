@@ -419,7 +419,7 @@ class MyModel extends CI_Model {
     }
 
     public function insert_momo($data){
-      $query = $this->db->insert('mommo',$data);
+      $query = $this->db->insert('momo',$data);
       if($query === true){
         return array('status'=> 200, 'message'=>'Momo saved', 'query'=>$query);
       }
