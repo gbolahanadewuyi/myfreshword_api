@@ -324,6 +324,7 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
       $this->form_validation->set_rules('network', 'Mobile Network', 'trim|required');
       $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]|is_unique[momo.payin_number]');
       $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
