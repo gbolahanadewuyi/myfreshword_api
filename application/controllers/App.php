@@ -350,8 +350,8 @@ class App extends REST_Controller {
 
           //now save momo details into the table
           $dB = array(
-            'network' =>  $_POST['network'],
-            'number'  =>  $_POST['number'],
+            'network' =>      $_POST['network'],
+            'number'  =>      $_POST['number'],
             'unique_acc'  =>  $_POST['email']
           );
 

@@ -431,7 +431,7 @@ class MyModel extends CI_Model {
     public function check_momo_exist($data = array()){
         $mobile = $data['number'];
         $q  = $this->db->select()->from('momo')->where('number',$mobile)->get()->row();
-        if($q == ""){//if there are not duplicates
+        if($q->number != $mobile){//if there are not duplicates
           return true;
         }else {// if there are duplicates
           return array('status'=>404 , 'message'=>'Mobile Money Number already used on another account');
