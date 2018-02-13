@@ -352,7 +352,7 @@ class App extends REST_Controller {
           $dB = array(
             'network' =>  $_POST['network'],
             'number'  =>  $_POST['number'],
-            'unique'  =>  $_POST['email']
+            'unique_acc'  =>  $_POST['email']
           );
           $dBquery = $this->MyModel->insert_momo($dB);
         }
