@@ -16,6 +16,7 @@ class MyModel extends CI_Model {
 
 
   public function check_auth_client(){
+        //this is where i am returning the header  user id and authentication id as well
         $client_service = $this->input->get_request_header('User-ID', TRUE);
         $auth_key  = $this->input->get_request_header('Authorization', TRUE);
         return array('user-id'=>$client_service, 'auth'=>$auth_key);
@@ -415,6 +416,16 @@ class MyModel extends CI_Model {
     // $validationResult['country_code'];
     // $validationResult['carrier'];
 
+    }
+
+    public function insert_momo($data){
+      $query = $this->db->insert('mommo',$data);
+      if($query === true){
+        return array('status'=> 200, 'message'=>'Momo saved', 'query'=>$query);
+      }
+      else{
+        return array('status'=> 400, 'message'=>'Error saving momo', 'query'=>$query);
+      }
     }
 
     public function bin_checker($bin){

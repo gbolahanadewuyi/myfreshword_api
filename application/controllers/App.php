@@ -341,12 +341,23 @@ class App extends REST_Controller {
             'message'=> 'Invalid Mobile Money Number'
           );
         }else if($query['valid'] === true){
+
           $data['success']= array(
             'status'=> true,
             'message'=>'Valid Mobile Money Number',
             'results'=>$query
           );
+
+          //now save momo details into the table
+          $dB = array(
+            'network' =>  $_POST['network'],
+            'number'  =>  $_POST['number'],
+            'unique'  =>  $_POST['email']
+          );
+          $dBquery = $this->MyModel->insert_momo($dB);
         }
+
+
         //ends here for the numerify validation
       }
       $this->response($data, REST_Controller::HTTP_OK);
@@ -367,4 +378,6 @@ class App extends REST_Controller {
     $query = $this->MyModel->check_auth_client();
     $this->response($query, REST_Controller::HTTP_OK);
   }
+
+
 }//end of class
