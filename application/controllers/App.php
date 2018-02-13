@@ -354,13 +354,20 @@ class App extends REST_Controller {
             'number'  =>  $_POST['number'],
             'unique_acc'  =>  $_POST['email']
           );
-          $dBquery = $this->MyModel->insert_momo($dB);
+
+          //this line we check if number has already been used to set up any account in the payment side
+          $dbDup = $this->MyModel->check_momo_exist($db);
+          if($dbDup != true){//if there are duplicates
+            $dupData['Duplicate'] =  $dbDup;
+          }else{
+            $dBquery = $this->MyModel->insert_momo($dB);
+          }
         }
 
 
         //ends here for the numerify validation
       }
-      $this->response($data, REST_Controller::HTTP_OK);
+      $this->response(array('momoQuery'=> $data, 'DuplicateQuery'=>$dupData), REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
