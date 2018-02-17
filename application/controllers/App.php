@@ -386,7 +386,7 @@ class App extends REST_Controller {
 
   public function momo_app_post(){
       $responseHead = $this->MyModel->header_auth();
-      if($response['status']==200){
+      if($responseHead['status']==200){
         $data = json_decode(file_get_contents('php://input'), TRUE);
         $query = $this->MyModel->momo_by_id($data['email']);
 
