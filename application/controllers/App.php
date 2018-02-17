@@ -369,7 +369,7 @@ class App extends REST_Controller {
     }
   }
 
-  public function momo_id_post(){
+  public function momo_data_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
     $query = $this->MyModel->momo_by_id($data['email']);
     if($query === false){
