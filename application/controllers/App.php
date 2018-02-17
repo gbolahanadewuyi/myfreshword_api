@@ -341,7 +341,8 @@ class App extends REST_Controller {
             'status'=>false,
             'message'=> 'Invalid Mobile Money Number'
           );
-        }else if($query['valid'] === true){
+        }
+        else if($query['valid'] === true){
 
           $data= array(
             'success'=> true,
@@ -351,9 +352,9 @@ class App extends REST_Controller {
 
           //now save momo details into the table
           $dB = array(
-            'network' =>  $_POST['network'],
+            'network'       =>  $_POST['network'],
             'payin_number'  =>  $_POST['number'],
-            'unique_acc'  =>  $_POST['email']
+            'unique_acc'    =>  $_POST['email']
           );
           $dBquery = $this->MyModel->insert_momo($dB);
         }
@@ -368,6 +369,20 @@ class App extends REST_Controller {
     }
   }
 
+  public function momo_id_post(){
+    $data = json_decode(file_get_contents('php://input'), TRUE);
+    $query = $this->MyModel->momo_by_id($data['email']);
+    if($query === false){
+      //do nothing
+      $response['success'] = false;
+      $response['message'] = 'User has not set up mobile money';
+    }else
+      $response['success'] = true;
+      $response['message'] = 'User has set up mobile money';
+      $response['results'] = $query;
+    }
+    $this->response($response,REST_Controller::HTTP_OK);
+  }
 
   public function credit_card_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
