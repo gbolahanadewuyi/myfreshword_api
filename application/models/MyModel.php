@@ -441,7 +441,7 @@ class MyModel extends CI_Model {
 
     public function momo_by_id($email){
       $q  = $this->db->select()->from('momo')->where('unique_acc',$email)->get()->row();
-      if($q->unique_acc != $email){//if email doesnt exist
+      if($q->unique_acc == " "){//if email doesnt exist
         return false;
       }else{
         return $q;
