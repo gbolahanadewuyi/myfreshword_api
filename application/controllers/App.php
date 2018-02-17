@@ -388,7 +388,7 @@ class App extends REST_Controller {
       $data = json_decode(file_get_contents('php://input'), TRUE);
       $query = $this->MyModel->momo_by_id($data['email']);
 
-      if($query === false){
+      if($query == false){
         //do nothing
         $response['success'] = false;
         $response['message'] = 'User has not set up mobile money';
