@@ -475,4 +475,35 @@ class MyModel extends CI_Model {
           return  $responseResult = json_decode($response, true);
         }
     }
+
+    //when a user is adding new data that hasnt been bought
+    public function addToCart($data = array()){
+      //check before we insert
+      $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
+      if($query == ""){//if query didnt bring back anything
+        $db = $this->db->insert('ts_cart',$data);
+        return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$db);
+      }else{
+        return array(
+          'success'=>false,
+          'message'=> 'Product already added'
+        );
+      }
+
+    }
+
+    public function cartRowCount($data = array()){//counting for cart items that havent been paid
+      $this->db->select('*')->from('ts_cart')->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0);
+      $q = $this->db->get();
+      return $q->num_rows();
+    }
+
+    public function TotalCartSales($data){//total price of items in the cart not paid for yet
+      $this->db->select_sum('prod_price');
+      $this->db->from('ts_cart');
+      $this->db->where('prod_purchase_by',$data['prod_purchase_by']);//by email
+      $this->db->where('paid',0);//where product hasnt been paid yet
+      $query=$this->db->get();
+      return $query->row()->prod_price;
+    }
 }
