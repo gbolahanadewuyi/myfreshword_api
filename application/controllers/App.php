@@ -369,18 +369,23 @@ class App extends REST_Controller {
     }
   }
 
-  public function momo_data_post(){
+  // public function momo_data_post(){
+  //   $data = json_decode(file_get_contents('php://input'), TRUE);
+  //   // $query = $this->MyModel->momo_by_id($data['email']);
+  //   // if($query === false){
+  //   //   //do nothing
+  //   //   $response['success'] = false;
+  //   //   $response['message'] = 'User has not set up mobile money';
+  //   // }else
+  //   //   $response['success'] = true;
+  //   //   $response['message'] = 'User has set up mobile money';
+  //   //   $response['results'] = $query;
+  //   // }
+  //   $this->response($data,REST_Controller::HTTP_OK);
+  // }
+
+  public function momo_app_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
-    // $query = $this->MyModel->momo_by_id($data['email']);
-    // if($query === false){
-    //   //do nothing
-    //   $response['success'] = false;
-    //   $response['message'] = 'User has not set up mobile money';
-    // }else
-    //   $response['success'] = true;
-    //   $response['message'] = 'User has set up mobile money';
-    //   $response['results'] = $query;
-    // }
     $this->response($data,REST_Controller::HTTP_OK);
   }
 
