@@ -343,8 +343,8 @@ class App extends REST_Controller {
           );
         }else if($query['valid'] === true){
 
-          $data['success']= array(
-            'status'=> true,
+          $data= array(
+            'success'=> true,
             'message'=>'Valid Mobile Money Number',
             'results'=>$query
           );
