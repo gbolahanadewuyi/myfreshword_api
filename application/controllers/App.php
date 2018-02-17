@@ -389,11 +389,11 @@ class App extends REST_Controller {
     $this->response($data,REST_Controller::HTTP_OK);
   }
 
-  public function credit_card_post(){
-    $data = json_decode(file_get_contents('php://input'), TRUE);
-    $query = $this->MyModel->bin_checker($data['bin']);
-    $this->response($query, REST_Controller::HTTP_OK);
-  }
+  // public function credit_card_post(){
+  //   $data = json_decode(file_get_contents('php://input'), TRUE);
+  //   $query = $this->MyModel->bin_checker($data['bin']);
+  //   $this->response($query, REST_Controller::HTTP_OK);
+  // }
 
   public function head_post(){
     $query = $this->MyModel->check_auth_client();
