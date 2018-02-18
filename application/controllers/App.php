@@ -455,7 +455,7 @@ class App extends REST_Controller {
        'paid'            =>  $dataPost['paid']
      );
 
-     $this->response($query,REST_Controller::HTTP_OK);
+     $this->response($data,REST_Controller::HTTP_OK);
 
   }
 
