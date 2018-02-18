@@ -442,20 +442,30 @@ class App extends REST_Controller {
     //   $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     // }
 
-    $dataPost = json_decode(file_get_contents('php://input'), TRUE);
 
-     $data = array(
-       'prod_uniqid'     =>  $dataPost['prod_uniqid'],
-       'prod_description'=>  $dataPost['prod_description'],
-       'prod_name'       =>  $dataPost['prod_name'],
-       'prod_price'      =>  $dataPost['prod_price'],
-       'prod_quantity'   =>  $dataPost['prod_quantity'],
-       'prod_img_link'   =>  $dataPost['prod_img_link'],
-       'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
-       'paid'            =>  $dataPost['paid']
-     );
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+        $dataPost = json_decode(file_get_contents('php://input'), TRUE);
 
-     $this->response($data,REST_Controller::HTTP_OK);
+         $data = array(
+           'prod_uniqid'     =>  $dataPost['prod_uniqid'],
+           'prod_description'=>  $dataPost['prod_description'],
+           'prod_name'       =>  $dataPost['prod_name'],
+           'prod_price'      =>  $dataPost['prod_price'],
+           'prod_quantity'   =>  $dataPost['prod_quantity'],
+           'prod_img_link'   =>  $dataPost['prod_img_link'],
+           'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
+           'paid'            =>  $dataPost['paid']
+         );
+
+         $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
+         $query['total_price'] = $this->MyModel->TotalCartSales($data);
+         $this->response($query,REST_Controller::HTTP_OK);
+
+     }
+     else{
+       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+     }
 
   }
 
