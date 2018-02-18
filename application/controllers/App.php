@@ -445,11 +445,10 @@ class App extends REST_Controller {
 
   }
 
-  //on page load post run and get necessary data from cart 
+  //on page load post run and get necessary data from cart
   public function cart_status_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
-
       $dataPost = json_decode(file_get_contents('php://input'), TRUE);
       $data = array(
          'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
@@ -457,6 +456,7 @@ class App extends REST_Controller {
       $query['cart_data'] = $this->MyModel->fetch_cart_data($data);
       $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
       $query['total_price'] = $this->MyModel->TotalCartSales($data);
+      $this->response($query,REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
