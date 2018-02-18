@@ -504,11 +504,25 @@ class MyModel extends CI_Model {
       $this->db->where('prod_purchase_by',$data['prod_purchase_by']);//by email
       $this->db->where('paid',0);//where product hasnt been paid yet
       $query=$this->db->get();
-      return $query->row()->prod_price;
+      $query->row()->prod_price;
+      if($query == null){
+        return $data = 0;
+      }else {
+        return $query;
+      }
     }
 
     public function fetch_cart_data($data){
       $query =  $this->db->select()->from('ts_cart')->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->order_by('id','desc')->get()->result();
       return $query;
+    }
+
+    public function delete_cart_data($data){
+      $query = $this->db->where('id',$id)->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->where('id',$data['id'])->delete('ts_cart');
+      if($query == true){
+        return array('status' => 200,'message' => 'Data has been deleted.', 'Query'=>$query);
+      }else {
+        return array('status' => 400,'message' => 'Data delete error.', 'Query'=>$query);
+      }
     }
 }

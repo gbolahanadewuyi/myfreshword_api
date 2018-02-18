@@ -463,4 +463,19 @@ class App extends REST_Controller {
     }
   }
 
+  public function remove_cart_item_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $param = json_decode(file_get_contents('php://input'), TRUE);
+      $data = array(
+        'id'               => $param['id'],
+        'prod_purchase_by' => $param['email']
+      );
+      $query = $this->MyModel->delete_cart_data($data);
+      $this->response($query,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 }//end of class
