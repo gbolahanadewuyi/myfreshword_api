@@ -418,31 +418,7 @@ class App extends REST_Controller {
     $this->response($query, REST_Controller::HTTP_OK);
   }
 
-  public function cardAdd_post(){
-    // $response = $this->MyModel->header_auth();
-    // if($response['status']==200){
-    //   $dataPost = json_decode(file_get_contents('php://input'), TRUE);
-    //
-    //   $data = array(
-    //     'prod_uniqid'     =>  $dataPost['prod_uniqid'],
-    //     'prod_description'=>  $dataPost['prod_description'],
-    //     'prod_name'       =>  $dataPost['prod_name'],
-    //     'prod_price'      =>  $dataPost['prod_price'],
-    //     'prod_quantity'   =>  $dataPost['prod_quantity'],
-    //     'prod_img_link'   =>  $dataPost['prod_img_link'],
-    //     'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
-    //     'paid'            =>  $dataPost['paid']
-    //   );
-    //
-    //   $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
-    //   $query['total_price'] = $this->MyModel->TotalCartSales($data);
-    //   $this->response($query,REST_Controller::HTTP_NOT_FOUND);
-    // }
-    // else{
-    //   $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-    // }
-
-
+  public function cardAdd_post(){//this to add products to carts
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
         $dataPost = json_decode(file_get_contents('php://input'), TRUE);
@@ -467,6 +443,24 @@ class App extends REST_Controller {
        $this->response($response,REST_Controller::HTTP_NOT_FOUND);
      }
 
+  }
+
+  //on page load post run and get necessary data from cart 
+  public function cart_status_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+
+      $dataPost = json_decode(file_get_contents('php://input'), TRUE);
+      $data = array(
+         'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
+       );
+      $query['cart_data'] = $this->MyModel->fetch_cart_data($data);
+      $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
+      $query['total_price'] = $this->MyModel->TotalCartSales($data);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
   }
 
 }//end of class

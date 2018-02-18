@@ -506,4 +506,9 @@ class MyModel extends CI_Model {
       $query=$this->db->get();
       return $query->row()->prod_price;
     }
+
+    public function fetch_cart_data(){
+      $query =  $this->db->select()->from('ts_cart')->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->order_by('id','desc')->get()->result();
+      return $query;
+    }
 }
