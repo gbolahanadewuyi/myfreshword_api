@@ -504,7 +504,14 @@ class MyModel extends CI_Model {
       $this->db->where('prod_purchase_by',$data['prod_purchase_by']);//by email
       $this->db->where('paid',0);//where product hasnt been paid yet
       $query=$this->db->get();
-      return $query->row()->prod_price;
+      if($query == ""){
+        return $data = '0';
+      }
+      else
+      {
+        return $query->row()->prod_price;
+      }
+
     }
 
     public function fetch_cart_data($data){
