@@ -521,7 +521,7 @@ class MyModel extends CI_Model {
     }
 
     public function delete_cart_data($data){
-      $query = $this->db->where('id',$id)->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->where('id',$data['id'])->delete('ts_cart');
+      $query = $this->db->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->where('id',$data['id'])->delete('ts_cart');
       if($query == true){
         return array('status' => 200,'message' => 'Data has been deleted.', 'Query'=>$query);
       }else {
