@@ -504,7 +504,7 @@ class MyModel extends CI_Model {
       $this->db->where('prod_purchase_by',$data['prod_purchase_by']);//by email
       $this->db->where('paid',0);//where product hasnt been paid yet
       $query=$this->db->get();
-      if($query === NULL){
+      if($query->row()->prod_price === NULL){
         return $data = '0';
       }
       else
