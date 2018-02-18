@@ -506,7 +506,7 @@ class MyModel extends CI_Model {
       $query=$this->db->get();
       $query->row()->prod_price;
       if($query == null){
-        return $data = 0;
+        return $data = '0';
       }else {
         return $query;
       }
