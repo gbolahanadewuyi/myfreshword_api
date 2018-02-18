@@ -457,7 +457,7 @@ class App extends REST_Controller {
            'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
            'paid'            =>  $dataPost['paid']
          );
-
+         $query['insert_query'] = $this->MyModel->addToCart($data);
          $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
          $query['total_price'] = $this->MyModel->TotalCartSales($data);
          $this->response($query,REST_Controller::HTTP_OK);
