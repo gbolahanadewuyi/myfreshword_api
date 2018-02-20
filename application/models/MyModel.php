@@ -529,9 +529,9 @@ class MyModel extends CI_Model {
       }
     }
 
-    public  function library_get($data){
-      $query =  $this->db->select()->from('product_link')->where('user_acc',$data['email'])->where('paid',1)->order_by('id','desc')->get()->result();
-      if($query == true){
+    public  function library_data($email){
+      $query =  $this->db->select()->from('product_link')->where('user_acc',$email)->where('paid',1)->order_by('id','desc')->get()->result();
+      if($query === true){
         return array('status' => 200,'message' => 'Library Content Data Success.', 'Query'=>$query);
       }else {
         return array('status' => 400,'message' => 'Error fetching library content data', 'Query'=>$query);
