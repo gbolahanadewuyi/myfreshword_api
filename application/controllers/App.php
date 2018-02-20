@@ -478,4 +478,19 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  public function library_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $param = json_decode(file_get_contents('php://input'), TRUE);
+      $data = array(
+        'email'               => $param['email']
+      );
+      $query = $this->MyModel->library($data);
+      $this->response($query,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 }//end of class
