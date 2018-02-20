@@ -487,11 +487,7 @@ class App extends REST_Controller {
         'email'               => $param['email']
       );
       $query = $this->MyModel->library_data($data['email']);
-      $q = array(
-        'jsonbobdy'=>$data['email'],
-        'fetched_data'=>$query
-      );
-      $this->response($q,REST_Controller::HTTP_OK);
+      $this->response($query,REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
