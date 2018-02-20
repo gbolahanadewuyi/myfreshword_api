@@ -530,7 +530,7 @@ class MyModel extends CI_Model {
     }
 
     public  function library_data($email){
-      return $this->db->select('*')->from('product_link')->where('user_acc',$email)->order_by('id','desc')->get()->result();
+      return $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
     }
 
 
