@@ -486,7 +486,7 @@ class App extends REST_Controller {
       $data = array(
         'email'               => $param['email']
       );
-      $query = $this->MyModel->library($data);
+      $query = $this->MyModel->library_get($data);
       $this->response($query,REST_Controller::HTTP_OK);
     }
     else{
