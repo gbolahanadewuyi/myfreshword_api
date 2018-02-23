@@ -493,4 +493,19 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+
+  public function checkout_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $param = json_decode(file_get_contents('php://input'), TRUE);
+      //an array of data will be passed and stored into the paid database provided if the payment transaction went through
+
+
+      $this->response($param,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 }//end of class
