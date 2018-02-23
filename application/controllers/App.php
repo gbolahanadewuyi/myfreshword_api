@@ -501,7 +501,11 @@ class App extends REST_Controller {
     if($response['status']==200){
       $param = json_decode(file_get_contents('php://input'), TRUE);
       //$count = count($param['id']);
-      $this->response($param .' running from server side', REST_Controller::HTTP_OK);
+      $data = array(
+        'data'=>$param,
+        'query'=> 'checking to see if data is running'
+      );
+      $this->response($data , REST_Controller::HTTP_OK);
       // if ($count > 0) {
       //
       //   // for ($i = 0; $i < $count; $i++) {
