@@ -533,5 +533,39 @@ class MyModel extends CI_Model {
       return $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
     }
 
+    public function checkout_data($data){
+      return  $query = $this->db->insert('ts_paid_prod',$data );
+    }
 
+    public function payIN_endpoint($phoneNumber,$payAmount, $churchAccount){
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "http://api.techloftgh.com/api/Transactions/buyAPI",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "{\n    \"service\": \"mobilemoney\",\n    \"account\": \"233545057185\",\n    \"channel\": \"mobilemoney\",\n    \"network\": \"mtn\",\n    \"amount\": \"0.10\",\n    \"servicedetails\": {\n      \"account\": \"myfreshword\",\n      \"type\": \"myfreshword\",\n      \"network\": \"icgc\",\n      \"description\": \"myFreshword Payment\",\n      \"amount\": \"1\"\n    }\n  }",
+          CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "content-type: application/json",
+            "postman-token: 6399befd-a47a-5b0f-6bde-fdff7e8caafd"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          echo "cURL Error #:" . $err;
+        } else {
+          echo $response;
+        }
+    }
 }
