@@ -520,10 +520,8 @@ class App extends REST_Controller {
           // if($query === true){
           //   $query = $this->MyModel->delete_cart_data($param);
           // }
-
+          $this->response($query,REST_Controller::HTTP_OK);
         }
-
-        $this->response($query,REST_Controller::HTTP_OK);
       }
       //an array of data will be passed and stored into the paid database provided if the payment transaction went through
       //once you checkout ==== remove data from cart === then insert into paid products with its associated data
