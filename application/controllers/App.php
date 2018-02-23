@@ -517,9 +517,9 @@ class App extends REST_Controller {
           );
 
           $query = $this->MyModel->checkout_data($data);
-          if($query === true){
-            $query = $this->MyModel->delete_cart_data($param);
-          }
+          // if($query === true){
+          //   $query = $this->MyModel->delete_cart_data($param);
+          // }
 
         }
 
