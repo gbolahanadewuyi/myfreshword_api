@@ -500,11 +500,10 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $param = json_decode(file_get_contents('php://input'), TRUE);
-      $count = count($param);
+      $count = count($param['id']);
       if ($count > 0) {
         for ($i = 0; $i < $count; $i++) {
           $data = array(
-
             'prod_uniqid'     =>  $param['prod_uniqid'],
             //'prod_description'=>  $param['prod_description'],
             'prod_name'       =>  $param['prod_name'],
@@ -515,12 +514,11 @@ class App extends REST_Controller {
             'paid'            =>  1,
             'file_link'       =>  $param['file_link']
           );
-
-          $query = $this->MyModel->checkout_data($data);
+          $this->response($data,REST_Controller::HTTP_OK);
+          //$query = $this->MyModel->checkout_data($data);
           // if($query === true){
           //   $query = $this->MyModel->delete_cart_data($param);
           // }
-          $this->response($query,REST_Controller::HTTP_OK);
         }
       }
       //an array of data will be passed and stored into the paid database provided if the payment transaction went through
