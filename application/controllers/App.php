@@ -500,8 +500,8 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $param = json_decode(file_get_contents('php://input'), TRUE);
-      $count = count($param['id']);
-      $this->response($count,REST_Controller::HTTP_OK);
+      //$count = count($param['id']);
+      $this->response($param, REST_Controller::HTTP_OK);
       // if ($count > 0) {
       //
       //   // for ($i = 0; $i < $count; $i++) {
