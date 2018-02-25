@@ -535,4 +535,37 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  public function sms_enable_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $param = json_decode(file_get_contents('php://input'), TRUE);
+      $data  = array(
+          'sms_notify'  => $param['notify']
+          // 'email'       => $param['email'],
+          //  'id'         => $param['id'],//this will be the profile id
+          //  'mobile'     => $param['mobile']
+      );
+      $query = $this->MyModel->sms_enable($data);
+      $this->response($query,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function email_enable_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $param = json_decode(file_get_contents('php://input'), TRUE);
+      $data = array(
+        'email_notify'  => $param['notify']
+      );
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+
+  }
+
 }//end of class

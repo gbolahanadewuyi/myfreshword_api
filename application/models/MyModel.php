@@ -568,4 +568,32 @@ class MyModel extends CI_Model {
           echo $response;
         }
     }
+
+    public function email_enable($data, $param){
+      //enable email alerts  ===  Id from user profile details
+      $this->db->where('id',$param['id'])->update('ts_user',$data);
+      return array('status' => 200,'message' => 'Email Notification Enabled.');
+    }
+
+    public function sms_enable($data, $param){
+      //this is saying send alerts if == Id from user profile details
+      //so here we need to check first if user phone number is set
+      $query = $this->mobile($data, $param);
+      if($query['status'] == 400){
+        return $query ;
+      }else{
+        $this->db->where('id',$param['id'])->update('ts_user',$data);
+        return array('status' => 200,'message' => 'SMS Notification Enabled.');
+      }
+    }
+
+    private function mobile_exist($data, $param){
+      $query = $this->db->select('user_mobile')->from('ts_user')->where('user_mobile',$param['mobile'])->where('user_email',$param['email'])->get()->row();
+      if($query->user_mobile == ""){
+        return array('status'=> 400, 'message'=> 'Update profile info with mobile');
+      }
+      else{
+        return array('status'=> 200, 'message'=> 'mobile number set');
+      }
+    }
 }
