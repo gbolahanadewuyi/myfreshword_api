@@ -590,9 +590,9 @@ class App extends REST_Controller {
           'user_pwd'    =>md5($_POST['password'])
         );
         $id = $_POST['id'];
-        $query = $this->MyModel->update_user_profile($id,$data);
+        $data = $this->MyModel->update_user_profile($id,$data);
       }
-      $this->response($query,REST_Controller::HTTP_OK);
+      $this->response($data,REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
