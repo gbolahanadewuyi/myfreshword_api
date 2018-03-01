@@ -596,4 +596,14 @@ class MyModel extends CI_Model {
         return array('status'=> 200, 'message'=> 'mobile number set');
       }
     }
+
+    public function update_user_profile($id,$data){
+      $query  = $this->db->where('id',$id)->update('ts_user',$data);
+      if($query == true){
+        return array('status' => 200,'message' => 'Profile data has been updated.');
+      }
+      else{
+        return array('status' => 400,'message' => 'Error updating profile data.');
+      }
+    }
 }

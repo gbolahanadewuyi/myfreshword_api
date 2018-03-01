@@ -568,4 +568,34 @@ class App extends REST_Controller {
 
   }
 
+  public function profile_update_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('id', 'User Profile ID', 'trim|required|numeric');
+      $this->form_validation->set_rules('username', 'Username', 'trim|required');
+      $this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
+      $this->form_validation->set_rules('password', 'Password', 'trim|required');
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+      }
+      else{
+        $data = array(
+          'user_uname'  =>$_POST['username'],
+          'user_mobile' =>$_POST['mobile'],
+          'user_pwd'    =>md5($_POST['password'])
+        );
+        $id = $_POST['id'];
+        $query = $this->MyModel->update_user_profile($id,$data);
+      }
+      $this->response($query,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 }//end of class
