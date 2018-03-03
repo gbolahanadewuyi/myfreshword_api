@@ -635,7 +635,7 @@ class MyModel extends CI_Model {
     }
 
     private function complete_payment($data){//this will be an update statement
-      $query = $this->db->where('freshword_transaction',$data['freshword_transaction_id'])->update('payment_response',$data);
+      $query = $this->db->where('freshword_transaction_id',$data['freshword_transaction_id'])->update('payment_response',$data);
       if($query == true){
         return array('status'=> 200, 'message'=> 'payment process completed');
       }
