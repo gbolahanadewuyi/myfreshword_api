@@ -621,13 +621,28 @@ class MyModel extends CI_Model {
     }
 
     public function callback_response($data){
-
-      $query = $this->db->insert('payment_response',$data);
-      if($query == true){
-        return array('status'=> 200, 'message'=>'Payment response logged');
+      $q = $this->check_if_freshword_transaction_id_exist($data);
+      if($q['status'] == 201){
+        $query = $this->db->insert('payment_response',$data);
+        if($query == true){
+          return array('status'=> 200, 'message'=>'Payment response logged');
+        }
+        else{
+          return array('status'=> 400, 'message'=>'Payment response not logged');
+        }
       }
       else{
-        return array('status'=> 400, 'message'=>'Payment response not logged');
+        return $q;
+      }
+
+    }
+
+    private function check_if_freshword_transaction_id_exist($data){
+      $query = $this->db->select('*')->from('payment_response')->where('freshword_transaction_id',$data['freshword_transaction_id'])->get()->row();
+      if($query->freshword_transaction_id ==  $data['freshword_transaction_id']){
+        return array('status'=>400, 'message'=> 'Payment is already being processed');
+      }else {
+        return array('status'=>201, 'message'=> 'No Duplicates logging payment data for processing');
       }
     }
 
