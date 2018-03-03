@@ -644,4 +644,62 @@ class MyModel extends CI_Model {
       }
     }
 
+
+    public function user_momo_numbers($data){//here we check the unique account using the email address of the user
+      $query =  $this->db->select('*')->from('momo')->where('unique_acc',$data['email'])->order_by('id','desc')->get()->result();
+      if($query == ""){
+        return array('status'=>204, 'message'=> 'Add a mobile money number');
+      }
+      else{
+        return array('status'=>200, 'message'=> 'User has set mobile money number');
+      }
+    }
+
+    public function delete_momo_number($data){
+      $query = $this->db->where('id',$data['id'])->where('unique_acc',$data['email'])->delete('momo');
+      if($query == true){
+        return array('status'=>200,'message'=>'Mobile money number removed successfully');
+      }
+      else{
+        return array('status'=>400, 'message'=>'Error removing mobile money number');
+      }
+    }
+
+    public function set_momo_default($data){//turn all off and set one as set_momo_default
+      $q = $this->user_momo_active($data);
+      if($q['status'] == 200){
+         //set default = 1 to set as active
+         $query = $this->db->where('payin_number',$data['payin_number'])->update('momo',$data);
+         if($query == true){
+           return array('status'=>200, 'message'=>'Number set as default');
+         }
+      }
+      else{
+        return $q;
+      }
+    }
+
+    private function user_momo_active($data){
+       $query =  $this->db->select('*')->from('momo')->where('unique_acc',$data['email'])->where('set_default',1)->get()->row();
+       if($query == ""){//if no number is active
+        $q =   $this->db->where('payin_number',$data['payin_number'])->update('momo',$data);//here the only data to set is set_default to 1
+          if($q == true){
+            return array('status'=>201, 'message'=> 'Mobile money number set as default');
+          }
+       }
+       else{
+         // turn off the already set Number
+         $offdata = array(
+           'payin_number'=> $query->payin_number,
+           'set_default'=>  0
+         );
+         $res = $this->db->where('payin_number',$offdata['payin_number'])->update('momo',$offdata);
+         if($res == true){
+           return array('status'=>200, 'message'=> 'Default number changed to zero');
+         }
+         else{
+           return array('status'=>400, 'message'=> 'Default number could not be changed');
+         }
+       }
+    }
 }

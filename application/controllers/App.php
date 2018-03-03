@@ -407,6 +407,20 @@ class App extends REST_Controller {
 
   }
 
+
+  public function momo_default_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->set_momo_default($_POST);
+      $this->response($q,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+
+    }
+  }
+
   public function credit_card_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
     $query = $this->MyModel->bin_checker($data['bin']);
