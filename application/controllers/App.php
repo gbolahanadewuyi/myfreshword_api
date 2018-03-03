@@ -585,9 +585,9 @@ class App extends REST_Controller {
       }
       else{
         $data = array(
-          'user_uname'  =>$_POST['username'],
-          'user_mobile' =>$_POST['mobile'],
-          'user_pwd'    =>md5($_POST['password'])
+          'user_uname'  => $_POST['username'],
+          'user_mobile' => $_POST['mobile'],
+          'user_pwd'    => $_POST['password']
         );
         $id = $_POST['id'];
         $data = $this->MyModel->update_user_profile($id,$data);
@@ -597,5 +597,27 @@ class App extends REST_Controller {
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
+  }
+
+  public function payment_response_post(){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $data= array('success'=> false, 'messages' => array());
+    $this->form_validation->set_rules('status', 'Rest Status Code', 'trim|required|numeric');
+    $this->form_validation->set_rules('success', 'Success Boolean', 'trim|required|numeric');
+    $this->form_validation->set_rules('message', 'Message', 'trim|required');
+    $this->form_validation->set_rules('network', 'Mobile Money Network', 'trim|required|numeric');
+    $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required|numeric');
+    $this->form_validation->set_rules('amount', 'Transaction Amount', 'trim|required|numeric');
+    $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required|numeric');
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+            $data['messages'][$key] = form_error($key);
+        }
+    }
+    else{
+      $data = $this->MyModel->callback_response($_POST);
+    }
+    $this->response($data,REST_Controller::HTTP_OK);
   }
 }//end of class

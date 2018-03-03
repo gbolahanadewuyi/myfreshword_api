@@ -606,4 +606,30 @@ class MyModel extends CI_Model {
         return array('status' => 400,'message' => 'Error updating profile data.');
       }
     }
+
+    public function check_db_with_rest_client($data){
+      $query = $this->db->select('*')->from('ts_user')->where('user_id',$data['id'])->get()->row();
+      //check values returned here with the post data being passed from the rest client
+      if($query->user_uname == $data['username'] && $query->user_mobile == $data['mobile'] && $query->user_pwd == $data['password']){
+        return array(
+          'status'=> 401, 'message'=> 'No Profile Changes made'
+        );
+      }
+      else{
+        return array('status'=>200, 'message'=> 'Data ready to update');
+      }
+    }
+
+    public function callback_response($data){
+
+      $query = $this->db->insert('payment_response',$data);
+      if($query == true){
+        return array('status'=> 200, 'message'=>'Payment response logged');
+      }
+      else{
+        return array('status'=> 400, 'message'=>'Payment response not logged');
+      }
+    }
+
+
 }
