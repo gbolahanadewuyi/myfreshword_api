@@ -602,13 +602,14 @@ class App extends REST_Controller {
   public function payment_response_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
     $data= array('success'=> false, 'messages' => array());
-    $this->form_validation->set_rules('status', 'Rest Status Code', 'trim|required|numeric');
-    $this->form_validation->set_rules('success', 'Success Boolean', 'trim|required|numeric');
+    //$this->form_validation->set_rules('status', 'Rest Status Code', 'trim|required|numeric');//preferred not to be passed
+    $this->form_validation->set_rules('success', 'Success Boolean', 'trim|required');
     $this->form_validation->set_rules('message', 'Message', 'trim|required');
-    $this->form_validation->set_rules('network', 'Mobile Money Network', 'trim|required|numeric');
+    $this->form_validation->set_rules('network', 'Mobile Money Network', 'trim|required');
     $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required|numeric');
     $this->form_validation->set_rules('amount', 'Transaction Amount', 'trim|required|numeric');
-    $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required|numeric');
+    $this->form_validation->set_rules('freshword_id', 'My Freshword Reference ID', 'trim|required');
+    $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
