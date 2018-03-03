@@ -621,29 +621,16 @@ class MyModel extends CI_Model {
     }
 
     public function callback_response($data){
-      $q = $this->check_if_freshword_transaction_id_exist($data);
-      if($q['status'] == 201){
-          // $query = $this->db->insert('payment_response',$data);
-          // if($query == true){
-          //   return array('status'=> 200, 'message'=>'Payment response logged');
-          // }
-          // else{
-          //   return array('status'=> 400, 'message'=>'Payment response not logged');
-          // }
-          return $this->complete_payment($data);
-      }
-      else{
-        return $q;
-      }
-
+      return $q = $this->check_if_freshword_transaction_id_exist($data);
+      //if exist complete payment processing with response
     }
 
     private function check_if_freshword_transaction_id_exist($data){
       $query = $this->db->select('*')->from('payment_response')->where('freshword_transaction_id',$data['freshword_transaction_id'])->get()->row();
       if($query->freshword_transaction_id ==  $data['freshword_transaction_id']){
-        return array('status'=>400, 'message'=> 'Payment is already being processed');
+          $q = $this->complete_payment($data);
       }else {
-        return array('status'=>201, 'message'=> 'No Duplicates logging payment data for processing');
+        return array('status'=>400, 'message'=> 'Freshword transaction id is invalid');
       }
     }
 
