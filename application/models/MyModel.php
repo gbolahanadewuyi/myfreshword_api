@@ -623,13 +623,14 @@ class MyModel extends CI_Model {
     public function callback_response($data){
       $q = $this->check_if_freshword_transaction_id_exist($data);
       if($q['status'] == 201){
-        $query = $this->db->insert('payment_response',$data);
-        if($query == true){
-          return array('status'=> 200, 'message'=>'Payment response logged');
-        }
-        else{
-          return array('status'=> 400, 'message'=>'Payment response not logged');
-        }
+          // $query = $this->db->insert('payment_response',$data);
+          // if($query == true){
+          //   return array('status'=> 200, 'message'=>'Payment response logged');
+          // }
+          // else{
+          //   return array('status'=> 400, 'message'=>'Payment response not logged');
+          // }
+          return $this->complete_payment($data);
       }
       else{
         return $q;
@@ -646,5 +647,14 @@ class MyModel extends CI_Model {
       }
     }
 
+    private function complete_payment($data){//this will be an update statement
+      $query = $this->db->where('freshword_transaction',$data['freshword_transaction_id'])->update('payment_response',$data);
+      if($query == true){
+        return array('status'=> 200, 'message'=> 'payment process completed');
+      }
+      else {
+        return array('status'=> 400 , 'message'=> 'There was an issue processing your payment');
+      }
+    }
 
 }
