@@ -608,7 +608,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('network', 'Mobile Money Network', 'trim|required');
     $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required|numeric');
     $this->form_validation->set_rules('amount', 'Transaction Amount', 'trim|required|numeric');
-    $this->form_validation->set_rules('freshword_id', 'My Freshword Reference ID', 'trim|required');
+    $this->form_validation->set_rules('freshword_transaction_id', 'My Freshword Transaction ID', 'trim|required');
     $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
     if ($this->form_validation->run() === FALSE){
