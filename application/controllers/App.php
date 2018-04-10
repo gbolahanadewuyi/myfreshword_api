@@ -446,7 +446,8 @@ class App extends REST_Controller {
            'prod_img_link'   =>  $dataPost['prod_img_link'],
            'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
            'paid'            =>  $dataPost['paid'],
-           'file_link'       =>  $dataPost['file_link']
+           'file_link'       =>  $dataPost['file_link'],
+           'transactionid'   =>  $this->MyModel->RandomString()//if it hasnt been paid dont generate new transaction id 
          );
          $query['insert_query'] = $this->MyModel->addToCart($data);
          $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
@@ -520,6 +521,9 @@ class App extends REST_Controller {
         'query'=> 'checking to see if data is running'
       );
       $this->response($data , REST_Controller::HTTP_OK);
+
+
+
       // if ($count > 0) {
       //
       //   // for ($i = 0; $i < $count; $i++) {
@@ -548,6 +552,10 @@ class App extends REST_Controller {
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
+  }
+
+  public function process_payment_post(){
+
   }
 
   public function sms_enable_post(){
@@ -634,5 +642,15 @@ class App extends REST_Controller {
       $data = $this->MyModel->callback_response($_POST);
     }
     $this->response($data,REST_Controller::HTTP_OK);
+  }
+
+
+  //here the payment processing data is stored into the db
+  public function payment_processor_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+    }
   }
 }//end of class
