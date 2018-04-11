@@ -651,7 +651,7 @@ class MyModel extends CI_Model {
         return array('status'=>204, 'message'=> 'Add a mobile money number');
       }
       else{
-        return array('status'=>200, 'message'=> 'User has set mobile money number');
+        return array('status'=>200, 'message'=> 'User has set mobile money number', 'query'=>$query);//query will return all array with email address
       }
     }
 
@@ -721,5 +721,10 @@ class MyModel extends CI_Model {
           //echo $randstr;
           //echo number_format($randstr,0,"","-");
         return wordwrap($randstr, 10, '-', true);
+      }
+
+      public function hold_trans_id($email, $transid){
+        //hold  and reuse trans id until
+
       }
 }

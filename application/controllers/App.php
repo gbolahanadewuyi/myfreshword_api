@@ -421,6 +421,17 @@ class App extends REST_Controller {
     }
   }
 
+  public function momo_get_data_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->user_momo_numbers($_POST['email']);
+      $this->response($q,REST_Controller::HTTP_OK);
+    }else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
   public function credit_card_post(){
     $data = json_decode(file_get_contents('php://input'), TRUE);
     $query = $this->MyModel->bin_checker($data['bin']);
@@ -447,7 +458,7 @@ class App extends REST_Controller {
            'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
            'paid'            =>  $dataPost['paid'],
            'file_link'       =>  $dataPost['file_link'],
-           'transactionid'   =>  $this->MyModel->RandomString()//if it hasnt been paid dont generate new transaction id 
+           'transactionid'   =>  $this->MyModel->RandomString()//if it hasnt been paid dont generate new transaction id
          );
          $query['insert_query'] = $this->MyModel->addToCart($data);
          $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
