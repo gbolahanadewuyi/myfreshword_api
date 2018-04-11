@@ -651,7 +651,8 @@ class MyModel extends CI_Model {
         return array('status'=>204, 'message'=> 'Add a mobile money number');
       }
       else{
-        return array('status'=>200, 'message'=> 'User has set mobile money number', 'query'=>$query);//query will return all array with email address
+        //return array('status'=>200, 'message'=> 'User has set mobile money number', 'query'=>$query);//query will return all array with email address
+        return $query;
       }
     }
 
