@@ -426,7 +426,10 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $q = $this->MyModel->user_momo_numbers($_POST['email']);
+      $data = array(
+        'email'=>$_POST['email']
+      );
+      $q = $this->MyModel->user_momo_numbers($data);
       $this->response($q,REST_Controller::HTTP_OK);
     }else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
