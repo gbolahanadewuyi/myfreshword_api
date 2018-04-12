@@ -342,6 +342,7 @@ class App extends REST_Controller {
             'message'=> 'Invalid Mobile Money Number'
           );
         }
+
         else if($query['valid'] === true){
 
           $data= array(

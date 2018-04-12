@@ -395,7 +395,7 @@ class MyModel extends CI_Model {
 
     public function new_momo($mobile){
       // set API Access Key
-    $access_key = 'a41000a45a900d1ba598be3e977fc387';
+    $access_key = 'a88d6294fe6ae7ded65c1f7fc7911c8e';
 
     // set phone number
     $phone_number = $mobile;
