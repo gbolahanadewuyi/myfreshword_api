@@ -662,11 +662,36 @@ class App extends REST_Controller {
 
 
   //here the payment processing data is stored into the db
-  public function payment_processor_post(){
+  // public function payment_processor_post(){
+  //   $response = $this->MyModel->header_auth();
+  //   if($response['status']==200){
+  //     $_POST = json_decode(file_get_contents('php://input'), TRUE);
+  //
+  //   }
+  // }
+
+
+
+  public function comments_title_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data = array(
+        'id'              =>  $_POST['id'],
+        'comment_title'   =>  $_POST['title']
+      );
 
+      $q = $this->MyModel->get_comment_title_data($data);
+      if($q['status'] == 204){
+        $this->response($q,REST_Controller::HTTP_NOT_FOUND);
+      }else{
+        $this->response($q,REST_Controller::HTTP_OK);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+
 }//end of class

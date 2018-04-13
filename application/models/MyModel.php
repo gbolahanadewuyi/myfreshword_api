@@ -728,4 +728,21 @@ class MyModel extends CI_Model {
         //hold  and reuse trans id until
 
       }
+
+
+      //this model is to get just the product comment title of the product
+      public function get_comment_title_data($data){//now this should be associated with the comment title
+        if($data['prod_id'] == "" && $data['comment_title'] == ""){
+          return array('status'=>204, 'message'=> 'There is an error with the comment title');
+        }
+        else if($data['prod_id'] == ""){
+          return array('status'=>204, 'message'=> 'Product ID is Null');
+        }
+        else if($data['comment_title'] == ""){
+          return array('status'=>204, 'message'=> 'Comment Title value is Null');
+        }
+        else if($data['id'] != "" && $data['comment_title'] != ""){
+          return $this->db->select('*')->from('comments')->where('id',$data['id'])->where('comment_title',$data['comment_title'])->get()->row();
+        }
+      }
 }
