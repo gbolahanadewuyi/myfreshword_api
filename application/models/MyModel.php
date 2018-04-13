@@ -741,8 +741,8 @@ class MyModel extends CI_Model {
         else if($data['comment_title'] == ""){
           return array('status'=>204, 'message'=> 'Comment Title value is Null');
         }
-        else if($data['id'] != "" && $data['comment_title'] != ""){
-          return $this->db->select('*')->from('comments')->where('id',$data['id'])->where('comment_title',$data['comment_title'])->get()->row();
+        else if($data['prod_id'] != "" && $data['comment_title'] != ""){
+          return $this->db->select('*')->from('comments')->where('prod_id',$data['prod_id'])->where('comment_title',$data['comment_title'])->get()->row();
         }
       }
 }

@@ -677,7 +677,7 @@ class App extends REST_Controller {
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $data = array(
-        'id'              =>  $_POST['id'],
+        'prod_id'              =>  $_POST['id'],
         'comment_title'   =>  $_POST['title']
       );
 
