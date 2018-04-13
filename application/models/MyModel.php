@@ -738,7 +738,7 @@ class MyModel extends CI_Model {
         else {
           $q =  $this->db->select('*')->from('comments')->where('prod_id',$data['prod_id'])->where('comment_title',$data['comment_title'])->get()->row();
           if($q == true ){
-            return arra('status'=>200, 'query'=>$q);
+            return array('status'=>200, 'query'=>$q);
           }
         }
       }
