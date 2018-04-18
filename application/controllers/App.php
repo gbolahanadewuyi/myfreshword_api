@@ -536,8 +536,9 @@ class App extends REST_Controller {
       $arrayLength = count($_POST['cart_data']);
       for ($i = 0; $i < $arrayLength; $i++) {
           foreach($_POST['cart_data'][$i] as $value) {
-            $this->response($value,REST_Controller::HTTP_OK);
+               $value;
           }
+          $this->response($value,REST_Controller::HTTP_OK);
       }
     }
     else{
