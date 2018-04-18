@@ -724,7 +724,7 @@ class MyModel extends CI_Model {
       }
 
       public function trans_rotate($email){
-        $q  = $this->db->select('transactionid')->from('ts_user')->where('prod_purchase_by',$email)->get()->row();
+        $q  = $this->db->select('transactionid')->from('ts_cart')->where('prod_purchase_by',$email)->get()->row();
         if($q == ""){
           return $this->RandomString();
         }
