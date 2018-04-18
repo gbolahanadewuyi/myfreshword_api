@@ -534,7 +534,7 @@ class App extends REST_Controller {
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
       //so here when you make payment
-      $this->db->insert_batch('mytable', $data);
+      //$this->db->insert_batch('ts_paid_prod', $_POST['cart_data']);
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
     }
     else{
