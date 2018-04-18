@@ -531,7 +531,7 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
+      $this->response($_POST['cart_data'][0],REST_Controller::HTTP_OK);
       // if ($count > 0) {
       //
       //   // for ($i = 0; $i < $count; $i++) {
