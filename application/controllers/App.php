@@ -530,16 +530,8 @@ class App extends REST_Controller {
   public function checkout_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
-      $param = json_decode(file_get_contents('php://input'), TRUE);
-      //$count = count($param['id']);
-      $data = array(
-        'data'=>$param,
-        'query'=> 'checking to see if data is running'
-      );
-      $this->response($data , REST_Controller::HTTP_OK);
-
-
-
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $this->response($_POST,REST_Controller::HTTP_OK);
       // if ($count > 0) {
       //
       //   // for ($i = 0; $i < $count; $i++) {
