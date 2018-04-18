@@ -532,30 +532,13 @@ class App extends REST_Controller {
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $this->response($_POST['cart_data'][0]['id'],REST_Controller::HTTP_OK);
-      // if ($count > 0) {
-      //
-      //   // for ($i = 0; $i < $count; $i++) {
-      //   //   $data = array(
-      //   //     'prod_uniqid'     =>  $param['prod_uniqid'],
-      //   //     //'prod_description'=>  $param['prod_description'],
-      //   //     'prod_name'       =>  $param['prod_name'],
-      //   //     'prod_price'      =>  $param['prod_price'],
-      //   //     'prod_quantity'   =>  $param['prod_quantity'],
-      //   //     'img_link'        =>  $param['prod_img_link'],
-      //   //     'user_acc'        =>  $param['prod_purchase_by'],
-      //   //     'paid'            =>  1,
-      //   //     'file_link'       =>  $param['file_link']
-      //   //   );
-      //   //   $this->response($data,REST_Controller::HTTP_OK);
-      //   //   //$query = $this->MyModel->checkout_data($data);
-      //   //   // if($query === true){
-      //   //   //   $query = $this->MyModel->delete_cart_data($param);
-      //   //   // }
-      //   // }
-      // }
-      //an array of data will be passed and stored into the paid database provided if the payment transaction went through
-      //once you checkout ==== remove data from cart === then insert into paid products with its associated data
-      //we have to count and loop the data object array for insertion
+
+      $arrayLength = count($_POST['cart_data']);
+      for ($i = 0; $i < $arrayLength; $i++) {
+          foreach($_POST['cart_data'][$i] as $value) {
+            $this->response($value,REST_Controller::HTTP_OK);
+          }
+      }
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
