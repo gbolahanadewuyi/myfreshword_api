@@ -463,6 +463,7 @@ class App extends REST_Controller {
            'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
            'paid'            =>  $dataPost['paid'],
            'file_link'       =>  $dataPost['file_link'],
+           'prod_type'       =>  $dataPost['type_list'],
            'transactionid'   =>  $this->MyModel->trans_rotate($dataPost['prod_purchase_by'])//if it hasnt been paid dont generate new transaction id
          );
          $query['insert_query'] = $this->MyModel->addToCart($data);
@@ -532,7 +533,8 @@ class App extends REST_Controller {
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
-
+      //so here when you make payment
+      $this->db->insert_batch('mytable', $data);
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
     }
     else{
