@@ -463,7 +463,7 @@ class App extends REST_Controller {
            'prod_purchase_by'=>  $dataPost['prod_purchase_by'],
            'paid'            =>  $dataPost['paid'],
            'file_link'       =>  $dataPost['file_link'],
-           'transactionid'   =>  $this->MyModel->RandomString()//if it hasnt been paid dont generate new transaction id
+           'transactionid'   =>  $this->MyModel->trans_rotate($dataPost['prod_purchase_by'])//if it hasnt been paid dont generate new transaction id
          );
          $query['insert_query'] = $this->MyModel->addToCart($data);
          $query['item_in_cart'] = $this->MyModel->cartRowCount($data);
@@ -531,8 +531,9 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
-      
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);

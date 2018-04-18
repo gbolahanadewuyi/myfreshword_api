@@ -20,11 +20,10 @@ class MyModel extends CI_Model {
         $client_service = $this->input->get_request_header('User-ID', TRUE);
         $auth_key  = $this->input->get_request_header('Authorization', TRUE);
         return array('user-id'=>$client_service, 'auth'=>$auth_key);
-    }
+  }
 
 
-    public function login($username,$password)
-    {
+  public function login($username,$password){
         $q  = $this->db->select('user_pwd,user_id,user_status,user_mobile')->from('ts_user')->where('user_uname',$username)->get()->row();
         if($q == ""){
             return array('status' => 204,'message' => 'Username not found.');
@@ -724,8 +723,14 @@ class MyModel extends CI_Model {
         return wordwrap($randstr, 10, '-', true);
       }
 
-      public function hold_trans_id($email, $transid){
-        //hold  and reuse trans id until
+      public function trans_rotate($email){
+        $q  = $this->db->select('transactionid')->from('ts_user')->where('prod_purchase_by',$email)->get()->row();
+        if($q == ""){
+          return $this->RandomString();
+        }
+        else{
+          return $q->transactionid;//if there is one it will always return this
+        }
 
       }
 
