@@ -535,6 +535,19 @@ class App extends REST_Controller {
 
       //so here when you make payment
       //$this->db->insert_batch('ts_paid_prod', $_POST['cart_data']);
+      foreach($_POST['cart_data'] as $db_data){
+        $data = array(
+          'prod_name'   =>  $db_data['prod_name'],
+          'prod_uniqid' =>  $db_data['prod_uniqid'],
+          'file_link'   =>  $db_data['file_link'],
+          'type'        =>  $db_data['prod_type'],
+          'paid'        =>  1,
+          'user_acc'    =>  $db_data['prod_purchase_by'],
+          'img_link'    =>  $db_data['prod_img_link'],
+          'prod_price'  =>  $db_data['prod_price']
+        );
+        $this->db->insert('ts_paid_prod', $data);
+      }
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
     }
     else{
