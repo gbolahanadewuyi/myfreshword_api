@@ -531,15 +531,8 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      //$this->response($_POST['cart_data'][0]['id'],REST_Controller::HTTP_OK);
-
-      $arrayLength = count($_POST['cart_data']);
-      for ($i = 0; $i < $arrayLength; $i++) {
-          foreach($_POST['cart_data'][$i] as $value) {
-               $value;
-          }
-          $this->response($value,REST_Controller::HTTP_OK);
-      }
+      $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
+      
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
