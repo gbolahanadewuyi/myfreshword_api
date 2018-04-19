@@ -652,7 +652,7 @@ class App extends REST_Controller {
   //data passed here should just contain the following
   //transactionid
   //
-  public function process_cart_payment(){
+  public function process_cart_payment_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
