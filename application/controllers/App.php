@@ -528,6 +528,7 @@ class App extends REST_Controller {
   }
 
 
+
   public function checkout_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -622,6 +623,8 @@ class App extends REST_Controller {
     }
   }
 
+
+  //this shooud be the response for the payment
   public function payment_response_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
     $data= array('success'=> false, 'messages' => array());
@@ -634,6 +637,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('freshword_transaction_id', 'My Freshword Transaction ID', 'trim|required');
     $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
             $data['messages'][$key] = form_error($key);
@@ -643,6 +647,49 @@ class App extends REST_Controller {
       $data = $this->MyModel->callback_response($_POST);
     }
     $this->response($data,REST_Controller::HTTP_OK);
+  }
+
+  //data passed here should just contain the following
+  //transactionid
+  //
+  public function process_cart_payment(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('success', 'Success Boolean', 'trim|required');
+      $this->form_validation->set_rules('status', 'status', 'trim|required');
+      $this->form_validation->set_rules('message', 'Message', 'trim|required');
+      $this->form_validation->set_rules('network', 'network', 'trim|required');
+      $this->form_validation->set_rules('phonenumber', 'Phone Number', 'trim|required|numeric');
+      $this->form_validation->set_rules('amount', 'amount', 'trim|required|numeric');
+      $this->form_validation->set_rules('freshword_transaction_id', 'Freshword Transaction Id', 'trim|required');
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+        if ($this->form_validation->run() === FALSE){
+            foreach($_POST as $key =>$value){
+                $data['messages'][$key] = form_error($key);
+            }
+        }
+        else{
+
+          $payData = array(
+            'success'                   =>    $_POST['success'],
+            'status'                    =>    $_POST['status'],
+            'message'                   =>    $_POST['message'],
+            'network'                   =>    $_POST['network'],
+            'phone_number'              =>    $_POST['phonenumber'],
+            'amount'                    =>    $_POST['amount'],
+            'freshword_transaction_id'  =>    $_POST['freshword_transaction_id']
+          );
+          $data['success']  = true;
+          $data['messages'] = $this->MyModel->payment_to_db($payData);
+
+        }
+        $this->response($data), REST_Controller:HTTP_OK;
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
   }
 
 
@@ -655,7 +702,9 @@ class App extends REST_Controller {
   //   }
   // }
 
+  public function selectedNetwork_post(){
 
+  }
 
   public function comments_title_post(){
     $response = $this->MyModel->header_auth();

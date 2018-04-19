@@ -747,4 +747,18 @@ class MyModel extends CI_Model {
           }
         }
       }
+
+
+      //process payment
+      //dont allow users to enter when
+      public function payment_to_db($data){
+        $q =  $this->db->select('*')->from('payment_response')->where('freshword_transaction_id',$data['freshword_transaction_id'])->get()->row();
+        if($q == ""){//here if it shows nothing
+          $this->db->insert('payment_response', $data);
+          return array('status'=>201, 'message'=>'New payment data inserted');
+        }
+        else{
+          return array('status'=>202, 'message'=> 'payment data already exist');
+        }
+      }
 }
