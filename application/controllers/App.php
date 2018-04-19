@@ -685,7 +685,7 @@ class App extends REST_Controller {
           $data['messages'] = $this->MyModel->payment_to_db($payData);
 
         }
-        $this->response($data), REST_Controller:HTTP_OK;
+        $this->response($data, REST_Controller:HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
