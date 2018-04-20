@@ -239,8 +239,8 @@ class MyModel extends CI_Model {
                 "From=freshword"
                 ."&To=$phone"
                 ."&Content=".urlencode("$pin")
-                ."&ClientId=ihounyms"
-                ."&ClientSecret=icbvukgq"
+                ."&ClientId=dgsfkiil"
+                ."&ClientSecret=czywtkzd"
                 ."&RegisteredDelivery=true";
             $curl = curl_init();
 
