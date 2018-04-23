@@ -546,9 +546,25 @@ class App extends REST_Controller {
           'prod_price'  =>  $db_data['prod_price']
         );
         $this->db->insert('ts_paid_prod', $data);
-        $this->db->where('user_acc',$db_data['prod_purchase_by'])->delete('ts_cart');
       }
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function clear_library_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      //run this endpoint after user checked out and paid all
+      $q = $this->MyModel->delete_library_data($_POST['email']);
+      if($q == true){
+        $data = array('status'=>200, 'message'=>'Cart data cleared');
+      }else{
+        $data = array('status'=>400, 'message'=> 'Error with cart data processing');
+      }
+      $this->response($data,REST_Controller::HTTP_OK);
     }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);

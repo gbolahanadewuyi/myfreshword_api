@@ -761,4 +761,8 @@ class MyModel extends CI_Model {
           return array('status'=>202, 'message'=> 'payment data already exist');
         }
       }
+
+      public function delete_library_data($email){
+        return $this->db->where('user_acc',$email)->delete('ts_cart');
+      }
 }
