@@ -763,6 +763,6 @@ class MyModel extends CI_Model {
       }
 
       public function delete_library_data($email){
-        return $this->db->where('user_acc',$email)->delete('ts_cart');
+        return $this->db->where('prod_purchase_by',$email)->delete('ts_cart');
       }
 }
