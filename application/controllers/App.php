@@ -558,6 +558,7 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       //run this endpoint after user checked out and paid all
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $q = $this->MyModel->delete_library_data($_POST['email']);
       if($q == true){
         $data = array('status'=>200, 'message'=>'Cart data cleared');
