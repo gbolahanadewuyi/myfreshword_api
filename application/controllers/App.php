@@ -301,7 +301,7 @@ class App extends REST_Controller {
   public function all_product_get(){
      $response = $this->MyModel->auth($this->get('userid'),$this->get('token'));
      if($response['status'] == 200){
-       $resp = $this->MyModel->audio_all_data();
+       $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
        $this->response($resp, REST_Controller::HTTP_OK);
      }else{
        $this->response($response, REST_Controller::HTTP_NOT_FOUND);
@@ -359,8 +359,6 @@ class App extends REST_Controller {
           );
           $dBquery = $this->MyModel->insert_momo($dB);
         }
-
-
         //ends here for the numerify validation
       }
       $this->response($data, REST_Controller::HTTP_OK);
@@ -548,6 +546,7 @@ class App extends REST_Controller {
           'prod_price'  =>  $db_data['prod_price']
         );
         $this->db->insert('ts_paid_prod', $data);
+        $this->db->where('user_acc',$db_data['prod_purchase_by'])->delete('ts_cart');
       }
       $this->response($_POST['cart_data'],REST_Controller::HTTP_OK);
     }
