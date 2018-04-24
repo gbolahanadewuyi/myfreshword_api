@@ -478,14 +478,33 @@ class MyModel extends CI_Model {
     //when a user is adding new data that hasnt been bought
     public function addToCart($data = array()){
       //check before we insert
-      $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
-      if($query == ""){//if query didnt bring back anything
-        $db = $this->db->insert('ts_cart',$data);
-        return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$db);
+      $check = $this->check_if_item_is_purchased($data);
+      if($check['success'] != false){
+        $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
+        if($query == ""){//if query didnt bring back anything
+          $db = $this->db->insert('ts_cart',$data);
+          return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$db);
+        }else{
+          return array(
+            'success'=>false,
+            'message'=> 'Product already added'
+          );
+        }
+      }
+      else{
+        return $check;
+      }
+      
+    }
+
+    public function check_if_item_is_purchased($data = array()){
+      $query = $this->db->select()->from('ts_paid_prod')->where('prod_uniqid',$data['prod_uniqid'])->where('user_acc',$data['prod_purchase_by'])->get()->row();
+      if($query == ""){
+        //move to next function
       }else{
         return array(
           'success'=>false,
-          'message'=> 'Product already added'
+          'message'=> 'Product purchased to library'
         );
       }
 
