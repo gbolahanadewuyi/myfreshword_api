@@ -480,21 +480,27 @@ class MyModel extends CI_Model {
       //check before we insert
       $check = $this->check_if_item_is_purchased($data);
       if($check['success'] != false){
+
         $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
-        if($query == ""){//if query didnt bring back anything
-          $db = $this->db->insert('ts_cart',$data);
-          return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$db);
-        }else{
-          return array(
-            'success'=>false,
-            'message'=> 'Product already added'
-          );
-        }
+
+          if($query == ""){//if query didnt bring back anything
+            $insertDB = $this->db->insert('ts_cart',$data);
+                if($insertDB == true){
+                  return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$insertDB);
+                }else{
+                  return array('success'=>false, 'message'=> 'Error adding product to cart', 'db_query'=>$insertDB);
+                }
+          }else{
+            return array(
+              'success'=>false,
+              'message'=> 'Product already added'
+            );
+          }
       }
       else{
         return $check;
       }
-      
+
     }
 
     public function check_if_item_is_purchased($data = array()){
@@ -504,7 +510,7 @@ class MyModel extends CI_Model {
       }else{
         return array(
           'success'=>false,
-          'message'=> 'Product purchased to library'
+          'message'=> 'Product already purchased to library'
         );
       }
 
