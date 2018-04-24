@@ -477,29 +477,22 @@ class MyModel extends CI_Model {
 
     //when a user is adding new data that hasnt been bought
     public function addToCart($data = array()){
-      //check before we insert
-      $check = $this->check_if_item_is_purchased($data);
-      if($check['success'] != false){
 
         $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
 
           if($query == ""){//if query didnt bring back anything
             $insertDB = $this->db->insert('ts_cart',$data);
-                if($insertDB == true){
-                  return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$insertDB);
-                }else{
-                  return array('success'=>false, 'message'=> 'Error adding product to cart', 'db_query'=>$insertDB);
-                }
+                      if($insertDB == true){
+                        return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$insertDB);
+                      }else{
+                        return array('success'=>false, 'message'=> 'Error adding product to cart', 'db_query'=>$insertDB);
+                      }
           }else{
             return array(
               'success'=>false,
               'message'=> 'Product already added'
             );
           }
-      }
-      else{
-        return $check;
-      }
 
     }
 
@@ -507,6 +500,7 @@ class MyModel extends CI_Model {
       $query = $this->db->select()->from('ts_paid_prod')->where('prod_uniqid',$data['prod_uniqid'])->where('user_acc',$data['prod_purchase_by'])->get()->row();
       if($query == ""){
         //move to next function
+        return array('success'=>true, 'message'=> 'Product not purchased to library yet');
       }else{
         return array(
           'success'=>false,
