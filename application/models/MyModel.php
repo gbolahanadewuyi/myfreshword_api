@@ -552,6 +552,7 @@ class MyModel extends CI_Model {
       }
     }
 
+    //trying to merge arrays here 
     public  function library_data($email){
       $query =  $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
       return array_merge($query,$this->free_library_data());
@@ -561,7 +562,7 @@ class MyModel extends CI_Model {
     public function free_library_data(){
       return $this->db->select('*')->from('ts_paid_prod')->where('user_acc','admin@techloftgh.com')->where('free',1)->order_by('id','desc')->get()->result();
     }
-    
+
     public function checkout_data($data){
       return  $query = $this->db->insert('ts_paid_prod',$data );
     }
