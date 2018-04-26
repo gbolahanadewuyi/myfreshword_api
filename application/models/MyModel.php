@@ -802,8 +802,8 @@ class MyModel extends CI_Model {
         $search_term="%".$search_term."%";
         $sql="SELECT * FROM ts_products WHERE prod_name LIKE ? ";
         $query=$this->db->query($sql,array($search_term));
-         $res=$query->result();//so basically we are going to return an array of the results
-         if($res == " "){
+        $res=$query->result();//so basically we are going to return an array of the results
+         if($res->prod_name == " "){
            return array('status'=>400 , 'message'=> 'Sorry No Data found');
          }
          else {
