@@ -552,7 +552,7 @@ class MyModel extends CI_Model {
       }
     }
 
-    //trying to merge arrays here 
+    //trying to merge arrays here
     public  function library_data($email){
       $query =  $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
       return array_merge($query,$this->free_library_data());
@@ -796,4 +796,19 @@ class MyModel extends CI_Model {
       public function delete_library_data($email){
         return $this->db->where('prod_purchase_by',$email)->delete('ts_cart');
       }
+
+      public function search_product($search_term){
+        //$search_term=$this->input->post('textboxName');
+        $search_term="%".$search_term."%";
+        $sql="SELECT * FROM ts_products WHERE prod_name LIKE ? ";
+        $query=$this->db->query($sql,array($search_term));
+         $res=$query->result();//so basically we are going to return an array of the results
+         if($res == " "){
+           return array('status'=>400 , 'message'=> 'Sorry No Data found');
+         }
+         else {
+           return array('status'=>200, 'message'=>$res);
+         }
+      }
+
 }
