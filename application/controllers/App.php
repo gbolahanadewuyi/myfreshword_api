@@ -92,6 +92,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|min_length[10]|is_unique[ts_user.user_mobile]');
     $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_user.user_email]');
     $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
+    $this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
 		if ($this->form_validation->run() === FALSE){
@@ -327,6 +328,7 @@ class App extends REST_Controller {
       $data= array('success'=> false, 'messages' => array());
       $this->form_validation->set_rules('network', 'Mobile Network', 'trim|required');
       $this->form_validation->set_rules('number', 'Mobile Number', 'trim|required|min_length[10]|max_length[12]|is_unique[momo.payin_number]');
+      $this->form_validation->set_message('is_unique', 'The %s is already taken');
       $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
       if ($this->form_validation->run() === FALSE){
           foreach($_POST as $key =>$value){
@@ -783,4 +785,22 @@ class App extends REST_Controller {
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
+  public function merchant_login_post(){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $data= array('success'=> false, 'messages' => array());
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_merchant.email]');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_message('is_unique', 'The %s is already taken');
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+            $data['messages'][$key] = form_error($key);
+        }
+    }
+    else{
+      $data['success'] = true;
+      $data['messages'] = $this->MyModel->merchant_login($_POST['email'], $_POST['password']);
+    }
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
 }//end of class

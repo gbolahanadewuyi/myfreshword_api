@@ -58,6 +58,66 @@ class MyModel extends CI_Model {
         }
     }
 
+    public function merchant_login($email, $password){
+      $q  = $this->db->select('email, password, approved')->from('ts_merchant')->where('email',$email)->get()->row();
+      if($q == ""){
+          return array('status' => 204,'message' => 'Email not found.');
+      }else if($q->approved == 0){//means account needs activation
+          return array('status' => 204,'message' => 'Your merchant account is  pending approval.');
+      }
+      else {
+
+          $hashed_password = $q->password;
+          $id              = $q->id;
+          if ($hashed_password == hash('sha256', $password)) {
+
+             $last_login = date('Y-m-d H:i:s');
+             $token_set = substr( md5(rand()), 0, 7);
+             $token = hash('sha256', $token_set);
+             $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
+             $this->db->trans_start();
+             $this->db->where('id',$id)->update('ts_merchant',array('last_login' => $last_login));
+             $this->db->insert('merchant_authentication',array('merchant_id' => $id,'token' => $token,'expired_at' => $expired_at));
+             if ($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();
+                return array('status' => 500,'message' => 'Internal server error.');
+             } else {
+                $this->db->trans_commit();
+                return array('status' => 200,'message' => 'Successfully login.','id' => $id, 'token' => $token);
+             }
+
+          } else {
+             return array('status' => 204,'message' => 'Wrong password.');
+          }
+
+      }
+
+    }
+
+    public function merchant_logout(){
+      $users_id  = $this->input->get_request_header('User-ID', TRUE);
+      $token     = $this->input->get_request_header('Authorization', TRUE);
+      $this->db->where('merchant_id',$users_id)->where('token',$token)->delete('merchant_authentication');
+      return array('status' => 200,'message' => 'Successfully logout.');
+    }
+
+
+    public function merchant_auth($merchant, $token){
+      $q  = $this->db->select('expired_at')->from('merchant_authentication')->where('merchant_id',$merchant_id)->where('token',$token)->get()->row();
+      if($q == ""){
+          return array('status' => 401,'message' => 'Unauthorized.');
+      } else {
+          if($q->expired_at < date('Y-m-d H:i:s')){
+              return array('status' => 401,'message' => 'Your session has been expired.');
+          } else {
+              $updated_at = date('Y-m-d H:i:s');
+              $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
+              $this->db->where('merchant_id',$merchant_id)->where('token',$token)->update('merchant_authentication',array('expired_at' => $expired_at,'updated_at' => $updated_at));
+              return array('status' => 200,'message' => 'Authorized.', 'id'=>$merchant_id);
+          }
+      }
+    }
+
     public function logout()
     {
         $users_id  = $this->input->get_request_header('User-ID', TRUE);
