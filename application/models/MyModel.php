@@ -811,4 +811,23 @@ class MyModel extends CI_Model {
          }
       }
 
+
+      // this will arrange products on the home page based the type of data to be fetched
+      public function arrange_by_category(){
+
+      }
+
+      public function audio_fetch(){
+        return $this->db->select('*')->from('ts_products')->where('type_list','Audio')->order_by('prod_id','desc')->get()->result();
+      }
+
+      public function video_fetch(){
+        return $this->db->select('*')->from('ts_products')->where('type_list','Video')->order_by('prod_id','desc')->get()->result();
+      }
+
+      public function book_fetch(){
+        return $this->db->select('*')->from('ts_products')->where('type_list','Book')->order_by('prod_id','desc')->get()->result();
+      }
+
+
 }

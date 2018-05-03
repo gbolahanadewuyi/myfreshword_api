@@ -709,18 +709,9 @@ class App extends REST_Controller {
   }
 
 
-  //here the payment processing data is stored into the db
-  // public function payment_processor_post(){
-  //   $response = $this->MyModel->header_auth();
-  //   if($response['status']==200){
-  //     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-  //
-  //   }
-  // }
 
-  public function selectedNetwork_post(){
 
-  }
+
 
   public function comments_title_post(){
     $response = $this->MyModel->header_auth();
@@ -755,6 +746,10 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
-  
+
+  public function web_products_get(){
+    $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
+    $this->response($resp, REST_Controller::HTTP_OK);
+  }
 
 }//end of class
