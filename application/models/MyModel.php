@@ -59,7 +59,7 @@ class MyModel extends CI_Model {
     }
 
     public function merchant_login($email, $password){
-      $q  = $this->db->select('email, password, approved')->from('ts_merchant')->where('email',$email)->get()->row();
+      $q  = $this->db->select('id, email, password, approved')->from('ts_merchant')->where('email',$email)->get()->row();
       if($q == ""){
           return array('status' => 204,'message' => 'Email not found.');
       }else if($q->approved == 0){//means account needs activation

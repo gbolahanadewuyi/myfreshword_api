@@ -787,10 +787,12 @@ class App extends REST_Controller {
 
   public function merchant_login_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('email', 'Email', 'trim|required');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
             $data['messages'][$key] = form_error($key);
