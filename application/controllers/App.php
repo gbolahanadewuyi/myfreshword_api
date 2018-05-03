@@ -757,10 +757,11 @@ class App extends REST_Controller {
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('firstname', 'First Name', 'trim|required');
     $this->form_validation->set_rules('lastname', 'Last Name', 'trim|required');
-    $this->form_validation->set_rules('email', 'Email', 'trim|required');
-    $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_merchant.email]');
+    $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|is_unique[ts_merchant.mobile]');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
     $this->form_validation->set_rules('church', 'Church', 'trim|required');
+    $this->form_validation->set_message('is_unique', 'The %s is already taken');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
