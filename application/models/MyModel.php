@@ -829,5 +829,14 @@ class MyModel extends CI_Model {
         return $this->db->select('*')->from('ts_products')->where('type_list','Book')->order_by('prod_id','desc')->get()->result();
       }
 
+      public function create_merchant($data){
+        $query =  $this->db->insert('ts_merchant',$data);
+        if($query == true){
+          return array('status'=>200, 'message'=> 'Merchant account created successfully');
+        }
+        else{
+          return array('status'=>400, 'message'=> 'Error creating merchant account');
+        }
+      }
 
 }

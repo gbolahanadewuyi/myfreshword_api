@@ -102,9 +102,9 @@ class App extends REST_Controller {
     else{
             $q = $this->MyModel->generate_short_code();
             $data =array(
-              'user_uname'  =>$_POST['username'],
-              'user_email'  =>$_POST['email'],
-              'user_mobile'  =>$_POST['mobile'],
+              'user_uname'  =>  $_POST['username'],
+              'user_email'  =>  $_POST['email'],
+              'user_mobile' =>  $_POST['mobile'],
               'user_pwd'    =>md5($_POST['password']),
               'user_key'    =>$key = md5(date('his').$_POST['email']),
               'user_accesslevel'=>2,
@@ -750,6 +750,36 @@ class App extends REST_Controller {
   public function web_products_get(){
     $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
     $this->response($resp, REST_Controller::HTTP_OK);
+  }
+
+  public function merchant_register_post(){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $data= array('success'=> false, 'messages' => array());
+    $this->form_validation->set_rules('firstname', 'First Name', 'trim|required');
+    $this->form_validation->set_rules('lastname', 'Last Name', 'trim|required');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required');
+    $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_rules('church', 'Church', 'trim|required');
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+            $data['messages'][$key] = form_error($key);
+        }
+    }
+    else{
+      $regData = array(
+        'first_name'  =>  $_POST['firstname'],
+        'last_name'   =>  $_POST['lastname'],
+        'email'       =>  $_POST['email'],
+        'mobile'      =>  $_POST['mobile'],
+        'password'    =>  hash('sha256', $_POST['password']),
+        'church'      =>  $_POST['church']
+      );
+      $data['success']= true;
+      $data['messages'] = $this->MyModel->create_merchant($regData);
+    }
+    $this->response($data, REST_Controller::HTTP_OK);
   }
 
 }//end of class
