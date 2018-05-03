@@ -788,9 +788,8 @@ class App extends REST_Controller {
   public function merchant_login_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
     $data= array('success'=> false, 'messages' => array());
-    $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_merchant.email]');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
-    $this->form_validation->set_message('is_unique', 'The %s is already taken');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
