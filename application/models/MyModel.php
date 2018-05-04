@@ -102,7 +102,7 @@ class MyModel extends CI_Model {
     }
 
 
-    public function merchant_auth($merchant, $token){
+    public function merchant_auth($merchant_id, $token){
       $q  = $this->db->select('expired_at')->from('merchant_authentication')->where('merchant_id',$merchant_id)->where('token',$token)->get()->row();
       if($q == ""){
           return array('status' => 401,'message' => 'Unauthorized.');
