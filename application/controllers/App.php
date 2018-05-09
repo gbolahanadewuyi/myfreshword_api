@@ -860,5 +860,9 @@ class App extends REST_Controller {
   }
 
 
+public function file_post(){
+  $this->response($_FILES, REST_Controller::HTTP_OK);
+}
+
 
 }//end of class
