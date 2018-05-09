@@ -815,4 +815,33 @@ class App extends REST_Controller {
     $this->response($resp, REST_Controller::HTTP_OK);
   }
 
+
+  //this has to be sequential now we need to return values here to proceed to the next endpoint
+  //this will be looped twice to the end point
+  public function merchant_add_file_post(){
+
+      $config['upload_path']   = base_url().'/uploads/';
+      $config['allowed_types'] = 'gif|jpg|png';
+      $config['max_size']      = 1024;
+      $this->load->library('upload', $config);
+
+      if ( ! $this->upload->do_upload('image')) {
+         $error = array('error' => $this->upload->display_errors());
+         echo json_encode($error);
+         $this->response($error, REST_Controller::HTTP_OK);
+      }else {
+         $data = $this->upload->data();
+         $success = ['success'=>$data['file_name']];
+         echo json_encode($success);
+         $this->response($success, REST_Controller::HTTP_OK);
+      }
+  }
+
+
+  public function merchant_add_product_post(){
+
+  }
+
+
+
 }//end of class

@@ -899,4 +899,14 @@ class MyModel extends CI_Model {
         }
       }
 
+      public function merchant_insert_product($data){
+       $query =   $query = $this->db->insert('ts_product', $data);
+       if($query == true){
+         return array('status'=>200, 'message'=> 'Product added successfully');
+       }
+       else{
+         return array('status'=>400, 'message'=> 'Error adding product details');
+       }
+      }
+
 }
