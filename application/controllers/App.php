@@ -818,7 +818,7 @@ class App extends REST_Controller {
 
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
-  public function merchant_add_file_post(){
+  public function merchant_add_image_post(){
 
       $config['upload_path']   = './uploads/';
       $config['allowed_types'] = 'gif|jpg|png';
@@ -826,20 +826,34 @@ class App extends REST_Controller {
       $this->load->library('upload', $config);
 
       if ( ! $this->upload->do_upload('image')) {
-         $error = array('error' => $this->upload->display_errors());
+         $error = array('status'=>false, 'error' => $this->upload->display_errors());
          //echo json_encode($error);
          $this->response($error, REST_Controller::HTTP_OK);
       }else {
          $data = $this->upload->data();
-         $success = ['success'=>$data['file_name']];
+         $success = ['status'=>true,'success'=>$data['file_name']];
          //echo json_encode($success);
          $this->response($success, REST_Controller::HTTP_OK);
       }
   }
 
 
-  public function merchant_add_product_post(){
+  public function merchant_add_file_post(){
+    $config['upload_path']   = './uploads/';
+    $config['allowed_types'] = 'mp3|mp4|avi';
+    $config['max_size']      = 2024;
+    $this->load->library('upload', $config);
 
+    if ( ! $this->upload->do_upload('image')) {
+       $error = array('status'=>false, 'error' => $this->upload->display_errors());
+       //echo json_encode($error);
+       $this->response($error, REST_Controller::HTTP_OK);
+    }else {
+       $data = $this->upload->data();
+       $success = ['status'=>true,'success'=>$data['file_name']];
+       //echo json_encode($success);
+       $this->response($success, REST_Controller::HTTP_OK);
+    }
   }
 
 
