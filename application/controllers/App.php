@@ -820,7 +820,7 @@ class App extends REST_Controller {
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
 
-      if(isset($_FILES["image_file"]["name"])){
+      
 
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
@@ -837,7 +837,7 @@ class App extends REST_Controller {
            //echo json_encode($success);
            $this->response($success, REST_Controller::HTTP_OK);
         }
-      }
+
   }
 
 
