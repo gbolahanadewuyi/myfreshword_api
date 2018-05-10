@@ -819,6 +819,7 @@ class App extends REST_Controller {
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
+    
       $data = json_decode(file_get_contents('php://input'), TRUE);
 
       $config['upload_path']   = './uploads/';
