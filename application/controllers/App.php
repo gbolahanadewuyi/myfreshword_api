@@ -820,21 +820,23 @@ class App extends REST_Controller {
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
 
-      $_FILES["image_file"]["name"];
-      $config['upload_path']   = './uploads/';
-      $config['allowed_types'] = 'gif|jpg|png';
-      $config['max_size']      = 1024;
-      $this->load->library('upload', $config);
+      if(isset($_FILES["image_file"]["name"])){
 
-      if ( ! $this->upload->do_upload('image_file')) {
-         $error = array('status'=>false, 'error' => $this->upload->display_errors());
-         //echo json_encode($error);
-         $this->response($error, REST_Controller::HTTP_OK);
-      }else {
-         $data = $this->upload->data();
-         $success = ['status'=>true,'success'=>$data['file_name']];
-         //echo json_encode($success);
-         $this->response($success, REST_Controller::HTTP_OK);
+        $config['upload_path']   = './uploads/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size']      = 1024;
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('image_file')) {
+           $error = array('status'=>false, 'error' => $this->upload->display_errors());
+           //echo json_encode($error);
+           $this->response($error, REST_Controller::HTTP_OK);
+        }else {
+           $data = $this->upload->data();
+           $success = ['status'=>true,'success'=>$data['file_name']];
+           //echo json_encode($success);
+           $this->response($success, REST_Controller::HTTP_OK);
+        }
       }
   }
 
