@@ -820,7 +820,7 @@ class App extends REST_Controller {
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
 
-      $_FILES["image_file"]["name"]
+      $_FILES["image_file"]["name"];
       $config['upload_path']   = './uploads/';
       $config['allowed_types'] = 'gif|jpg|png';
       $config['max_size']      = 1024;
