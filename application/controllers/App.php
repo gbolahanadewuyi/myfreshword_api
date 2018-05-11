@@ -797,6 +797,8 @@ class App extends REST_Controller {
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
+
+
   public function merchant_login_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
@@ -825,8 +827,10 @@ class App extends REST_Controller {
   }
 
 
-  public function merchant_activate_account(){
-
+  public function merchant_activate_account_post(){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $query = $this->MyModel->activate_merchant($_POST);
+    $this->response($query, REST_Controller::HTTP_OK);
   }
 
   //this has to be sequential now we need to return values here to proceed to the next endpoint
