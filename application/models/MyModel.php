@@ -910,8 +910,8 @@ class MyModel extends CI_Model {
       }
 
       //add this is to file name and insert data
-      public function imgPlus(data){
-        return "http://myfreshword.com/myfreshword/api/public/images/products/".data;
+      public function imgPlus($data){
+        return "http://myfreshword.com/myfreshword/api/public/images/products/".$data;
       }
 
       public function replace_hyphens($string){
