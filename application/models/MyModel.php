@@ -992,7 +992,7 @@ class MyModel extends CI_Model {
       }
       else{
         $q = $this->create_reset_code($query->mobile);
-        return array('status'=>200, 'message'=> 'Email address is present', 'mobile'=>$query->mobile);
+        return array('status'=>200, 'message'=> 'Email address is present', 'mobile'=>$query->mobile, 'resetSms'=>$q);
       }
 
     }
@@ -1002,8 +1002,9 @@ class MyModel extends CI_Model {
       $reset_code = array(
         'reset_code'=> $resetcode
       );
-      $this->send_reset_code($mobile,$reset_code['reset_code']);
-      return $q = $this->db->where('mobile',$mobile)->update('ts_merchant',$reset_code);
+      $sms = $this->send_reset_code($mobile,$reset_code['reset_code']);
+      $q = $this->db->where('mobile',$mobile)->update('ts_merchant',$reset_code);
+      return array('dbquery'=>$q, 'sms'=>$sms );
     }
 
     public function check_reset_code($mobile, $resetcode){
