@@ -787,7 +787,7 @@ class App extends REST_Controller {
         'organisation'        =>  $_POST['organisation'],
         'location'            =>  $_POST['location'],
         'merchant_name'       =>  $_POST['merchantname'],
-        'approval_code'       =>  $this->MyModel->generate_merchant_activation_code();
+        'approval_code'       =>  $this->MyModel->generate_merchant_activation_code()
       );
       $data['sms']        = $this->MyModel->send_code( $regData['mobile'], $regData['approval_code']);
       $data['success']    = true;
