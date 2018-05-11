@@ -909,4 +909,47 @@ class MyModel extends CI_Model {
        }
       }
 
+      //add this is to file name and insert data
+      public function imgPlus(data){
+        return "http://myfreshword.com/myfreshword/api/public/images/products/".data;
+      }
+
+      public function replace_hyphens($string){
+        return str_replace(' ','-',$string);
+      }
+
+      public function prod_type(data){
+         if(data == 'Audio'){
+           return 'microphone';
+         }
+         else if(data == 'Video'){
+           return 'videocam';
+         }
+         else if(data == 'Book'){
+           return 'book';
+         }
+
+      }
+
+
+      public function generate_product_unique_code($length = 12){
+            $randstr ="";
+            srand((double) microtime(TRUE) * 1000000);
+            //our array add all letters and numbers if you wish
+            $chars = array(
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'p',
+                'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5',
+                '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+            for ($rand = 0; $rand <= $length; $rand++) {
+                $random = rand(0, count($chars) - 1);
+                $randstr .= $chars[$random];
+            }
+            return $randstr;
+            //echo number_format($randstr,0,"","-");
+          //return wordwrap($randstr, 10, '-', true);
+      }
+
+
 }
