@@ -319,7 +319,7 @@ class MyModel extends CI_Model {
                 return "cURL Error #:" . $err;
             } else {
                return $response;
-            }
+          }
     }
 
     public function activate_account($auth_code){
@@ -985,5 +985,104 @@ class MyModel extends CI_Model {
     }
 
 
+    public function check_merchant_email($data){
+      $query = $this->db->select('email,mobile')->from('ts_merchant')->where('email',$data['email'])->get()->row();
+      if($query ==""){
+        return array('status'=>400, 'message'=>'Sorry email address does not exist');
+      }
+      else{
+        $query = $this->create_reset_code($query->mobile)
+        return array('status'=>200, 'message'=> 'Email address is present', 'mobile'=>$query->mobile);
+      }
 
+    }
+
+    public function create_reset_code($mobile){
+      $resetcode = $this->generate_merchant_activation_code($length = 6);
+      $reset_code = array(
+        'reset_code'=> $resetcode
+      );
+      $this->send_reset_code($mobile,$reset_code['reset_code']);
+      return $q = $this->db->where('mobile',$mobile)->update('ts_merchant',$reset_code);
+    }
+
+    public function check_reset_code($mobile, $resetcode){
+      $query = $this->db->select('mobile, reset_code')->from('ts_merchant')->where('reset_code',$resetcode)->get()->row();
+      if($query == ""){
+        return array('status'=>400, 'message'=> 'Invalid reset code');
+      }
+      else{
+        //now send new password
+        $newpass = $this->generate_merchant_activation_code($length = 8);
+        $query = $this->temp_merchant_password($newpass,$mobile);
+        return array('status'=>200, 'message'=> 'Sending temporary password to your mobile');
+      }
+    }
+
+
+    public function temp_merchant_password($newpassword, $mobile){
+      $updatepass = array(
+        'password'=>hash('sha256', $newpassword)
+      );
+      $q = $this->db->where('mobile',$mobile)->update('ts_merchant',$updatepass);
+      $sms = $this->send_new_pass($mobile, $newpass);
+      return array('newpass'=>$newpassword, 'updatestatus'=>$q, 'sms'=>$sms);
+    }
+
+    public function send_new_pass($phone,$newpass){
+        //$pin = $this->generate_short_code();
+        $url = "http://api.mytxtbox.com/v3/messages/send?".
+                "From=freshword"
+                ."&To=$phone"
+                ."&Content=".urlencode("Your temporary password : $newpass")
+                ."&ClientId=dgsfkiil"
+                ."&ClientSecret=czywtkzd"
+                ."&RegisteredDelivery=true";
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CUSTOMREQUEST => "GET",
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                return "cURL Error #:" . $err;
+            } else {
+               return $response;
+          }
+    }
+
+    public function send_reset_code($phone, $resetcode){
+      $url = "http://api.mytxtbox.com/v3/messages/send?".
+              "From=freshword"
+              ."&To=$phone"
+              ."&Content=".urlencode("Your account reset code : $resetcode")
+              ."&ClientId=dgsfkiil"
+              ."&ClientSecret=czywtkzd"
+              ."&RegisteredDelivery=true";
+          $curl = curl_init();
+
+          curl_setopt_array($curl, array(
+              CURLOPT_URL => $url,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_CUSTOMREQUEST => "GET",
+          ));
+
+          $response = curl_exec($curl);
+          $err = curl_error($curl);
+
+          curl_close($curl);
+
+          if ($err) {
+              return "cURL Error #:" . $err;
+          } else {
+             return $response;
+        }
+    }
 }
