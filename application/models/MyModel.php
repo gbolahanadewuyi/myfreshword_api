@@ -918,14 +918,14 @@ class MyModel extends CI_Model {
         return str_replace(' ','-',$string);
       }
 
-      public function prod_type(data){
-         if(data == 'Audio'){
+      public function prod_type($data){
+         if($data == 'Audio'){
            return 'microphone';
          }
-         else if(data == 'Video'){
+         else if($data == 'Video'){
            return 'videocam';
          }
-         else if(data == 'Book'){
+         else if($data == 'Book'){
            return 'book';
          }
 
