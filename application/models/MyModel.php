@@ -318,7 +318,7 @@ class MyModel extends CI_Model {
             if ($err) {
                 return "cURL Error #:" . $err;
             } else {
-               return echo $response;
+               return $response;
             }
     }
 
