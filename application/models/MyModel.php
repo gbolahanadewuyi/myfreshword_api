@@ -991,7 +991,7 @@ class MyModel extends CI_Model {
         return array('status'=>400, 'message'=>'Sorry email address does not exist');
       }
       else{
-        $query = $this->create_reset_code($query->mobile);
+        $q = $this->create_reset_code($query->mobile);
         return array('status'=>200, 'message'=> 'Email address is present', 'mobile'=>$query->mobile);
       }
 
