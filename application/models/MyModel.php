@@ -972,7 +972,7 @@ class MyModel extends CI_Model {
 
 
     public function activate_merchant($data){
-      $query = $this->db->select('mobile,approval_code')->from('ts_merchant')->where('mobile',$data['mobile'])->where('approval_code',$data['code'])->get()->row();
+      $query = $this->db->select('mobile,approval_code')->from('ts_merchant')->where('mobile',$data['mobile'])->where('approval_code',$data['approval_code'])->get()->row();
       if($q == ""){
         return array('status'=>400, 'message'=> 'Invalid activation code');
       }else{
