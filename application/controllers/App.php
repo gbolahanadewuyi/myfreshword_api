@@ -786,10 +786,12 @@ class App extends REST_Controller {
         'password'            =>  hash('sha256', $_POST['password']),
         'organisation'        =>  $_POST['organisation'],
         'location'            =>  $_POST['location'],
-        'merchant_name'       =>  $_POST['merchantname']
+        'merchant_name'       =>  $_POST['merchantname'],
+        'approval_code'       =>  $this->MyModel->generate_merchant_activation_code();
       );
-      $data['success']= true;
-      $data['messages'] = $this->MyModel->create_merchant($regData);
+      $data['sms']        = $this->MyModel->send_code( $regData['mobile'], $regData['approval_code']);
+      $data['success']    = true;
+      $data['messages']   = $this->MyModel->create_merchant($regData);
     }
 
     $this->response($data, REST_Controller::HTTP_OK);
@@ -822,6 +824,10 @@ class App extends REST_Controller {
     $this->response($resp, REST_Controller::HTTP_OK);
   }
 
+
+  public function merchant_activate_account(){
+
+  }
 
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
