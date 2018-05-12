@@ -1016,7 +1016,7 @@ class MyModel extends CI_Model {
         //now send new password
         $newpass = $this->generate_merchant_activation_code($length = 8);
         $query = $this->temp_merchant_password($newpass,$mobile);
-        return array('status'=>200, 'message'=> 'Sending temporary password to your mobile');
+        return array('status'=>200, 'message'=> 'Sending temporary password to your mobile', 'query'=>$query);
       }
     }
 
