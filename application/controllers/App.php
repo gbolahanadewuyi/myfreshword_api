@@ -898,7 +898,8 @@ class App extends REST_Controller {
         $response = $this->MyModel->merchant_auth();
         if($response['status']==200){
           $this->load->helper('url');
-          $list = $this->MerchantProductModel->get_datatables($this->MyModel->merchant_email($response['id']));
+          $query = $this->MyModel->merchant_email($response['id']);
+          $list = $this->MerchantProductModel->get_datatables($query->email);
           $data = array();
           $no = $_POST['start'];
           foreach ($list as $prod) {
@@ -918,8 +919,8 @@ class App extends REST_Controller {
 
           $output = array(
               "draw" => $_POST['draw'],
-              "recordsTotal" => $this->MerchantProductModel->count_all($this->MyModel->merchant_email($response['id'])),
-              "recordsFiltered" => $this->MerchantProductModel->count_filtered($this->MyModel->merchant_email($response['id'])),
+              "recordsTotal" => $this->MerchantProductModel->count_all($query->email),
+              "recordsFiltered" => $this->MerchantProductModel->count_filtered($query->email),
               "data" => $data,
           );
           //output to json format
