@@ -906,14 +906,18 @@ class App extends REST_Controller {
               $no++;
               $row = array();
               $row[] = $prod->prod_name;
-              $row[] = $prod->prod_urlname;
               $row[] = $prod->prod_preacher;
               $row[] = $prod->prod_church;
               $row[] = $prod->prod_price;
-
+              $row[] =  '<img src="'.$prod->img_link.'" height="150px">';
+              $row[] = $prod->prod_tags;
+              $row[] = $prod->uniqid;
+              $row[] = $prod->prod_download_count;
+              $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
-              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
+              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product('."'".$prod->prod_id."'".')"><i class="fa fa-play"></i> </a>
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
               $data[] = $row;
           }
 
