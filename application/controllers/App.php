@@ -837,13 +837,13 @@ class App extends REST_Controller {
 
   public function merchant_forgot_pass_email_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-    $resp   = $this->MyModel->check_reset_code($_POST);
+    $resp   = $this->MyModel->check_merchant_email($_POST);
     $this->response($resp, REST_Controller::HTTP_OK);
   }
 
   public function merchant_confirm_reset_code_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-    $resp   = $this->MyModel->check_merchant_email($_POST['mobile'],$_POST['resetcode']);
+    $resp   = $this->MyModel->check_reset_code($_POST['mobile'],$_POST['resetcode']);
     $this->response($resp, REST_Controller::HTTP_OK);
   }
   //this has to be sequential now we need to return values here to proceed to the next endpoint
