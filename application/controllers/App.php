@@ -911,7 +911,7 @@ class App extends REST_Controller {
               $row[] = $prod->prod_price;
               $row[] =  '<img src="'.$prod->img_link.'" height="150px">';
               $row[] = $prod->prod_tags;
-              $row[] = $prod->uniqid;
+              $row[] = $prod->prod_uniqid;
               $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
