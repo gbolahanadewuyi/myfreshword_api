@@ -894,9 +894,9 @@ class App extends REST_Controller {
 
 
   public function merchant_products_post(){
-        $_POST = json_decode(file_get_contents('php://input'), TRUE);
+        //$_POST = json_decode(file_get_contents('php://input'), TRUE);
         $this->load->helper('url');
-        $list = $this->MerchantProductModel->get_datatables($_POST['email']);
+        $list = $this->MerchantProductModel->get_datatables('admin@admin.com');
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $prod) {
@@ -916,8 +916,8 @@ class App extends REST_Controller {
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->MerchantProductModel->count_all($_POST['email']),
-            "recordsFiltered" => $this->MerchantProductModel->count_filtered($_POST['email']),
+            "recordsTotal" => $this->MerchantProductModel->count_all('admin@admin.com'),
+            "recordsFiltered" => $this->MerchantProductModel->count_filtered('admin@admin.com'),
             "data" => $data,
         );
         //output to json format
