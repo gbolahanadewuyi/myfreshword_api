@@ -10,6 +10,8 @@ class App extends REST_Controller {
   public function __construct() {
       parent::__construct();
       $this->load->model('MyModel');
+      $this->load->model('MerchantProductModel');
+
   }
 
   public function isLoggedin_post(){
@@ -890,6 +892,37 @@ class App extends REST_Controller {
 
   }
 
+
+  public function merchant_products_post(){
+        $_POST = json_decode(file_get_contents('php://input'), TRUE);
+        $this->load->helper('url');
+        $list = $this->MerchantProductModel->get_datatables($_POST['email']);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $prod) {
+            $no++;
+            $row = array();
+            $row[] = $prod->prod_name;
+            $row[] = $prod->prod_urlname;
+            $row[] = $prod->prod_preacher;
+            $row[] = $prod->prod_church;
+            $row[] = $prod->prod_price;
+
+           	//if($payee->network == 'MTN'):
+            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->id."'".')"><i class="fa fa-edit"></i> </a>
+                      <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->id."'".')"><i class="fa fa-trash"></i> </a>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->MerchantProductModel->count_all($_POST['email']),
+            "recordsFiltered" => $this->MerchantProductModel->count_filtered($_POST['email']),
+            "data" => $data,
+        );
+        //output to json format
+        $this->response($output, REST_Controller::HTTP_OK);
+  }
   //and then we finally post the data needed as well
   // Here we will go through our form validaitons to avoid same data being posted twice
   public function merchant_add_product_data_post(){
