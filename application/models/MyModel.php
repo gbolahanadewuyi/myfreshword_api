@@ -1035,7 +1035,7 @@ class MyModel extends CI_Model {
         $url = "http://api.mytxtbox.com/v3/messages/send?".
                 "From=freshword"
                 ."&To=$phone"
-                ."&Content=".urlencode("Your temporary password : $newpass")
+                ."&Content=".urlencode("Your temporary password : $newpass , please do well to change your password after logging in .Thank You")
                 ."&ClientId=dgsfkiil"
                 ."&ClientSecret=czywtkzd"
                 ."&RegisteredDelivery=true";

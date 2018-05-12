@@ -837,7 +837,7 @@ class App extends REST_Controller {
 
   public function merchant_forgot_pass_email_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-    $resp   = $this->MyModel->check_merchant_email($_POST);
+    $resp   = $this->MyModel->check_reset_code($_POST);
     $this->response($resp, REST_Controller::HTTP_OK);
   }
 
