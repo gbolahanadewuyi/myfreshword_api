@@ -1026,7 +1026,7 @@ class MyModel extends CI_Model {
         'password'=>hash('sha256', $newpassword)
       );
       $q = $this->db->where('mobile',$mobile)->update('ts_merchant',$updatepass);
-      $sms = $this->send_new_pass($mobile, $newpass);
+      $sms = $this->send_new_pass($mobile, $newpassword);
       return array('newpass'=>$newpassword, 'updatestatus'=>$q, 'sms'=>$sms);
     }
 
