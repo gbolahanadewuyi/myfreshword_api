@@ -102,7 +102,10 @@ class MyModel extends CI_Model {
     }
 
 
-    public function merchant_auth($merchant_id, $token){
+    public function merchant_auth(){
+      $merchant_id  = $this->input->get_request_header('User-ID', TRUE);
+      $token     = $this->input->get_request_header('Authorization', TRUE);
+
       $q  = $this->db->select('expired_at')->from('merchant_authentication')->where('merchant_id',$merchant_id)->where('token',$token)->get()->row();
       if($q == ""){
           return array('status' => 401,'message' => 'Unauthorized.');
@@ -118,8 +121,11 @@ class MyModel extends CI_Model {
       }
     }
 
-    public function logout()
-    {
+    public function merchant_email($id){
+      return $this->db->select('email')->from('ts_merchant')->where('id',$id)->get()->row();
+    }
+
+    public function logout(){
         $users_id  = $this->input->get_request_header('User-ID', TRUE);
         $token     = $this->input->get_request_header('Authorization', TRUE);
         $this->db->where('users_id',$users_id)->where('token',$token)->delete('users_authentication');

@@ -895,34 +895,42 @@ class App extends REST_Controller {
 
   public function merchant_products_post(){
         //$_POST = json_decode(file_get_contents('php://input'), TRUE);
-        $this->load->helper('url');
-        $list = $this->MerchantProductModel->get_datatables('admin@admin.com');
-        $data = array();
-        $no = $_POST['start'];
-        foreach ($list as $prod) {
-            $no++;
-            $row = array();
-            $row[] = $prod->prod_name;
-            $row[] = $prod->prod_urlname;
-            $row[] = $prod->prod_preacher;
-            $row[] = $prod->prod_church;
-            $row[] = $prod->prod_price;
+        $response = $this->MyModel->merchant_auth();
+        if($response['status']==200){
+          $this->load->helper('url');
+          $list = $this->MerchantProductModel->get_datatables($this->MyModel->merchant_email($response['id']));
+          $data = array();
+          $no = $_POST['start'];
+          foreach ($list as $prod) {
+              $no++;
+              $row = array();
+              $row[] = $prod->prod_name;
+              $row[] = $prod->prod_urlname;
+              $row[] = $prod->prod_preacher;
+              $row[] = $prod->prod_church;
+              $row[] = $prod->prod_price;
 
-           	//if($payee->network == 'MTN'):
-            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
-                      <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
-            $data[] = $row;
+             	//if($payee->network == 'MTN'):
+              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
+              $data[] = $row;
+          }
+
+          $output = array(
+              "draw" => $_POST['draw'],
+              "recordsTotal" => $this->MerchantProductModel->count_all($this->MyModel->merchant_email($response['id'])),
+              "recordsFiltered" => $this->MerchantProductModel->count_filtered($this->MyModel->merchant_email($response['id'])),
+              "data" => $data,
+          );
+          //output to json format
+          $this->response($output, REST_Controller::HTTP_OK);
+        }else{
+          $this->response($response, REST_Controller::HTTP_OK);
         }
 
-        $output = array(
-            "draw" => $_POST['draw'],
-            "recordsTotal" => $this->MerchantProductModel->count_all('admin@admin.com'),
-            "recordsFiltered" => $this->MerchantProductModel->count_filtered('admin@admin.com'),
-            "data" => $data,
-        );
-        //output to json format
-        $this->response($output, REST_Controller::HTTP_OK);
   }
+
+
   //and then we finally post the data needed as well
   // Here we will go through our form validaitons to avoid same data being posted twice
   public function merchant_add_product_data_post(){
