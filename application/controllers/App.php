@@ -909,8 +909,8 @@ class App extends REST_Controller {
             $row[] = $prod->prod_price;
 
            	//if($payee->network == 'MTN'):
-            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->id."'".')"><i class="fa fa-edit"></i> </a>
-                      <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->id."'".')"><i class="fa fa-trash"></i> </a>';
+            $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_person('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
+                      <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_person('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
             $data[] = $row;
         }
 
