@@ -824,7 +824,7 @@ class App extends REST_Controller {
   //so here i am beginning session to control my rest client session pages
   public function merchant_session_start_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-    $resp = $this->MyModel->merchant_auth($_POST['id'],$_POST['token']);
+    $resp = $this->MyModel->merchant_session($_POST['id'],$_POST['token']);
     $this->response($resp, REST_Controller::HTTP_OK);
   }
 

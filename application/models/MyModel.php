@@ -103,8 +103,28 @@ class MyModel extends CI_Model {
 
 
     public function merchant_auth(){
+
       $merchant_id  = $this->input->get_request_header('User-ID', TRUE);
       $token     = $this->input->get_request_header('Authorization', TRUE);
+
+      $q  = $this->db->select('expired_at')->from('merchant_authentication')->where('merchant_id',$merchant_id)->where('token',$token)->get()->row();
+      if($q == ""){
+          return array('status' => 401,'message' => 'Unauthorized.');
+      } else {
+          if($q->expired_at < date('Y-m-d H:i:s')){
+              return array('status' => 401,'message' => 'Your session has been expired.');
+          } else {
+              $updated_at = date('Y-m-d H:i:s');
+              $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
+              $this->db->where('merchant_id',$merchant_id)->where('token',$token)->update('merchant_authentication',array('expired_at' => $expired_at,'updated_at' => $updated_at));
+              return array('status' => 200,'message' => 'Authorized.', 'id'=>$merchant_id);
+          }
+      }
+    }
+
+    public function merchant_session($id, $token_auth){
+      $merchant_id  = $id;
+      $token        = $token_auth;
 
       $q  = $this->db->select('expired_at')->from('merchant_authentication')->where('merchant_id',$merchant_id)->where('token',$token)->get()->row();
       if($q == ""){
