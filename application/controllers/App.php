@@ -851,6 +851,7 @@ class App extends REST_Controller {
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
+        $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
@@ -863,7 +864,7 @@ class App extends REST_Controller {
            $this->response($error, REST_Controller::HTTP_OK);
         }else {
            $data = $this->upload->data();
-           $success = ['status'=>true,'success'=>$data['file_name'], 'post'=>$_POST];
+           $success = ['status'=>true,'success'=>$data['file_name']];
            //echo json_encode($success);
            $this->response($success, REST_Controller::HTTP_OK);
         }
