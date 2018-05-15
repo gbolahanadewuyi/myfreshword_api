@@ -909,6 +909,7 @@ class App extends REST_Controller {
               $row[] = $prod->prod_preacher;
               $row[] = $prod->prod_church;
               $row[] = $prod->prod_price;
+              $row[] = $prod->currency;
               $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_tags;
               $row[] = $prod->prod_uniqid;

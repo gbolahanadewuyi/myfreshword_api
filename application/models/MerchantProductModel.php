@@ -6,7 +6,7 @@ Class MerchantProductModel extends CI_Model {
   var $column_order = array('prod_name','prod_urlname','prod_preacher', 'prod_church', 'prod_image', 'img_link', 'prod_tags', 'prod_description',
                             'prod_essay', 'prod_demourl','prod_demoshow','prod_cateid', 'prod_subcateid', 'prod_filename', 'prod_price', 'prod_plan',
                             'prod_free', 'prod_featured','prod_status','prod_uniqid','prod_date','prod_update', 'prod_download_count', 'prod_gallery',
-                            'prod_uid','prod_type', 'type_list','file_link','merchant_email', null); //set column field database for datatable orderable
+                            'prod_uid','prod_type', 'type_list','file_link','merchant_email', 'currency',null); //set column field database for datatable orderable
 
   var $column_search = array('prod_name','prod_preacher','prod_church', 'prod_tags', 'prod_price', 'prod_uniqid', 'prod_date', 'prod_download_count'); //set column field database for datatable searchable just firstname , lastname , address are searchable
   var $order = array('prod_id' => 'desc'); // default order
