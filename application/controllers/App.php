@@ -863,7 +863,7 @@ class App extends REST_Controller {
            $this->response($error, REST_Controller::HTTP_OK);
         }else {
            $data = $this->upload->data();
-           $success = ['status'=>true,'success'=>$data['file_name']];
+           $success = ['status'=>true,'success'=>$data['file_name'], 'post'=>$_POST];
            //echo json_encode($success);
            $this->response($success, REST_Controller::HTTP_OK);
         }
