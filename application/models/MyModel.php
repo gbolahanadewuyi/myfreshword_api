@@ -1114,8 +1114,8 @@ class MyModel extends CI_Model {
     }
 
     //search data by email
-    public function get_merchant_profile($data){
-      $query = $this->db->select('first_name, last_name, email, mobile, organisation, location, merchant_name')->from('ts_merchant')->where('id',$data)->get()->row();
+    public function get_merchant_profile($id){
+      $query = $this->db->select('id,first_name,last_name,email,mobile,organisation,location,merchant_name')->from('ts_merchant')->where('id',$id)->get()->row();
       if($query == ""){
         return array('status'=>400, 'message'=>'Error fetching merchant profile data');
       }
