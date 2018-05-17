@@ -852,7 +852,7 @@ class App extends REST_Controller {
   public function merchant_profile_get(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-      $query = $this->MyModel->get_merchant_profile($response->id);
+      $query = $this->MyModel->get_merchant_profile($response['id']);
       $data = array('res'=>$query, 'headerRes'=> $response);
       $this->response($data, REST_Controller::HTTP_OK);
     }else{
