@@ -961,8 +961,8 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
     $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
     $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
-    $this->form_validation->set_rules('prod_description', 'Product Description', 'trim|required');//this is the theme
-    $this->form_validation->set_rules('prod_essay', 'Product Essay', 'trim|required');//and this is the essay
+    $this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required');//this is the theme
+    $this->form_validation->set_rules('prod_essay', 'Product Description', 'trim|required');//and this is the essay
     $this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
     $this->form_validation->set_rules('merchant_email', 'Merchant Email', 'trim|required');
     $this->form_validation->set_message('is_unique', 'The %s is already taken');
