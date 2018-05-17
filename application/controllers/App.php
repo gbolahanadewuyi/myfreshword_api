@@ -961,12 +961,14 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
     $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
     $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
-    $this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required');//this is the theme
+    $this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required|max_length[160]');//this is the theme
     $this->form_validation->set_rules('prod_essay', 'Product Description', 'trim|required');//and this is the essay
     $this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
     $this->form_validation->set_rules('merchant_email', 'Merchant Email', 'trim|required');
     $this->form_validation->set_message('is_unique', 'The %s is already taken');
+    $this->form_validation->set_message('max_length[160]', '%s: the maximum of 160 Characters allowed');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
             $data['messages'][$key] = form_error($key);
@@ -978,11 +980,11 @@ class App extends REST_Controller {
         'prod_urlname'          =>      $this->MyModel->replace_hyphens($_POST['prod_name']),
         'prod_preacher'         =>      $_POST['prod_preacher'],
         'prod_church'           =>      $_POST['prod_church'],
-        'prod_image'            =>      $_POST['prod_image'],
-        'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
+        //'prod_image'            =>      $_POST['prod_image'],
+        //'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
         'prod_tags'             =>      $_POST['prod_tags'], //here we use value as the same for type_list
-        'prod_description'      =>      $_POST['prod_description'],
-        'prod_essay'            =>      $_POST['prod_essay'],
+        'prod_description'      =>      $_POST['prod_theme'],
+        'prod_essay'            =>      $_POST['prod_description'],
         'prod_demourl'          =>      'null',
         'prod_demoshow'         =>      1,
         'prod_cateid'           =>      1,
@@ -999,9 +1001,9 @@ class App extends REST_Controller {
         'prod_uid'              =>      1,
         'prod_type'             =>      $this->MyModel->prod_type($_POST['prod_tags']),
         'type_list'             =>      $_POST['prod_tags'],
-        'file_link'             =>      $_POST['file_link'],
+        //'file_link'             =>      $_POST['file_link'],
         'merchant_email'        =>      $_POST['merchant_email'],
-        'currency'              =>      $_POST['currency']
+        'currency'              =>      $_POST['prod_currency']
 
       );
       $query = $this->MyModel->merchant_insert_product($prodData);
