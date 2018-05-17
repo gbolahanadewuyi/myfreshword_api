@@ -853,11 +853,14 @@ class App extends REST_Controller {
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
       $query = $this->MyModel->get_merchant_profile($response->id);
-      $this->response($query, REST_Controller::HTTP_OK);
+      $data = array('res'=>$query, 'headerRes'=> $response);
+      $this->response($data, REST_Controller::HTTP_OK);
     }else{
       $this->response($response, REST_Controller::HTTP_OK);
     }
   }
+
+
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
