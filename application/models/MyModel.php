@@ -926,7 +926,7 @@ class MyModel extends CI_Model {
       }
 
       public function merchant_insert_product($data){
-       $query =   $query = $this->db->insert('ts_product', $data);
+       $query =   $query = $this->db->insert('ts_products', $data);
        if($query == true){
          return array('status'=>200, 'message'=> 'Product added successfully');
        }

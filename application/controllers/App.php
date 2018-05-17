@@ -983,8 +983,8 @@ class App extends REST_Controller {
         //'prod_image'            =>      $_POST['prod_image'],
         //'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
         'prod_tags'             =>      $_POST['prod_tags'], //here we use value as the same for type_list
-        'prod_description'      =>      $_POST['prod_theme'],
-        'prod_essay'            =>      $_POST['prod_description'],
+        'prod_description'      =>      $_POST['prod_description'],
+        'prod_essay'            =>      $_POST['prod_essay'],
         'prod_demourl'          =>      'null',
         'prod_demoshow'         =>      1,
         'prod_cateid'           =>      1,
