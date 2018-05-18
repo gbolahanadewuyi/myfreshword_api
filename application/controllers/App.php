@@ -864,6 +864,7 @@ class App extends REST_Controller {
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
   public function merchant_add_image_post(){
+
         $id = $_POST['id'];
         $config['upload_path']   = './public/images/products/';
         $config['allowed_types'] = 'gif|jpg|png';
@@ -892,21 +893,25 @@ class App extends REST_Controller {
   //we run this on the success response from the first push
   public function merchant_add_file_post(){
 
-    $config['upload_path']   = './uploads/';
-    $config['allowed_types'] = 'mp3|mp4|avi';
-    $config['max_size']      = 2024;
-    $this->load->library('upload', $config);
+      $id = $_POST['id'];
+      $config['upload_path']   = './prod_link/audio';
+      $config['allowed_types'] = 'mp3|mp4|avi';
+      $config['max_size']      = 2024;
+      $this->load->library('upload', $config);
 
-    if ( ! $this->upload->do_upload('image')) {
-       $error = array('status'=>false, 'error' => $this->upload->display_errors());
-       //echo json_encode($error);
-       $this->response($error, REST_Controller::HTTP_OK);
-    }else {
-       $data = $this->upload->data();
-       $success = ['status'=>true,'success'=>$data['file_name']];
-       //echo json_encode($success);
-       $this->response($success, REST_Controller::HTTP_OK);
-    }
+      if ( ! $this->upload->do_upload('image')) {
+         $error = array('status'=>false, 'error' => $this->upload->display_errors());
+         //echo json_encode($error);
+         $this->response($error, REST_Controller::HTTP_OK);
+      }else {
+         $data = $this->upload->data();
+         $success = ['status'=>true,'success'=>$data['file_name']];
+         $imgData = array(
+           'file_link'     =>  $data['file_name']
+         );
+         $this->MyModel->update_file($id, $imgData);
+         $this->response($success, REST_Controller::HTTP_OK);
+      }
 
   }
 
