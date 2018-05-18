@@ -887,14 +887,13 @@ class App extends REST_Controller {
            $this->response($success, REST_Controller::HTTP_OK);
         }
 
-  }
 
 
   //we run this on the success response from the first push
   public function merchant_add_file_post(){
 
       $id = $_POST['id'];
-      $config['upload_path']   = './prod_link/dummy/';
+      $config['upload_path']   = './prod_link/audio/';
       $config['allowed_types'] = 'mp3|mp4|avi';
       $config['max_size']      = 2024;
       $this->load->library('upload', $config);
