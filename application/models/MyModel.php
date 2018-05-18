@@ -1135,7 +1135,7 @@ class MyModel extends CI_Model {
       return $this->db->where('id',$id)->update('ts_products',$data);
     }
 
-    // public function update_file($id){
-    //
-    // }
+    public function update_file($id, $data){
+      return $this->db->where('id',$id)->update('ts_products',$data);
+    }
 }

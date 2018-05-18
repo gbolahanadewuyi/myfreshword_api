@@ -863,8 +863,8 @@ class App extends REST_Controller {
 
   //this has to be sequential now we need to return values here to proceed to the next endpoint
   //this will be looped twice to the end point
-  public function merchant_add_image_put(){
-        $id = (int) $this->put('id');
+  public function merchant_add_image_post(){
+        $id = $_POST['id'];
 
         $config['upload_path']   = './uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
