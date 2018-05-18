@@ -894,7 +894,7 @@ class App extends REST_Controller {
 
       $id = $_POST['id'];
       $query = $this->MyModel->upload_path($id);
-      $config['upload_path']   = './prod_link/ '.$query.'/';
+      $config['upload_path']   = './prod_link/'.$query.'/';
       $config['allowed_types'] = 'mp3|mp4|avi';
       $config['max_size']      = 2024;
       $this->load->library('upload', $config);

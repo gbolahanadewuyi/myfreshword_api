@@ -1140,7 +1140,7 @@ class MyModel extends CI_Model {
     }
 
     public function upload_path($id){
-      $query = $this->db->select('type_list')->from('ts_products')->where('prod_id',$id)->get()->row();
+      $query = $this->db->select('*')->from('ts_products')->where('prod_id',$id)->get()->row();
       if($query->type_list == "Audio"){
         return "audio";
       }
