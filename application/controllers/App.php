@@ -887,7 +887,7 @@ class App extends REST_Controller {
            $this->response($success, REST_Controller::HTTP_OK);
         }
 
-
+}
 
   //we run this on the success response from the first push
   public function merchant_add_file_post(){
