@@ -883,6 +883,10 @@ class MyModel extends CI_Model {
         return $this->db->where('prod_purchase_by',$email)->delete('ts_cart');
       }
 
+
+      //need to check this data
+
+
       public function search_product($search_term){
         //$search_term=$this->input->post('textboxName');
         $search_term="%".$search_term."%";
@@ -927,8 +931,10 @@ class MyModel extends CI_Model {
 
       public function merchant_insert_product($data){
        $query =   $query = $this->db->insert('ts_products', $data);
+       $insert_id = $this->db->insert_id();
+
        if($query == true){
-         return array('status'=>200, 'message'=> 'Product added successfully');
+         return array('status'=>200, 'message'=> 'Product added successfully', 'last_insert_row'=>$insert_id);
        }
        else{
          return array('status'=>400, 'message'=> 'Error adding product details');
@@ -1123,4 +1129,5 @@ class MyModel extends CI_Model {
         return array('status'=>200, 'message'=> $query);
       }
     }
+
 }

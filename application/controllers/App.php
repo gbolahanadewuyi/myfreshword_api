@@ -1003,8 +1003,8 @@ class App extends REST_Controller {
         'type_list'             =>      $_POST['prod_tags'],
         //'file_link'             =>      $_POST['file_link'],
         'merchant_email'        =>      $_POST['merchant_email'],
-        'currency'              =>      $_POST['prod_currency']
-
+        'currency'              =>      $_POST['prod_currency'],
+        'prod_date'             =>      date('Y-m-d H:i:s')
       );
       $query = $this->MyModel->merchant_insert_product($prodData);
       $data = array('success'=>true,'message'=>$query);
