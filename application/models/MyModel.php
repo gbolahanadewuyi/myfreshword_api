@@ -1132,10 +1132,10 @@ class MyModel extends CI_Model {
     }
 
     public function update_image($id, $data){
-      return $this->db->where('id',$id)->update('ts_products',$data);
+      return $this->db->where('prod_id',$id)->update('ts_products',$data);
     }
 
     public function update_file($id, $data){
-      return $this->db->where('id',$id)->update('ts_products',$data);
+      return $this->db->where('prod_id',$id)->update('ts_products',$data);
     }
 }
