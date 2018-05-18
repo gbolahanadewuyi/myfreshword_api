@@ -883,7 +883,7 @@ class App extends REST_Controller {
              'prod_image'   =>  $data['file_name'],
              'img_link'     =>  'http://myfreshword.com/myfreshword/api/public/images/products/'.$data['file_name']
            );
-           $this->update_image($id);
+           $this->MyModel->update_image($id);
            $this->response($success, REST_Controller::HTTP_OK);
         }
 
