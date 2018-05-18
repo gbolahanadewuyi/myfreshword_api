@@ -1138,4 +1138,17 @@ class MyModel extends CI_Model {
     public function update_file($id, $data){
       return $this->db->where('prod_id',$id)->update('ts_products',$data);
     }
+
+    public function upload_path($id){
+      $query = $this->db->select('type_list')->from('ts_products')->where('prod_id',$id)->get()->row();
+      if($query->type_list == "Audio"){
+        return "audio";
+      }
+      else if($query->type_list == "Video"){
+        return "video";
+      }
+      else if($query->type_list == "Book"){
+        return "book";
+      }
+    }
 }
