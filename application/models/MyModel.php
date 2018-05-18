@@ -123,6 +123,7 @@ class MyModel extends CI_Model {
     }
 
     public function merchant_session($id, $token_auth){
+
       $merchant_id  = $id;
       $token        = $token_auth;
 
@@ -1130,4 +1131,11 @@ class MyModel extends CI_Model {
       }
     }
 
+    public function update_image($id){
+      return $this->db->where('id',$id)->update('ts_products',$data);
+    }
+
+    // public function update_file($id){
+    //
+    // }
 }
