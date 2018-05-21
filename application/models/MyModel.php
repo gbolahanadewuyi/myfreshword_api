@@ -1166,4 +1166,8 @@ class MyModel extends CI_Model {
     public function product_preview($id){
       return  $query = $this->db->select('prod_tags, file_link')->from('ts_products')->where('prod_id',$id)->get()->row();
     }
+
+    public function edit_product($id){
+      return  $query = $this->db->select('*')->from('ts_products')->where('prod_id',$id)->get()->row();
+    }
 }

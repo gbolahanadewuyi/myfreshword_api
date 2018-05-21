@@ -1035,4 +1035,15 @@ class App extends REST_Controller {
   }
 
 
+  public function product_edit_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $id = (int) $this->get('id');
+      $query = $this->MyModel->edit_product($id);
+      $this->response($query, REST_Controller::HTTP_OK);
+    }else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
+
 }//end of class
