@@ -1023,6 +1023,16 @@ class App extends REST_Controller {
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
+  public function product_preview_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $id = (int) $this->get('id');
+      $query = $this->MyModel->product_preview($id);
+      $this->response($query, REST_Controller::HTTP_OK);
+    }else{
+      $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
 
 
 }//end of class

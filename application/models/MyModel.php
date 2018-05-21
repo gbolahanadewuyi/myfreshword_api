@@ -1161,4 +1161,9 @@ class MyModel extends CI_Model {
         return "fa fa-video-camera";
       }
     }
+
+    //play a particular product / audio / book / video
+    public function product_preview($id){
+      return  $query = $this->db->select('prod_tags, file_link')->from('ts_products')->where('id',$id)->get()->row();
+    }
 }
