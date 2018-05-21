@@ -1030,7 +1030,7 @@ class App extends REST_Controller {
       $query = $this->MyModel->product_preview($id);
       $this->response($query, REST_Controller::HTTP_OK);
     }else{
-      $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
   }
 
