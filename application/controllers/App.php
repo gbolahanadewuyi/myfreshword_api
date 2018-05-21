@@ -939,7 +939,8 @@ class App extends REST_Controller {
               $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
-              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product('."'".$prod->prod_id."'".')"><i class="fa fa-play"></i> </a>
+              $query = $this->MyModel->favicon_show($prod->prod_tags);
+              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product('."'".$prod->prod_id."'".')"><i class="'.$query.'"></i> </a>
                         <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
                         <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
               $data[] = $row;
@@ -963,6 +964,7 @@ class App extends REST_Controller {
   //and then we finally post the data needed as well
   // Here we will go through our form validaitons to avoid same data being posted twice
   public function merchant_add_product_data_post(){
+
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type

@@ -1151,4 +1151,14 @@ class MyModel extends CI_Model {
         return "book";
       }
     }
+
+    public function favicon_show($data){
+      if($data == "Book"){
+        return "fa fa-book";
+      }else if($data == "Audio"){
+        return "fa fa-music";
+      }else if($data == "Video"){
+        return "fa fa-video-camera";
+      }
+    }
 }
