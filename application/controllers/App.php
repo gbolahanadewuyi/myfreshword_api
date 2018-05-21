@@ -939,8 +939,8 @@ class App extends REST_Controller {
               $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
-              $query = $this->MyModel->favicon_show($prod->prod_tags);
-              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product('."'".$prod->prod_id."'".')"><i class="'.$query.'"></i> </a>
+              $favicon = $this->MyModel->favicon_show($prod->prod_tags);
+              $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product('."'".$prod->prod_id."'".')"><i class="'.$favicon.'"></i> </a>
                         <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product('."'".$prod->prod_id."'".')"><i class="fa fa-edit"></i> </a>
                         <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product('."'".$prod->prod_id."'".')"><i class="fa fa-trash"></i> </a>';
               $data[] = $row;
