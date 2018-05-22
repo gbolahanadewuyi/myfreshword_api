@@ -1200,4 +1200,5 @@ class MyModel extends CI_Model {
          return array('status'=>404, 'message'=>'error deleting product details');
        }
     }
+
 }

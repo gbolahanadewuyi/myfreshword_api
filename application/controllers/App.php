@@ -1073,7 +1073,7 @@ class App extends REST_Controller {
           $exlclude_id = $_POST['id'];
           $data= array('success'=> false, 'messages' => array());
           $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
-          $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|is_unique2[ts_products.prod_name.prod_id.'.$exclude_id.']');
+          $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
           $this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
           $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
           $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
@@ -1101,4 +1101,17 @@ class App extends REST_Controller {
     }
 
   }
+
+
+  //this is a call back
+  public function _is_unique2($input) {
+        $exclude_id = $_POST['id'];
+        if( $this->db->where('prod_name', $input)->where('prod_id !=', $exclude_id)
+            ->limit(1)->get('ts_products')->num_rows())
+        {
+            $this->form_validation->set_message('_is_unique2', 'name already exists');
+            return FALSE;
+        }
+        return TRUE;
+    }
 }//end of class
