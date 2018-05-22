@@ -1070,7 +1070,7 @@ class App extends REST_Controller {
 
           //code beginss here
           $_POST = json_decode(file_get_contents('php://input'), TRUE);
-          $exlclude_id = $_POST['id'];
+          $exlclude_id = $_POST['prod_id'];
           $data= array('success'=> false, 'messages' => array());
           $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
           $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
@@ -1092,9 +1092,8 @@ class App extends REST_Controller {
           else{
             $data['success'] = true;
             $data['message'] = $this->MyModel->update_ts_products($exclude_id, $_POST);
-            $this->response($data, REST_Controller::HTTP_OK);
           }
-
+          $this->response($data, REST_Controller::HTTP_OK);
           //code ends here
     }else{
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
@@ -1105,7 +1104,7 @@ class App extends REST_Controller {
 
   //this is a call back
   public function _is_unique2($input) {
-        $exclude_id = $_POST['id'];
+        $exclude_id = $_POST['prod_id'];
         if( $this->db->where('prod_name', $input)->where('prod_id !=', $exclude_id)
             ->limit(1)->get('ts_products')->num_rows())
         {
