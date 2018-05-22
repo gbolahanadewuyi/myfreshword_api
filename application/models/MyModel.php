@@ -1184,7 +1184,7 @@ class MyModel extends CI_Model {
           'prod_type'           =>    $this->prod_type($data['prod_tags']),
           'type_list'           =>    $data['prod_tags']
         );
-      $query = $this->db->where('prod_id', $data[id])->update('ts_products', $update);
+      $query = $this->db->where('prod_id', $id)->update('ts_products', $update);
       if($query == true){
         return array('status'=>201, 'message'=> 'Product has been updated successfully', 'last_insert_row'=>$id);
       }else{

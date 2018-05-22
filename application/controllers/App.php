@@ -1108,7 +1108,7 @@ class App extends REST_Controller {
         if( $this->db->where('prod_name', $input)->where('prod_id !=', $exclude_id)
             ->limit(1)->get('ts_products')->num_rows())
         {
-            $this->form_validation->set_message('_is_unique2', 'name already exists');
+            $this->form_validation->set_message('_is_unique2', 'The product name already exists');
             return FALSE;
         }
         return TRUE;
