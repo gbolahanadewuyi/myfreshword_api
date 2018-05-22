@@ -964,7 +964,7 @@ class App extends REST_Controller {
   //and then we finally post the data needed as well
   // Here we will go through our form validaitons to avoid same data being posted twice
   public function merchant_add_product_data_post(){
-    
+
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
@@ -1070,7 +1070,7 @@ class App extends REST_Controller {
 
           //code beginss here
           $_POST = json_decode(file_get_contents('php://input'), TRUE);
-          $exlclude_id = $_POST['prod_id'];
+          $exlclude_id = $_POST['id'];
           $data= array('success'=> false, 'messages' => array());
           $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
           $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|is_unique2[ts_products.prod_name.prod_id.'.$exclude_id.']');
