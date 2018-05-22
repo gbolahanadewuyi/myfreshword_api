@@ -1070,7 +1070,6 @@ class App extends REST_Controller {
 
           //code beginss here
           $_POST = json_decode(file_get_contents('php://input'), TRUE);
-          $exlclude_id = $_POST['prod_id'];
           $data= array('success'=> false, 'messages' => array());
           $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
           $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
@@ -1091,7 +1090,7 @@ class App extends REST_Controller {
           }
           else{
             $data['success'] = true;
-            $data['message'] = $this->MyModel->update_ts_products($exclude_id, $_POST);
+            $data['message'] = $this->MyModel->update_ts_products($_POST);
           }
           $this->response($data, REST_Controller::HTTP_OK);
           //code ends here

@@ -1171,7 +1171,7 @@ class MyModel extends CI_Model {
       return  $query = $this->db->select('*')->from('ts_products')->where('prod_id',$id)->get()->row();
     }
 
-    public function update_ts_products($id, $data){
+    public function update_ts_products($data){
         $update = array(
           'prod_name'           =>    $data['prod_name'],
           'prod_preacher'       =>    $data['prod_preacher'],
@@ -1184,7 +1184,7 @@ class MyModel extends CI_Model {
           'prod_type'           =>    $this->prod_type($data['prod_tags']),
           'type_list'           =>    $data['prod_tags']
         );
-      $query = $this->db->where('prod_id', $id)->update('ts_products', $update);
+      $query = $this->db->where('prod_id', $data['prod_id'])->update('ts_products', $update);
       if($query == true){
         return array('status'=>201, 'message'=> 'Product has been updated successfully', 'last_insert_row'=>$id);
       }else{
