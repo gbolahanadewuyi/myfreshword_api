@@ -1170,4 +1170,13 @@ class MyModel extends CI_Model {
     public function edit_product($id){
       return  $query = $this->db->select('*')->from('ts_products')->where('prod_id',$id)->get()->row();
     }
+
+    public function delete_product($id, $email){
+       $query =  $this->db->where('prod_id',$id)->where('merchant_email',$email)->delete('ts_products');
+       if($query == true){
+         return array('status'=>200, 'message'=>'product item deleted successfully');
+       }else{
+         return array('status'=>404, 'message'=>'error deleting product details');
+       }
+    }
 }
