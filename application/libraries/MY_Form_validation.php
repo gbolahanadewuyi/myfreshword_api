@@ -16,4 +16,14 @@ class MY_Form_validation extends CI_Form_validation {
               return FALSE;
           }
        }
+
+     function is_unique2($str, $field){
+        list($table, $field, $exclude_field, $exclude_value)=explode('.', $field);
+
+        return (bool) $this->CI->db
+            ->where($field, $str)
+            ->where($exclude_field.' !=', $exclude_value)
+            ->limit(1)
+            ->get($table)->num_rows();
+    }
 }

@@ -1051,10 +1051,49 @@ class App extends REST_Controller {
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $query = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
+      $data = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
       $this->response($query, REST_Controller::HTTP_OK);
     }else{
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
+  }
+
+
+  public function update_product_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+
+          //code beginss here
+          $_POST = json_decode(file_get_contents('php://input'), TRUE);
+          $exlclude_id = $_POST['prod_id'];
+          $data= array('success'=> false, 'messages' => array());
+          $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
+          $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|is_unique2[ts_products.prod_name.prod_id.'.$exclude_id.']');
+          $this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
+          $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
+          $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
+          $this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required|max_length[160]');//this is the theme
+          $this->form_validation->set_rules('prod_essay', 'Product Description', 'trim|required');//and this is the essay
+          //below are the custom reponse messages
+          $this->form_validation->set_message('is_unique2', 'The %s is already taken');
+          $this->form_validation->set_message('max_length[160]', '%s: the maximum of 160 Characters allowed');
+          //push error response into delimiters
+          $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+          if ($this->form_validation->run() === FALSE){
+              foreach($_POST as $key =>$value){
+                  $data['messages'][$key] = form_error($key);
+              }
+          }
+          else{
+            $data['success'] = true;
+            $data['message'] = $this->MyModel->update_ts_products($exclude_id, $_POST);
+            $this->response($data, REST_Controller::HTTP_OK);
+          }
+
+          //code ends here
+    }else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+
   }
 }//end of class

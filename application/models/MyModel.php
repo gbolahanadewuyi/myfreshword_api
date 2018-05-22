@@ -1171,6 +1171,27 @@ class MyModel extends CI_Model {
       return  $query = $this->db->select('*')->from('ts_products')->where('prod_id',$id)->get()->row();
     }
 
+    public function update_ts_products($id, $data){
+        $update = array(
+          'prod_name'           =>    $data['prod_name'],
+          'prod_preacher'       =>    $data['prod_preacher'],
+          'prod_tags'           =>    $data['prod_tags'],
+          'prod_description'    =>    $data['prod_description'],
+          'prod_essay'          =>    $data['prod_essay'],
+          'prod_price'          =>    $data['prod_price'],
+          'currency'            =>    $data['prod_currency'],
+          'prod_urlname'        =>    $this->replace_hyphens($data['prod_name']),
+          'prod_type'           =>    $this->prod_type($data['prod_tags']),
+          'type_list'           =>    $data['prod_tags']
+        );
+      $query = $this->db->where('prod_id', $data[id])->update('ts_products', $update);
+      if($query == true){
+        return array('status'=>201, 'message'=> 'Product has been updated successfully', 'last_insert_row'=>$id);
+      }else{
+        return array('status'=>404, 'message'=> 'Error updating your products');
+      }
+    }
+
     public function delete_product($id, $email){
        $query =  $this->db->where('prod_id',$id)->where('merchant_email',$email)->delete('ts_products');
        if($query == true){
