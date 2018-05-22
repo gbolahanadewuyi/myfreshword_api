@@ -867,7 +867,7 @@ class App extends REST_Controller {
 
         $id = $_POST['id'];
         $config['upload_path']   = './public/images/products/';
-        $config['allowed_types'] = 'gif|jpg|png';
+        $config['allowed_types'] = 'gif|jpg|png';//allowing only images
         $config['max_size']      = 1024;
         $this->load->library('upload', $config);
 
@@ -895,7 +895,15 @@ class App extends REST_Controller {
       $id = $_POST['id'];
       $query = $this->MyModel->upload_path($id);
       $config['upload_path']   = './prod_link/'.$query.'/';
-      $config['allowed_types'] = 'mp3|mp4|avi|pdf|doc';
+      if($query == "audio"){
+        $config['allowed_types'] = 'mp3';
+      }
+      if($query == "video"){
+        $config['allowed_types'] = 'mp4|avi';
+      }
+      if($query == "book"){
+        $config['allowed_types'] = 'pdf|doc';
+      }
       $config['max_size']      = 2024;
       $this->load->library('upload', $config);
 
