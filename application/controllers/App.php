@@ -1056,7 +1056,7 @@ class App extends REST_Controller {
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $data = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
+      $query = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
       $this->response($query, REST_Controller::HTTP_OK);
     }else{
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
