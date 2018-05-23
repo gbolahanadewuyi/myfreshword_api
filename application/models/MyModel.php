@@ -1220,7 +1220,7 @@ class MyModel extends CI_Model {
 
     //so this counts a total number of product views
     public function count_product_views($query){//this is by email
-      $this->db->select('*')->from('product_view')->where('merchanntemail', $query);
+      $this->db->select('*')->from('product_view')->where('merchantemail', $query);
       $q = $this->db->get();
       return $q->num_rows();
     }
