@@ -752,8 +752,9 @@ class App extends REST_Controller {
   }
 
 
-
-  //merchant endpoint starts from here
+/*========================================================================================================================================================================================================
+*MERCHANT ENDPOINTS STARTS FROM HERE
+*/
   public function web_products_get(){
     $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
     $this->response($resp, REST_Controller::HTTP_OK);
@@ -975,6 +976,7 @@ class App extends REST_Controller {
 
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
+
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
       $data= array('success'=> false, 'messages' => array());
       $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
@@ -1120,4 +1122,21 @@ class App extends REST_Controller {
         }
         return TRUE;
     }
+
+
+  public function dashboard_data_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+
+      $email                            = $this->get('email');
+      $data['free_products']            = $this->MyModel->count_free_products($email);
+      $data['premium_products']         = $this->MyModel->count_premium_products($email);
+      $data['total_product_views']      = $this->MyModel->count_product_views($email);
+      $this->response($data, REST_Controller::HTTP_OK);
+
+    }else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+      
+  }
 }//end of class
