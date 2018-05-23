@@ -937,14 +937,14 @@ class App extends REST_Controller {
           foreach ($list as $prod) {
               $no++;
               $row = array();
+              $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_name;
               $row[] = $prod->prod_preacher;
-              $row[] = $prod->prod_church;
+              //$row[] = $prod->prod_church;
               $row[] = $prod->prod_price;
               $row[] = $prod->currency;
-              $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_tags;
-              $row[] = $prod->prod_uniqid;
+              //$row[] = $prod->prod_uniqid;
               $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
@@ -1137,6 +1137,6 @@ class App extends REST_Controller {
     }else{
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
-      
+
   }
 }//end of class
