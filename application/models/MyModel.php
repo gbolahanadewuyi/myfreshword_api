@@ -1205,14 +1205,14 @@ class MyModel extends CI_Model {
 
     //we will be using email to search
     public function count_free_products($email){
-      $this->db->select('*')->from('ts_products')->where('email', $email)->where('prod_price', 0);
+      $this->db->select('*')->from('ts_products')->where('merchant_email', $email)->where('prod_price', 0);
       $q = $this->db->get();
       return $q->num_rows();
     }
 
     //using email to count qyert
     public function count_premium_products($email){
-      $this->db->select('*')->from('ts_products')->where('email', $email)->where('prod_price !=', 0);
+      $this->db->select('*')->from('ts_products')->where('merchant_email', $email)->where('prod_price !=', 0);
       $q = $this->db->get();
       return $q->num_rows();
     }
@@ -1220,7 +1220,7 @@ class MyModel extends CI_Model {
 
     //so this counts a total number of product views
     public function count_product_views($query){//this is by email
-      $this->db->select('*')->from('product_view')->where('email', $query);
+      $this->db->select('*')->from('product_view')->where('merchanntemail', $query);
       $q = $this->db->get();
       return $q->num_rows();
     }
