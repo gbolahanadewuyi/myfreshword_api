@@ -1224,4 +1224,27 @@ class MyModel extends CI_Model {
       $q = $this->db->get();
       return $q->num_rows();
     }
+
+    //merchant feed
+    public function insert_feed_data($data, $img){
+      $newFeed = array(
+            'title'             => $data['feed_title'],
+            'message'           => $data['feed_message'],
+            'image'             => $img,
+            'merchantemail'     => $data['merchantemail']
+      );
+      $query =   $query = $this->db->insert('merchant_feed', $newFeed);
+      $insert_id = $this->db->insert_id();
+      if($query != true){
+        return array('status'=>404, 'message'=> 'Error creating your merchant feed');
+      }
+      return array('status'=> 200, 'message'=> 'merchant feed created successfully', 'last_insert_id'=>$insert_id);
+    }
+
+    public function insert_feed_image($data){
+      $image = array(
+        'image'=> $data['file_name']
+      );
+      return $this->db->where('id',$id)->update('merchant_feed',$image);
+    }
 }

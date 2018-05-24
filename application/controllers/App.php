@@ -646,6 +646,7 @@ class App extends REST_Controller {
 
   //this shooud be the response for the payment
   public function payment_response_post(){
+
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
     $data= array('success'=> false, 'messages' => array());
     //$this->form_validation->set_rules('status', 'Rest Status Code', 'trim|required|numeric');//preferred not to be passed
@@ -654,7 +655,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('network', 'Mobile Money Network', 'trim|required');
     $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required|numeric');
     $this->form_validation->set_rules('amount', 'Transaction Amount', 'trim|required|numeric');
-    $this->form_validation->set_rules('freshword_transaction_id', 'My Freshword Transaction ID', 'trim|required');
+    $this->form_validation->set_rules('freshword_transaction_id', 'My Freshword Transaction ID', 'trim|required');//this should be tied to the array of products being purchased
     $this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
@@ -1121,7 +1122,7 @@ class App extends REST_Controller {
             return FALSE;
         }
         return TRUE;
-    }
+  }
 
 
   public function dashboard_data_get(){
@@ -1139,4 +1140,102 @@ class App extends REST_Controller {
     }
 
   }
+
+
+  public function merchant_feed_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+
+      $data= array('success'=> false, 'messages' => array());
+
+      $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
+      $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
+      $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
+      $this->form_validation->set_rules('merchant_image', 'Merchant Image', 'callback_file_check');
+
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+      }
+      else{
+
+        //this is where i upload the image for the merchant feed
+        $config['upload_path']   = './public/images/products/';
+        $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+        $config['max_size']      = 1024;
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('merchant_image')) {
+           $error = array('status'=>false, 'error' => $this->upload->display_errors());
+           //echo json_encode($error);
+           $this->response($error, REST_Controller::HTTP_OK);
+           return false;
+        }
+        else{
+
+          $data = $this->upload->data();
+          $success = ['status'=>true,'success'=>$data['file_name']];
+          //echo json_encode($success);
+          $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
+
+          //so run insertion since the validation for the form has been passed correctly
+          $data = $this->MyModel->insert_feed_data($_POST,$img);
+        }
+      }
+      $this->response($data, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
+
+
+
+  // call back for checking file directly into one
+  public function file_check($str){
+      $allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
+      $mime = get_mime_by_extension($_FILES['file']['name']);
+      if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
+          if(in_array($mime, $allowed_mime_type_arr)){
+              return true;
+          }else{
+              $this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
+              return false;
+          }
+      }else{
+          $this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+          return false;
+      }
+  }
+
+
+
+  public function merchant_feed_image_post(){
+    $id = $_POST['id'];
+    $config['upload_path']   = './public/images/products/';
+    $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+    $config['max_size']      = 1024;
+    $this->load->library('upload', $config);
+
+    if ( ! $this->upload->do_upload('image_file')) {
+       $error = array('status'=>false, 'error' => $this->upload->display_errors());
+       //echo json_encode($error);
+       $this->response($error, REST_Controller::HTTP_OK);
+    }else {
+       $data = $this->upload->data();
+       $success = ['status'=>true,'success'=>$data['file_name']];
+       //echo json_encode($success);
+       $imgData = array(
+         'prod_image'   =>  $data['file_name'],
+         'img_link'     =>  'http://myfreshword.com/myfreshword/api/public/images/products/'.$data['file_name']
+       );
+
+       $this->MyModel->update_image($id, $imgData);
+       $this->response($success, REST_Controller::HTTP_OK);
+    }
+  }
+
+
 }//end of class
