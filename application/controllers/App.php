@@ -1167,7 +1167,7 @@ class App extends REST_Controller {
         $config['max_size']      = 1024;
         $this->load->library('upload', $config);
 
-        if ( ! $this->upload->do_upload('merchant_image')) {
+        if ( ! $this->upload->do_upload('file')) {
            $error = array('status'=>false, 'error' => $this->upload->display_errors());
            //echo json_encode($error);
            $this->response($error, REST_Controller::HTTP_OK);
