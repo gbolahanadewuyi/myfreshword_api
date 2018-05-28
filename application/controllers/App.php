@@ -1227,8 +1227,9 @@ public function merchant_news_feed_get(){
     $config["uri_segment"] = 3;
     $this->pagination->initialize($config);
     $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-    $data["results"] = $this->MyModel->get_merchant_feed_data($config["per_page"], $page, $email);
-    $data["links"] = $this->pagination->create_links();
+    $data["results"]  = $this->MyModel->get_merchant_feed_data($config["per_page"], $page, $email);
+    $data["links"]    = $this->pagination->create_links();
+    $data['entries']  = $this->MyModel->count_merchant_feed($email);
     $this->response($data, REST_Controller::HTTP_OK);
   }
   else{
