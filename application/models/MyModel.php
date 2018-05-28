@@ -1253,7 +1253,7 @@ class MyModel extends CI_Model {
 
     public function count_merchant_feed($email){
       //return $this->db->where('merchantemail', $email)->count_all("merchant_feed");
-      $this->db->select('*')->from('merchant_feed')->where('merchantemil',$email);
+      $this->db->select('*')->from('merchant_feed')->where('merchantemail',$email);
       $q = $this->db->get();
       return $q->num_rows();
     }
