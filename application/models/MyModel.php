@@ -1247,4 +1247,21 @@ class MyModel extends CI_Model {
       );
       return $this->db->where('id',$id)->update('merchant_feed',$image);
     }
+
+    public function count_merchant_feed($email){
+      return $this->db->where('merchantemail', $email)->count_all("merchant_feed");
+    }
+
+    public function get_merchant_feed_data($limit, $start, $email){
+      $this->db->limit($limit, $start);
+      $query = $this->db->where('merchantemail', $email)->get("merchant_feed");
+
+      if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+     return false;
+    }
 }

@@ -753,7 +753,9 @@ class App extends REST_Controller {
   }
 
 
-/*========================================================================================================================================================================================================
+/*================================================================================================================
+==================================================================================================================
+==================================================================================================================
 *MERCHANT ENDPOINTS STARTS FROM HERE
 */
   public function web_products_get(){
@@ -1212,30 +1214,27 @@ class App extends REST_Controller {
 
 
 
-  public function merchant_feed_image_post(){
-    $id = $_POST['id'];
-    $config['upload_path']   = './public/images/products/';
-    $config['allowed_types'] = 'gif|jpg|png';//allowing only images
-    $config['max_size']      = 1024;
-    $this->load->library('upload', $config);
+public function merchant_news_feed_get(){
+  $response = $this->MyModel->merchant_auth();
+  if($response['status']==200){
 
-    if ( ! $this->upload->do_upload('image_file')) {
-       $error = array('status'=>false, 'error' => $this->upload->display_errors());
-       //echo json_encode($error);
-       $this->response($error, REST_Controller::HTTP_OK);
-    }else {
-       $data = $this->upload->data();
-       $success = ['status'=>true,'success'=>$data['file_name']];
-       //echo json_encode($success);
-       $imgData = array(
-         'prod_image'   =>  $data['file_name'],
-         'img_link'     =>  'http://myfreshword.com/myfreshword/api/public/images/products/'.$data['file_name']
-       );
+    $email= $this->get('email');
 
-       $this->MyModel->update_image($id, $imgData);
-       $this->response($success, REST_Controller::HTTP_OK);
-    }
+    $config = array();
+    $config["base_url"] = base_url() . "merchant/news_feed";
+    $config["total_rows"] = $this->MyModel->count_merchant_feed($email);
+    $config["per_page"] = 10;
+    $config["uri_segment"] = 3;
+    $this->pagination->initialize($config);
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+    $data["results"] = $this->MyModel->get_merchant_feed_data($config["per_page"], $page, $email);
+    $data["links"] = $this->pagination->create_links();
+    $this->response($data, REST_Controller::HTTP_OK);
   }
+  else{
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+  }
+}
 
 
 }//end of class
