@@ -1217,9 +1217,7 @@ class App extends REST_Controller {
 public function merchant_news_feed_get(){
   $response = $this->MyModel->merchant_auth();
   if($response['status']==200){
-
     $email= $this->get('email');
-
     $config = array();
     $config["base_url"] = base_url() . "merchant/news_feed";
     $config["total_rows"] = $this->MyModel->count_merchant_feed($email);
@@ -1230,6 +1228,10 @@ public function merchant_news_feed_get(){
     $data["results"]  = $this->MyModel->get_merchant_feed_data($config["per_page"], $page, $email);
     $data["links"]    = $this->pagination->create_links();
     $data['entries']  = $this->MyModel->count_merchant_feed($email);
+    $data['likes']    = $this->MyModel->count_merchant_likes($response['id']);
+    $data['comments'] = $this->MyModel->count_merchant_comments($response['id']);
+
+
     $this->response($data, REST_Controller::HTTP_OK);
   }
   else{

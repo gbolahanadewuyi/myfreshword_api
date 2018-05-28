@@ -1264,4 +1264,22 @@ class MyModel extends CI_Model {
         }
      return false;
     }
+
+    //count the number of likes in the comment thread
+    public function count_merchant_likes($id){
+      return $this->db->where('merchant_feed_id', $id)->where('likes', 1)->count_all('merchant_comment_thread');
+    }
+
+    //count the number of comments in the comment thread
+    public function count_merchant_comments($id){
+      return $this->db->where('merchant_feed_id', $id)->count_all('merchant_comment_thread');
+    }
+
+    //fetch all merchant comments data associated to merchant feed
+    public function fetch_merchant_comments($id){
+      return  $query = $this->db->select('*')->from('merchant_comment_thread')->where('merchant_feed_id',$id)->get()->result();
+    }
+
+
+
 }
