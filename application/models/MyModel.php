@@ -1294,7 +1294,7 @@ class MyModel extends CI_Model {
       return $q->num_rows();
     }
 
-    //fetch all merchant comments data associated to merchant feed
+    //fetch all merchant comments data associated to merchant feed-->git
     public function fetch_merchant_comments($id){
       return  $query = $this->db->select('*')->from('merchant_comment_thread')->where('merchant_feed_id',$id)->get()->result();
     }
