@@ -1232,7 +1232,7 @@ class MyModel extends CI_Model {
             'message'           => $data['feed_message'],
             'image'             => $img,
             'merchantemail'     => $data['merchantemail'],
-            'time_stamp'        => $date('Y-m-d H:i:s'),
+            'time_stamp'        => date('Y-m-d H:i:s'),
             'likes_count'       => 0,
             'comments_counts'   => 0
       );
