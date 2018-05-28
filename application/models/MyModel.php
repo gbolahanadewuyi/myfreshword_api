@@ -1254,7 +1254,7 @@ class MyModel extends CI_Model {
 
     public function get_merchant_feed_data($limit, $start, $email){
       $this->db->limit($limit, $start);
-      $query = $this->db->where('merchantemail', $email)->get("merchant_feed");
+      $query = $this->db->where('merchantemail', $email)->order_by('id','desc')->get("merchant_feed");
 
       if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
@@ -1263,6 +1263,13 @@ class MyModel extends CI_Model {
             return $data;
         }
      return false;
+    }
+
+    public function get_merchant_feed_no_pagination($email, $id){
+      $query['results']         = $this->db->select('*')->from('merchant_feed')->where('merchantemail', $email)->order_by('id','desc')->get()->result();
+      $query['assoc_likes']     = $this->count_merchant_likes($id);
+      $query['assoc_comments']  = $this->count_merchant_comments($id);
+      return $query;
     }
 
     //count the number of likes in the comment thread
