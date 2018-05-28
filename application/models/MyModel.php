@@ -1231,7 +1231,10 @@ class MyModel extends CI_Model {
             'title'             => $data['feed_title'],
             'message'           => $data['feed_message'],
             'image'             => $img,
-            'merchantemail'     => $data['merchantemail']
+            'merchantemail'     => $data['merchantemail'],
+            'time_stamp'        => $date('Y-m-d H:i:s'),
+            'likes_count'       => 0,
+            'comments_counts'   => 0
       );
       $query =   $query = $this->db->insert('merchant_feed', $newFeed);
       $insert_id = $this->db->insert_id();
