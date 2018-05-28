@@ -1164,7 +1164,7 @@ class App extends REST_Controller {
       else{
 
         //this is where i upload the image for the merchant feed
-        $config['upload_path']   = './public/images/products/';
+        $config['upload_path']   = './feed_upload/';
         $config['allowed_types'] = 'gif|jpg|png';//allowing only images
         $config['max_size']      = 1024;
         $this->load->library('upload', $config);
