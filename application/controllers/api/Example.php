@@ -121,6 +121,8 @@ class Example extends REST_Controller {
         $this->set_response($message, REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
     }
 
+
+    
     public function users_delete()
     {
         $id = (int) $this->get('id');

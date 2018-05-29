@@ -1592,7 +1592,9 @@ abstract class REST_Controller extends CI_Controller {
         // It might be a HTTP body
         if ($this->request->format)
         {
-            $this->request->body = $this->input->raw_input_stream;
+            //$this->request->body = $this->input->raw_input_stream;
+            $this->request->body = file_get_contents('php://input');
+
         }
         else if ($this->input->method() === 'patch')
         {
