@@ -1208,13 +1208,30 @@ class App extends REST_Controller {
 
 
 
-  public function merchant_feed_update_post(){
+  public function merchant_feed_put(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
 
+      $id = (int) $this->get('id');
+      if ($id <= 0)
+      {
+          // Invalid id, set the response and exit.
+          $data['status']  = 404;
+          $data['message'] = 'Id is invalid';
+          $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+          return false;
+      }
+
+      if($id == ""){
+        // Invalid id, set the response and exit.
+        $data['status']  = 404;
+        $data['message'] = 'Id can not be empty';
+        $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+        return false;
+      }
+
       $data= array('success'=> false, 'messages' => array());
 
-      $this->form_validation->set_rules('id', 'Feed ID', 'trim|required');
       $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
       $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
       $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
@@ -1246,7 +1263,7 @@ class App extends REST_Controller {
               //echo json_encode($success);
               $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
               //so run insertion since the validation for the form has been passed correctly
-              $data = $this->MyModel->update_merchant_feed($_POST['id'], $_POST, $_POST['email'], $img);
+              $data = $this->MyModel->update_merchant_feed($id, $_POST, $_POST['email'], $img);
             }
       }
       $this->response($data, REST_Controller::HTTP_OK);
