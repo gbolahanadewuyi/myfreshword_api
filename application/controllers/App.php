@@ -1150,7 +1150,7 @@ class App extends REST_Controller {
 
       $data= array('success'=> false, 'messages' => array());
 
-      $this->form_validation->set_rules('feed_title', 'Title', 'trim|requiredis_unique[merchant_feed.title]');
+      $this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
       $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
       $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
       $this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
