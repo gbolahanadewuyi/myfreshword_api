@@ -1299,6 +1299,34 @@ class MyModel extends CI_Model {
       return  $query = $this->db->select('*')->from('merchant_comment_thread')->where('merchant_feed_id',$id)->get()->result();
     }
 
+    public function get_merchant_feed_id($id){
+      $q  = $this->db->select()->from('merchant_feed')->where('id',$id)->limit(1)->get()->row();
+      if($q == ""){
+        return array('status'=>404, 'message'=>'feed row data does not exit');
+      }
+      return array('status'=>200, 'results'=>$q);
+    }
 
+    public function update_merchant_feed($id, $data, $email, $img){
+      $updateData = array(
+        'title'             => $data['feed_title'],
+        'message'           => $data['feed_message'],
+        'image'             => $img,
+        'merchantemail'     => $data['merchantemail'],
+        'timestamp'         => date('Y-m-d H:i:s')
+      );
+      $query = $this->db->where('id',$id)->where('merchantemail', $email)->update('merchant_feed',$updateData);
+      if($query == false){
+        return array('status'=>404, 'message'=> 'Error updating merchant post');
+      }
+      return array('status'=>201, 'message'=> 'Merchant feed post updated successfully');
+    }
 
+    public function delete_merchant_feed($id){
+    $query =   $this->db->where('id',$id)->delete('merchant_feed');
+      if($query == false){
+        return array('status'=>404, 'message'=> 'error deleting merchant feed');
+      }
+      return array('status'=>200, 'message'=>'feed post deleted successfully');
+    }
 }

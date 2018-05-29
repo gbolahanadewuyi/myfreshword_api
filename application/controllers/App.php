@@ -1150,7 +1150,7 @@ class App extends REST_Controller {
 
       $data= array('success'=> false, 'messages' => array());
 
-      $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
+      $this->form_validation->set_rules('feed_title', 'Title', 'trim|requiredis_unique[merchant_feed.title]');
       $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
       $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
       $this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
@@ -1193,6 +1193,80 @@ class App extends REST_Controller {
     }
   }
 
+  //so basically this gets the row data to dsiplay in the
+  public function merchant_feed_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $id = (int) $this->get('id');
+      $data = $this->MyModel->get_merchant_feed_id($id);
+      $this->response($data, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
+
+
+
+  public function merchant_feed_update_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+
+      $data= array('success'=> false, 'messages' => array());
+
+      $this->form_validation->set_rules('id', 'Feed ID', 'trim|required');
+      $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
+      $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
+      $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
+      $this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
+
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+      }
+      else{
+
+            $config['upload_path']   = './feed_upload/';
+            $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+            $config['max_size']      = 1024;
+            $this->load->library('upload', $config);
+
+            if ( ! $this->upload->do_upload('file')) {
+               $error = array('status'=>false, 'error' => $this->upload->display_errors());
+               //echo json_encode($error);
+               $this->response($error, REST_Controller::HTTP_OK);
+               return false;
+            }
+            else{
+
+              $data = $this->upload->data();
+              $success = ['status'=>true,'success'=>$data['file_name']];
+              //echo json_encode($success);
+              $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
+              //so run insertion since the validation for the form has been passed correctly
+              $data = $this->MyModel->update_merchant_feed($_POST['id'], $_POST, $_POST['email'], $img);
+            }
+      }
+      $this->response($data, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
+
+  public function merchant_feed_delete(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $id = (int) $this->get('id');
+      $data = $this->MyModel->delete_merchant_feed($id);
+      $this->response($data, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+    }
+  }
 
 
   // call back for checking file directly into one
@@ -1230,8 +1304,6 @@ public function merchant_news_feed_get(){
     $data['entries']  = $this->MyModel->count_merchant_feed($email);
     $data['likes']    = $this->MyModel->count_merchant_likes($response['id']);
     $data['comments'] = $this->MyModel->count_merchant_comments($response['id']);
-
-
     $this->response($data, REST_Controller::HTTP_OK);
   }
   else{
