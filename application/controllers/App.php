@@ -1208,27 +1208,27 @@ class App extends REST_Controller {
 
 
 
-  public function merchant_feed_put(){
+  public function merchant_feed_update_post(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
 
-      $id = (int) $this->get('id');
-      if ($id <= 0)
-      {
-          // Invalid id, set the response and exit.
-          $data['status']  = 404;
-          $data['message'] = 'Id is invalid';
-          $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-          return false;
-      }
-
-      if($id == ""){
-        // Invalid id, set the response and exit.
-        $data['status']  = 404;
-        $data['message'] = 'Id can not be empty';
-        $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-        return false;
-      }
+      // $id = (int) $this->get('id');
+      // if ($id <= 0)
+      // {
+      //     // Invalid id, set the response and exit.
+      //     $data['status']  = 404;
+      //     $data['message'] = 'Id is invalid';
+      //     $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+      //     return false;
+      // }
+      //
+      // if($id == ""){
+      //   // Invalid id, set the response and exit.
+      //   $data['status']  = 404;
+      //   $data['message'] = 'Id can not be empty';
+      //   $this->response($data, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+      //   return false;
+      // }
 
       $data= array('success'=> false, 'messages' => array());
 
