@@ -1287,7 +1287,7 @@ class App extends REST_Controller {
 
   public function update_file_check($str){
     if($_FILES['file']['name']==""){//so here we assume user decided to use the old file upload
-      return true
+      return true;
     }else{
       return $this->file_check($str);
     }
