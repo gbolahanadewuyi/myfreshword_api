@@ -1341,5 +1341,15 @@ public function merchant_news_feed_get(){
   }
 }
 
+public function merchant_search_feed_post(){
+  $response = $this->MyModel->merchant_auth();
+  if($response['status']==200){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $data['results'] = $this->MyModel->search_merchant_feed($_POST['search'], $_POST['email']);
+    $this->response($data, REST_Controller::HTTP_OK);
+  }else{
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+  }
+}
 
 }//end of class

@@ -1340,4 +1340,18 @@ class MyModel extends CI_Model {
       }
       return array('status'=>200, 'message'=>'feed post deleted successfully');
     }
+
+    public function search_merchant_feed($search_term, $email){
+      $this->db->select('*');
+      $this->db->from('merchant_feed');
+      $this->db->like('title', $search_term);
+      $this->db->where('merchantemail', $email);
+      $query = $this->db->get();
+      $res=$query->result();//so basically we are going to return an array of the results
+       if(count($res) > 0){
+         return $res;
+       }else{
+         return array('status'=>404, 'message'=>'No news post feed with that title');
+       }
+    }
 }
