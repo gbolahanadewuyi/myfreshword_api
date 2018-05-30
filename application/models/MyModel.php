@@ -1258,8 +1258,8 @@ class MyModel extends CI_Model {
       return $q->num_rows();
     }
 
-    public function get_merchant_feed_data($limit, $start, $email){
-      $this->db->limit($limit, $start);
+    public function get_merchant_feed_data($email){
+      //$this->db->limit($limit, $start);
       $query = $this->db->where('merchantemail', $email)->order_by('id','desc')->get("merchant_feed");
 
       if ($query->num_rows() > 0) {

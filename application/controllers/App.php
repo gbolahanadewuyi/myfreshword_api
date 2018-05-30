@@ -1329,7 +1329,8 @@ public function merchant_news_feed_get(){
     $config["uri_segment"] = 3;
     $this->pagination->initialize($config);
     $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-    $data["results"]  = $this->MyModel->get_merchant_feed_data($config["per_page"], $page, $email);
+    
+    $data["results"]  = $this->MyModel->get_merchant_feed_data($email);//here we need to take the pagination out for the time
     $data["links"]    = $this->pagination->create_links();
     $data['entries']  = $this->MyModel->count_merchant_feed($email);
     $data['likes']    = $this->MyModel->count_merchant_likes($response['id']);
