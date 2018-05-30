@@ -1244,27 +1244,33 @@ class App extends REST_Controller {
           }
       }
       else{
+              if(($_FILES['file']['name']==""){
+                $img = "";
+                $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
+                $this->response($data, REST_Controller::HTTP_OK);
+                return false;//script will end here
+              }
+              
+              $config['upload_path']   = './feed_upload/';
+              $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+              $config['max_size']      = 1024;
+              $this->load->library('upload', $config);
 
-            $config['upload_path']   = './feed_upload/';
-            $config['allowed_types'] = 'gif|jpg|png';//allowing only images
-            $config['max_size']      = 1024;
-            $this->load->library('upload', $config);
+              if ( ! $this->upload->do_upload('file')) {
+                 $error = array('status'=>false, 'error' => $this->upload->display_errors());
+                 //echo json_encode($error);
+                 $this->response($error, REST_Controller::HTTP_OK);
+                 return false;
+              }
+              else{
 
-            if ( ! $this->upload->do_upload('file')) {
-               $error = array('status'=>false, 'error' => $this->upload->display_errors());
-               //echo json_encode($error);
-               $this->response($error, REST_Controller::HTTP_OK);
-               return false;
-            }
-            else{
-
-              $data = $this->upload->data();
-              $success = ['status'=>true,'success'=>$data['file_name']];
-              //echo json_encode($success);
-              $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
-              //so run insertion since the validation for the form has been passed correctly
-              $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
-            }
+                $data = $this->upload->data();
+                $success = ['status'=>true,'success'=>$data['file_name']];
+                //echo json_encode($success);
+                $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
+                //so run insertion since the validation for the form has been passed correctly
+                $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
+              }
       }
       $this->response($data, REST_Controller::HTTP_OK);
     }
