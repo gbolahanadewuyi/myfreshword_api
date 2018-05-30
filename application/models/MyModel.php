@@ -1346,7 +1346,7 @@ class MyModel extends CI_Model {
       $this->db->from('merchant_feed');
       $this->db->like('title', $search_term);
       $this->db->where('merchantemail', $email);
-      $this->dbb->->order_by('id','desc');
+      $this->db->order_by('id','desc');
       $query = $this->db->get();
       $res=$query->result();//so basically we are going to return an array of the results
        if(count($res) > 0){
