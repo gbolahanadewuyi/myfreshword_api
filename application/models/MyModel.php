@@ -1308,13 +1308,24 @@ class MyModel extends CI_Model {
     }
 
     public function update_merchant_feed($id, $data, $email, $img){
-      $updateData = array(
-        'title'             => $data['feed_title'],
-        'message'           => $data['feed_message'],
-        'image'             => $img,
-        'merchantemail'     => $data['merchantemail'],
-        'timestamp'         => date('Y-m-d H:i:s')
-      );
+      if($img == ""){
+        $updateData = array(
+          'title'             => $data['feed_title'],
+          'message'           => $data['feed_message'],
+          //'image'             => $img,
+          'merchantemail'     => $data['merchantemail'],
+          'timestamp'         => date('Y-m-d H:i:s')
+        );
+      }else{
+        $updateData = array(
+          'title'             => $data['feed_title'],
+          'message'           => $data['feed_message'],
+          'image'             => $img,
+          'merchantemail'     => $data['merchantemail'],
+          'timestamp'         => date('Y-m-d H:i:s')
+        );
+      }
+
       $query = $this->db->where('id',$id)->where('merchantemail', $email)->update('merchant_feed',$updateData);
       if($query == false){
         return array('status'=>404, 'message'=> 'Error updating merchant post');
