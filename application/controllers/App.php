@@ -1263,7 +1263,7 @@ class App extends REST_Controller {
               //echo json_encode($success);
               $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
               //so run insertion since the validation for the form has been passed correctly
-              $data = $this->MyModel->update_merchant_feed($id, $_POST, $_POST['email'], $img);
+              $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
             }
       }
       $this->response($data, REST_Controller::HTTP_OK);
