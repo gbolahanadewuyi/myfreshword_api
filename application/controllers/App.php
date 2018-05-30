@@ -1244,13 +1244,13 @@ class App extends REST_Controller {
           }
       }
       else{
-              if(($_FILES['file']['name']==""){
-                $img = "";
+              if($_FILES['file']['name']=="" ){
+                $img = '';
                 $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
                 $this->response($data, REST_Controller::HTTP_OK);
                 return false;//script will end here
               }
-              
+
               $config['upload_path']   = './feed_upload/';
               $config['allowed_types'] = 'gif|jpg|png';//allowing only images
               $config['max_size']      = 1024;
