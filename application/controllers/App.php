@@ -1329,7 +1329,7 @@ public function merchant_news_feed_get(){
     $config["uri_segment"] = 3;
     $this->pagination->initialize($config);
     $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-    
+
     $data["results"]  = $this->MyModel->get_merchant_feed_data($email);//here we need to take the pagination out for the time
     $data["links"]    = $this->pagination->create_links();
     $data['entries']  = $this->MyModel->count_merchant_feed($email);
@@ -1350,6 +1350,65 @@ public function merchant_search_feed_post(){
     $this->response($data, REST_Controller::HTTP_OK);
   }else{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+  }
+}
+
+
+public function merchant_update_profile_post(){
+  $response = $this->MyModel->merchant_auth();
+  if($response['status']==200){
+
+    $data= array('success'=> false, 'messages' => array());
+
+    $this->form_validation->set_rules('organisation', 'Organisation ', 'trim|required|is_unique[merchant_feed.title]');
+    $this->form_validation->set_rules('merchant_name', 'Merchant Name', 'trim|required');
+    $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
+    $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
+    $this->form_validation->set_rules('Email', 'Email', 'trim|required');
+    $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_rules('facebook', 'Facebook', 'trim|required');
+    $this->form_validation->set_rules('twitter', 'Twitter', 'trim|required');
+    $this->form_validation->set_rules('youtube', 'Youtube', 'trim|required');
+    $this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
+    $this->form_validation->set_rules('org_address', 'Address', 'trim|required');
+    $this->form_validation->set_rules('org_country', 'Country', 'trim|required');
+    $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_file_check');
+
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+            $data['messages'][$key] = form_error($key);
+        }
+    }
+    else{
+
+        //this is where i upload the image for the merchant feed
+        $config['upload_path']   = './profile_photos/';
+        $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+        $config['max_size']      = 1024;
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('merchant_display_picture')) {
+           $error = array('status'=>false, 'error' => $this->upload->display_errors());
+           //echo json_encode($error);
+           $this->response($error, REST_Controller::HTTP_OK);
+           return false;
+        }
+        else{
+
+          $data = $this->upload->data();
+          $success = ['status'=>true,'success'=>$data['file_name']];
+          //echo json_encode($success);
+          $img =   'http://myfreshword.com/myfreshword/api/profile_photos/'.$data['file_name'];
+
+          //so run insertion since the validation for the form has been passed correctly
+          $data = $this->MyModel->update_merchant_profile($_POST,$img);
+        }
+    }
+    $this->response($data, REST_Controller::HTTP_OK);
+  }else{
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 }
 

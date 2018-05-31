@@ -1355,4 +1355,60 @@ class MyModel extends CI_Model {
          return array('status'=>404, 'message'=>'No news post feed with that title');
        }
     }
+
+    public function update_merchant_profile($updateData, $img){
+
+      $result = $this->check_password($updateData['password']);
+      if($result == false){
+        $data = array(
+          'first_name'      => $updateData['first_name'],
+          'last_name'       => $updateData['last_name'],
+          'email'           => $updateData['email'],
+          'mobile'          => $updateData['mobile'],
+          //'password'        => $updateData['password'],//hashing password
+          'organisation'    => $updateData['organisation'],
+          'location'        => $updateData['location'],
+          'merchant_name'   => $updateData['merchant_name'],
+          'address'         => $updateData['org_address'],
+          'country'         => $updateData['org_country'],
+          'facebook'        => $updateData['facebook'],
+          'twitter'         => $updateData['twitter'],
+          'youtube'         => $updateData['youtube'],
+          'display_image'   => $img
+        );
+      }
+      else{
+        $data = array(
+          'first_name'      => $updateData['first_name'],
+          'last_name'       => $updateData['last_name'],
+          'email'           => $updateData['email'],
+          'mobile'          => $updateData['mobile'],
+          'password'        => $result,//hashing password
+          'organisation'    => $updateData['organisation'],
+          'location'        => $updateData['location'],
+          'merchant_name'   => $updateData['merchant_name'],
+          'address'         => $updateData['org_address'],
+          'country'         => $updateData['org_country'],
+          'facebook'        => $updateData['facebook'],
+          'twitter'         => $updateData['twitter'],
+          'youtube'         => $updateData['youtube'],
+          'display_image'   => $img
+        );
+      }
+
+      
+      $query  = $this->db->where('id',$updateData['id'])->update('ts_merchant',$data);
+      if($query == true ){
+        return array('status'=>201, 'message'=> 'Merchant profile updated successfully');
+      }
+      return array('status'=>404, 'message'=>'Error updating merchant profile');
+
+    }
+
+    public function check_password($str){
+      if($str != "********"){//chars 8
+        return hash('sha256', $str);
+      }
+      return false;
+    }
 }
