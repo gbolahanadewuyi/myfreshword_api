@@ -1301,10 +1301,9 @@ class App extends REST_Controller {
 
   // call back for checking file directly into one
   public function file_check($str){
-
       $allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
-      $mime = get_mime_by_extension($_FILES[$str]['name']);
-      if(isset($_FILES[$str]['name']) && $_FILES[$str]['name']!=""){
+      $mime = get_mime_by_extension($_FILES['file']['name']);
+      if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
           if(in_array($mime, $allowed_mime_type_arr)){
               return true;
           }else{
@@ -1376,7 +1375,7 @@ public function merchant_update_profile_post(){
     $this->form_validation->set_rules('org_address', 'Address', 'trim|required');
     $this->form_validation->set_rules('org_country', 'Country', 'trim|required');
     $this->form_validation->set_rules('location', 'Location', 'trim|required');
-    $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_file_check');
+    $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
     if ($this->form_validation->run() === FALSE){
@@ -1415,6 +1414,20 @@ public function merchant_update_profile_post(){
   }
 }
 
-
+public function merchant_profile_check($str){
+    $allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
+    $mime = get_mime_by_extension($_FILES['merchant_display_picture']['name']);
+    if(isset($_FILES['merchant_display_picture']['name']) && $_FILES['merchant_display_picture']['name']!=""){
+        if(in_array($mime, $allowed_mime_type_arr)){
+            return true;
+        }else{
+            $this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
+            return false;
+        }
+    }else{
+        $this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+        return false;
+    }
+}
 
 }//end of class
