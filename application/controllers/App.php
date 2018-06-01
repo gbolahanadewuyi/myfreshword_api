@@ -1365,7 +1365,7 @@ public function merchant_update_profile_post(){
     $this->form_validation->set_rules('merchant_name', 'Merchant Name', 'trim|required');
     $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
     $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
-    $this->form_validation->set_rules('Email', 'Email', 'trim|required');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required');
     $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
     $this->form_validation->set_rules('password', 'Password', 'trim|required');
     $this->form_validation->set_rules('facebook', 'Facebook', 'trim|required');
@@ -1391,22 +1391,24 @@ public function merchant_update_profile_post(){
         $config['max_size']      = 1024;
         $this->load->library('upload', $config);
 
-        if ( ! $this->upload->do_upload('merchant_display_picture')) {
-           $error = array('status'=>false, 'error' => $this->upload->display_errors());
-           //echo json_encode($error);
-           $this->response($error, REST_Controller::HTTP_OK);
-           return false;
-        }
-        else{
+            if ( ! $this->upload->do_upload('merchant_display_picture')) {
+               $error = array('status'=>false, 'error' => $this->upload->display_errors());
+               //echo json_encode($error);
+               $this->response($error, REST_Controller::HTTP_OK);
+               return false;
+            }
+            else{
 
-          $data = $this->upload->data();
-          $success = ['status'=>true,'success'=>$data['file_name']];
-          //echo json_encode($success);
-          $img =   'http://myfreshword.com/myfreshword/api/profile_photos/'.$data['file_name'];
+              $data = $this->upload->data();
+              $success = ['status'=>true,'success'=>$data['file_name']];
+              //echo json_encode($success);
+              $img =   'http://myfreshword.com/myfreshword/api/profile_photos/'.$data['file_name'];
 
-          //so run insertion since the validation for the form has been passed correctly
-          $data = $this->MyModel->update_merchant_profile($_POST,$img);
-        }
+              //so run insertion since the validation for the form has been passed correctly
+              $data = $this->MyModel->update_merchant_profile($_POST,$img);
+              $this->response($data, REST_Controller::HTTP_OK);
+              return false;
+            }
     }
     $this->response($data, REST_Controller::HTTP_OK);
   }else{
