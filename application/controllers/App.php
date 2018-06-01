@@ -1355,6 +1355,7 @@ public function merchant_search_feed_post(){
 
 
 public function merchant_update_profile_post(){
+
   $response = $this->MyModel->merchant_auth();
   if($response['status']==200){
 
