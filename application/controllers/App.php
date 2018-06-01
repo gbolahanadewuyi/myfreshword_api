@@ -1421,11 +1421,11 @@ public function merchant_profile_check($str){
         if(in_array($mime, $allowed_mime_type_arr)){
             return true;
         }else{
-            $this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
+            $this->form_validation->set_message('merchant_profile_check', 'Please select only jpeg/jpg/png file.');
             return false;
         }
     }else{
-        $this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+        $this->form_validation->set_message('merchant_profile_check', 'Please choose a file to upload.');
         return false;
     }
 }
