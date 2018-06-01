@@ -1360,6 +1360,7 @@ class MyModel extends CI_Model {
 
       $result = $this->check_password($updateData['password']);
       if($result == false){
+
         $data = array(
           'first_name'      => $updateData['first_name'],
           'last_name'       => $updateData['last_name'],
@@ -1377,7 +1378,9 @@ class MyModel extends CI_Model {
           'display_image'   => $img
         );
       }
+      
       else{
+
         $data = array(
           'first_name'      => $updateData['first_name'],
           'last_name'       => $updateData['last_name'],
@@ -1394,9 +1397,10 @@ class MyModel extends CI_Model {
           'youtube'         => $updateData['youtube'],
           'display_image'   => $img
         );
+
       }
 
-      
+
       $query  = $this->db->where('id',$updateData['id'])->update('ts_merchant',$data);
       if($query == true ){
         return array('status'=>201, 'message'=> 'Merchant profile updated successfully');
