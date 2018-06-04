@@ -1378,7 +1378,7 @@ class MyModel extends CI_Model {
           'display_image'   => $img
         );
       }
-      
+
       else{
 
         $data = array(
@@ -1415,4 +1415,7 @@ class MyModel extends CI_Model {
       }
       return false;
     }
-}
+
+
+
+}//end of class

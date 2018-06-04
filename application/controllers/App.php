@@ -1427,9 +1427,10 @@ public function merchant_profile_check($str){
             return false;
         }
     }else{
-        $this->form_validation->set_message('merchant_profile_check', 'Please choose a file to upload.');
-        return false;
+        //$this->form_validation->set_message('merchant_profile_check', 'Please choose a file to upload.');
+        return true;
     }
 }
+
 
 }//end of class
