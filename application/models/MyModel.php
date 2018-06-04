@@ -1417,5 +1417,12 @@ class MyModel extends CI_Model {
     }
 
 
-
+    function photo_check($id){
+      $query = $this->db->select('display_image')->where('id', $id)->from('ts_merchant')->get()->row()
+      if($query ==""){
+        return $img = 'http://www.top-madagascar.com/assets/images/admin/user-admin.png';
+      }else{
+        return $query->display_image;
+      }
+    }
 }//end of class

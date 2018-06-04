@@ -1384,9 +1384,10 @@ public function merchant_update_profile_post(){
         }
     }
     else{
-      
+
         if($_FILES['merchant_display_picture']['name']==""){
-          $img = "http://www.top-madagascar.com/assets/images/admin/user-admin.png";
+          $q = $this->MyModel->photo_check($_POST['id']);
+          $img = $q;
           $data = $this->MyModel->update_merchant_profile($_POST,$img);
           $this->response($data, REST_Controller::HTTP_OK);
           return false;
