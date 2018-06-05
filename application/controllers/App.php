@@ -2,7 +2,7 @@
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 require_once APPPATH . '/libraries/JWT.php';
-//require_once APPPATH . '/libraries/HubtelApi.php';
+require_once APPPATH . '/libraries/HubtelApi.php';
 
 use \Firebase\JWT\JWT;
 
@@ -13,7 +13,7 @@ class App extends REST_Controller {
       parent::__construct();
       $this->load->model('MyModel');
       $this->load->model('MerchantProductModel');
-      $this->load->library('HubtelApi');
+      //$this->load->library('HubtelApi');
   }
 
   public function isLoggedin_post(){
@@ -1463,6 +1463,7 @@ function merchant_momo_add_post(){
         'network'     => $_POST['network'],
         'mobile'      => $_POST['mobile']
       );
+
       $data =  $this->HubtelApi->save_momo_code($momoData);
 
       if($data['status'] ==201){
