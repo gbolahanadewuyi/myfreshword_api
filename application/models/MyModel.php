@@ -1443,7 +1443,7 @@ class MyModel extends CI_Model {
         'mobile'      => $data_['mobile'],
         'code'        => $this->generate_short_code_(4)
       );
-      $query = $this->CI->db->insert('merchant_momo', $data);
+      $query = $this->db->insert('merchant_momo', $data);
       if($query == true){
         $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
         return array('status'=>201, 'message'=> 'Merchant momo account created');
@@ -1454,7 +1454,7 @@ class MyModel extends CI_Model {
 
 
     function avoid_momo_duplicates($id){
-      $query = $this->CI->db->select()->from('merchant_momo')->where('merchant_id',$id)->limit(1)->get()->row();
+      $query = $this->db->select()->from('merchant_momo')->where('merchant_id',$id)->limit(1)->get()->row();
       if($query == ""){
         return false;
       }
