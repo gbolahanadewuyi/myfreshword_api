@@ -1490,9 +1490,9 @@ class MyModel extends CI_Model {
           curl_close($curl);
 
           if ($err) {
-              return "cURL Error #:" . $err;
+              return "cURL Error #:" . json_decode($err);
           } else {
-             return $response;
+             return json_decode($response);
         }
     }
 
