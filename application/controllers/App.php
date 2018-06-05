@@ -2,7 +2,7 @@
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 require_once APPPATH . '/libraries/JWT.php';
-require_once APPPATH . '/libraries/HubtelApi.php';
+//require_once APPPATH . '/libraries/HubtelApi.php';
 
 use \Firebase\JWT\JWT;
 
