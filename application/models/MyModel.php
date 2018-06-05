@@ -1445,8 +1445,8 @@ class MyModel extends CI_Model {
       );
       $query = $this->db->insert('merchant_momo', $data);
       if($query == true){
-        $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
-        return array('status'=>201, 'message'=> 'Merchant momo account created');
+        $q = $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
+        return array('status'=>201, 'message'=> 'Merchant momo account created', 'smsStatus'=>$q);
       }
       return array('status'=>204, 'message'=> 'Error adding merchant momo number');
     }
@@ -1463,7 +1463,7 @@ class MyModel extends CI_Model {
 
 
     function merchant_momo_message_content($pin){
-      return "Mobile money confirmation code: " .$pin;
+      return "Merchant mobile money confirmation code: " .$pin;
     }
 
 
