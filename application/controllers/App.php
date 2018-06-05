@@ -1464,7 +1464,7 @@ function merchant_momo_add_post(){
         'mobile'      => $_POST['mobile']
       );
 
-      $data =  $this->hubtelApi->save_momo_code($momoData);
+      $data =  $this->MyModel->save_momo_code($momoData);
 
       if($data['status'] ==201){
         $this->response($data, REST_Controller::HTTP_CREATED);

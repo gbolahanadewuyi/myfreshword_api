@@ -1,6 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 Class HubtelApi {
+
+  
   protected $CI;
   protected $client_id = "dgsfkiil";
   protected $client_secret = "czywtkzd";
@@ -41,7 +43,7 @@ Class HubtelApi {
     return array('status'=>204, 'message'=> 'Error adding merchant momo number');
   }
 
-  
+
 
   function avoid_momo_duplicates($id){
     $query = $this->CI->db->select()->from('merchant_momo')->where('merchant_id',$id)->limit(1)->get()->row();
