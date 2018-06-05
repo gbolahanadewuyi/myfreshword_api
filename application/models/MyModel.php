@@ -1425,4 +1425,7 @@ class MyModel extends CI_Model {
         return $query->display_image;
       }
     }
+
+
+    
 }//end of class

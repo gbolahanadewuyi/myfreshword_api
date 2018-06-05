@@ -2,6 +2,8 @@
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 require_once APPPATH . '/libraries/JWT.php';
+require_once APPPATH . '/libraries/HubtelApi.php';
+
 use \Firebase\JWT\JWT;
 
 class App extends REST_Controller {
@@ -11,7 +13,7 @@ class App extends REST_Controller {
       parent::__construct();
       $this->load->model('MyModel');
       $this->load->model('MerchantProductModel');
-
+      $this->load->library('HubtelApi');
   }
 
   public function isLoggedin_post(){
@@ -1439,6 +1441,18 @@ public function merchant_profile_check($str){
         //$this->form_validation->set_message('merchant_profile_check', 'Please choose a file to upload.');
         return true;
     }
+}
+
+
+function merchant_momo_add_post(){
+  $response = $this->MyModel->merchant_auth();
+  if($response['status']==200){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+  }
+  else{
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+  }
 }
 
 
