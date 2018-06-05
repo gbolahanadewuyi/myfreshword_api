@@ -41,6 +41,8 @@ Class HubtelApi {
     return array('status'=>204, 'message'=> 'Error adding merchant momo number');
   }
 
+  
+
   function avoid_momo_duplicates($id){
     $query = $this->CI->db->select()->from('merchant_momo')->where('merchant_id',$id)->limit(1)->get()->row();
     if($query == ""){
