@@ -1475,7 +1475,7 @@ function merchant_momo_add_post(){
         return false;
       }
     }
-
+    $this->response($data, REST_Controller::HTTP_OK);
   }
   else{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
