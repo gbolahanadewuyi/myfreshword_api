@@ -48,7 +48,7 @@ Class Merchant extends REST_Controller{
   }
 
 
-  function ghBanks_post(){
+  function ghBanks_get(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
         $q = $this->pay->get_ghBanks();
