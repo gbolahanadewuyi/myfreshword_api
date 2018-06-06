@@ -5,7 +5,7 @@ Class PayModel extends CI_Model {
 
   protected $momoTable = "merchant_momo";
   protected $bankTable = "merchant_bank";
-  protected $ghBanks   =  "ghBanks";
+  protected $ghBank    =  "ghBanks";
   function __construct(){
     parent:: __construct();
   }
