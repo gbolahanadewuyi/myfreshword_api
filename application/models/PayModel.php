@@ -5,7 +5,7 @@ Class PayModel extends CI_Model {
 
   protected $momoTable = "merchant_momo";
   protected $bankTable = "merchant_bank";
-
+  protected $ghBanks   =  "ghBanks";
   function __construct(){
     parent:: __construct();
   }
@@ -39,5 +39,8 @@ Class PayModel extends CI_Model {
     return array('status'=>400, 'message'=> 'Error setting bank account as default payment channel');
   }
 
+  function get_ghBanks(){
+    return $query = $this->db->select('*')->from($this->ghBank)->get()->result();
+  }
 
 }
