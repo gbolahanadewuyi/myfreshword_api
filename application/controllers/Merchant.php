@@ -82,7 +82,7 @@ Class Merchant extends REST_Controller{
         'swiftCode'             =>    $_POST['swiftCode'],
         'merchant_id'           =>    $response['id']
       );
-      $q = $this->pay->add_Bank_details($response['id'], $_POST);
+      $q = $this->pay->add_Bank_details($response['id'], $pData);
       $this->response($q, REST_Controller::HTTP_OK);
       return false;
     }
