@@ -57,4 +57,59 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+
+  function addBankChannel_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('bankName', 'Bank Name', 'trim|required');
+      $this->form_validation->set_rules('accountName', 'Account Name', 'trim|required');
+      $this->form_validation->set_rules('accountNumber', 'Account Number', 'trim|required');
+      $this->form_validation->set_rules('swiftCode', 'Swift Code / BAC', 'trim|required');
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+          $this->response($data, REST_Controller::HTTP_OK);
+          return false;
+      }
+      $pData = array(
+        'bankName'      =>    $_POST['bankName'],
+        'accountName'   =>    $_POST['accountName'],
+        'accountNumber' =>    $_POST['accountNumber'],
+        'swiftCode'     =>    $_POST['swiftCode'],
+        'merchant_id'   =>    $response['id']
+      );
+      $q = $this->pay->add_Bank_details($response['id'], $_POST);
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  function addMomoChannel_post(){
+
+  }
+
+  function defaultPayChannel_post(){
+
+  }
+
+  //this should be part of the data  that has to be run
+  function defaultPaychannel_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $q = $this->pay->getMerchantDefault($response['id']);
+      if($q['status'] == 200){
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_NOT_FOUND);
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+
 }//end of class
