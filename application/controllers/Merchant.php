@@ -76,11 +76,11 @@ Class Merchant extends REST_Controller{
           return false;
       }
       $pData = array(
-        'bankName'      =>    $_POST['bankName'],
-        'accountName'   =>    $_POST['accountName'],
-        'accountNumber' =>    $_POST['accountNumber'],
-        'swiftCode'     =>    $_POST['swiftCode'],
-        'merchant_id'   =>    $response['id']
+        'bankName'              =>    $_POST['bankName'],
+        'bankAccountName'       =>    $_POST['accountName'],
+        'bankAccountNumber'     =>    $_POST['accountNumber'],
+        'swiftCode'             =>    $_POST['swiftCode'],
+        'merchant_id'           =>    $response['id']
       );
       $q = $this->pay->add_Bank_details($response['id'], $_POST);
       $this->response($q, REST_Controller::HTTP_OK);
