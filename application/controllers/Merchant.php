@@ -191,4 +191,134 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+
+  function setAppNotify_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      if($id == 0){
+        $q = $this->notify->setNotificationApp($response['id'], $id);
+        if($q['status']==201){
+          $mess = array('status'=>201, 'message'=>'Notification disabled successfully');
+          $this->response($mess, REST_Controller::HTTP_CREATED);
+          return false;
+        }
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $q = $this->notify->setNotificationApp($response['id'], $id);
+      if($q['status']==201){
+        $mess = array('status'=>201, 'message'=>'Notification enabled successfully');
+        $this->response($mess, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  function setEmailNotify_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      if($id == 0){
+        $q = $this->notify->setNotificationEmail($response['id'], $id);
+        if($q['status']==201){
+          $mess = array('status'=>201, 'message'=>'Notification disabled successfully');
+          $this->response($mess, REST_Controller::HTTP_CREATED);
+          return false;
+        }
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $q = $this->notify->setNotificationEmail($response['id'], $id);
+      if($q['status']==201){
+        $mess = array('status'=>201, 'message'=>'Notification enabled successfully');
+        $this->response($mess, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  function setPushNotify_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      if($id == 0){
+        $q = $this->notify->setPushNotification($response['id'], $id);
+        if($q['status']==201){
+          $mess = array('status'=>201, 'message'=>'Notification disabled successfully');
+          $this->response($mess, REST_Controller::HTTP_CREATED);
+          return false;
+        }
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $q = $this->notify->setPushNotification($response['id'], $id);
+      if($q['status']==201){
+        $mess = array('status'=>201, 'message'=>'Notification enabled successfully');
+        $this->response($mess, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  function setPurchaseNotify_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      if($id == 0){
+        $q = $this->notify->setPurchaseNotification($response['id'], $id);
+        if($q['status']==201){
+          $mess = array('status'=>201, 'message'=>'Notification disabled successfully');
+          $this->response($mess, REST_Controller::HTTP_CREATED);
+          return false;
+        }
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $q = $this->notify->setPurchaseNotification($response['id'], $id);
+      if($q['status']==201){
+        $mess = array('status'=>201, 'message'=>'Notification enabled successfully');
+        $this->response($mess, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  function setCommentNotify_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      if($id == 0){
+        $q = $this->notify->setCommentNotification($response['id'], $id);
+        if($q['status']==201){
+          $mess = array('status'=>201, 'message'=>'Notification disabled successfully');
+          $this->response($mess, REST_Controller::HTTP_CREATED);
+          return false;
+        }
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $q = $this->notify->setCommentNotification($response['id'], $id);
+      if($q['status']==201){
+        $mess = array('status'=>201, 'message'=>'Notification enabled successfully');
+        $this->response($mess, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_OK);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
 }//end of class

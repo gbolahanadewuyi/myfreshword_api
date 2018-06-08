@@ -40,17 +40,17 @@ Class NotificationModel extends CI_Model{
      return array('status'=>true, 'res'=>$q);
    }
 
-   function setNotificationEmail($id){
+   function setNotificationEmail($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->emailNotify=>$this->true);
+       $data = array($this->emailNotify=>$status);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Email notification enabled');
         }
         return array('status'=>404, 'message'=> 'Error enabling email notification');
      }
-     $data = array($this->emailNotify=>$this->true);
+     $data = array($this->emailNotify=>$status);
      $c = $this->db->where('merchant_id', $id)->update($this->notifyTable,$data);
      if($c == false){
        return array('status'=>404, 'message'=>'Error enabling  email notification');
@@ -59,17 +59,17 @@ Class NotificationModel extends CI_Model{
    }
 
 
-   function setNotificationApp($id){
+   function setNotificationApp($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->appNotify=>$this->true);
+       $data = array($this->appNotify=>$status);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'myFreshWord notification enabled');
         }
         return array('status'=>404, 'message'=> 'Error enabling myFreshWord notification');
      }
-     $data = array($this->appNotify=>$this->true);
+     $data = array($this->appNotify=>$status);
      $c = $this->db->where('merchant_id', $id)->update($this->notifyTable,$data);
      if($c == false){
        return array('status'=>404, 'message'=>'Error enabling  myFreshWord notification');
@@ -77,17 +77,17 @@ Class NotificationModel extends CI_Model{
      return array('status'=>201, 'message'=> 'myFreshWord Notificaton successfully notified');
    }
 
-   function setPushNotification($id){
+   function setPushNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->pushNotify=>$this->true);
+       $data = array($this->pushNotify=>$status);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Push notification enabled');
         }
         return array('status'=>404, 'message'=> 'Error enabling push notification');
      }
-     $data = array($this->pushNotify=>$this->true);
+     $data = array($this->pushNotify=>$status);
      $c = $this->db->where('merchant_id', $id)->update($this->notifyTable,$data);
      if($c == false){
        return array('status'=>404, 'message'=>'Error enabling  push notification');
@@ -95,17 +95,17 @@ Class NotificationModel extends CI_Model{
      return array('status'=>201, 'message'=> 'Push Notificaton successfully notified');
    }
 
-   function setPurchaseNotification(){
+   function setPurchaseNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->purchaseNotify=>$this->true);
+       $data = array($this->purchaseNotify=>$status);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Purchase notification enabled');
         }
         return array('status'=>404, 'message'=> 'Error enabling purchase notification');
      }
-     $data = array($this->purchaseNotify=>$this->true);
+     $data = array($this->purchaseNotify=>$status);
      $c = $this->db->where('merchant_id', $id)->update($this->notifyTable,$data);
      if($c == false){
        return array('status'=>404, 'message'=>'Error enabling  purchase notification');
@@ -113,23 +113,22 @@ Class NotificationModel extends CI_Model{
      return array('status'=>201, 'message'=> 'Purchase Notificaton successfully notified');
    }
 
-   function setCommentNotification(){
+   function setCommentNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->commentNotify=>$this->true);
+       $data = array($this->commentNotify=>$status);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Comment notification enabled');
         }
         return array('status'=>404, 'message'=> 'Error enabling comment notification');
      }
-     $data = array($this->commentNotify=>$this->true);
+     $data = array($this->commentNotify=>$status);
      $c = $this->db->where('merchant_id', $id)->update($this->notifyTable,$data);
      if($c == false){
        return array('status'=>404, 'message'=>'Error enabling  comment notification');
      }
      return array('status'=>201, 'message'=> 'Comment Notificaton successfully notified');
    }
-
 
 }
