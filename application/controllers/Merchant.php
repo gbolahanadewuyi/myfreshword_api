@@ -181,8 +181,8 @@ Class Merchant extends REST_Controller{
     if($response['status']==200){
       $q = $this->notify->getNotificationStatus($response['id']);
       if($q == false){
-        $message = array('status'=> 404, 'message'=> 'all notifications are turned off');
-        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+        $message = array('status'=> 204, 'message'=> 'all notifications are turned off');
+        $this->response($message, REST_Controller::HTTP_NO_CONTENT);
         return false;
       }
       $this->response($q, REST_Controller::HTTP_Ok);
