@@ -185,7 +185,7 @@ Class Merchant extends REST_Controller{
         $this->response($message, REST_Controller::HTTP_NO_CONTENT);
         return false;
       }
-      $this->response($q, REST_Controller::HTTP_Ok);
+      $this->response($q, REST_Controller::HTTP_OK);
       return false;
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
