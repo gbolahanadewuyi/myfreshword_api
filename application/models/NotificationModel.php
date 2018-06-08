@@ -43,7 +43,7 @@ Class NotificationModel extends CI_Model{
    function setNotificationEmail($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->emailNotify=>$status);
+       $data = array($this->emailNotify=>$status, 'merchant_id'=>$id);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Email notification enabled');
@@ -62,7 +62,7 @@ Class NotificationModel extends CI_Model{
    function setNotificationApp($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->appNotify=>$status);
+       $data = array($this->appNotify=>$status, 'merchant_id'=>$id);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'myFreshWord notification enabled');
@@ -80,7 +80,7 @@ Class NotificationModel extends CI_Model{
    function setPushNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->pushNotify=>$status);
+       $data = array($this->pushNotify=>$status, 'merchant_id'=>$id);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Push notification enabled');
@@ -98,7 +98,7 @@ Class NotificationModel extends CI_Model{
    function setPurchaseNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->purchaseNotify=>$status);
+       $data = array($this->purchaseNotify=>$status, 'merchant_id'=>$id);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Purchase notification enabled');
@@ -116,7 +116,7 @@ Class NotificationModel extends CI_Model{
    function setCommentNotification($id, $status){
      $a = $this->getNotificationStatus($id);
      if($a == false){
-       $data = array($this->commentNotify=>$status);
+       $data = array($this->commentNotify=>$status, 'merchant_id'=>$id);
        $q = $this->db->insert($this->notifyTable, $data);
        if($q == true){
          return array('status'=>201, 'message'=> 'Comment notification enabled');
