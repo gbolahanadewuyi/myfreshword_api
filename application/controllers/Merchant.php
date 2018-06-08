@@ -160,6 +160,20 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+  function momoDetails_delete(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $q = $this->pay->deleteMomData($response['id']);
+      if($q['status'] == 202){
+        $this->response($q, REST_Controller::HTTP_ACCEPTED);
+        return false;
+      }
+      $this->response($q,REST_Controller::HTTP_NOT_FOUND);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
   //this should be part of the data  that has to be run
   function defaultPaychannel_get(){
     $response = $this->MyModel->merchant_auth();
@@ -321,4 +335,6 @@ Class Merchant extends REST_Controller{
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
+
+
 }//end of class

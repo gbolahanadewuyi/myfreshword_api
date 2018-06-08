@@ -1442,12 +1442,27 @@ class MyModel extends CI_Model {
         'mobile'      => $data_['mobile'],
         'code'        => $this->generate_short_code_(4)
       );
-      $query = $this->db->insert('merchant_momo', $data);
-      if($query == true){
-        $q = $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
-        return array('status'=>201, 'message'=> 'Merchant momo account created', 'smsStatus'=>$q);
+      $q = $this->avoid_momo_duplicates($data_['merchant_id']);
+      if($q == false){
+        $query = $this->db->insert('merchant_momo', $data);
+        if($query == true){
+          $q = $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
+          return array('status'=>201, 'message'=> 'Merchant momo account created', 'smsStatus'=>$q);
+        }
+        return array('status'=>204, 'message'=> 'Error adding merchant momo number');
       }
-      return array('status'=>204, 'message'=> 'Error adding merchant momo number');
+      $data = array(
+        //'merchant_id' => $data_['merchant_id'],
+        'network'     => $data_['network'],
+        'mobile'      => $data_['mobile'],
+        'code'        => $this->generate_short_code_(4)
+      );
+      $a = $this->db->where('merchant_id', $data_['merchant_id'])->update('merchant_momo', $data);
+      if($a == true){
+        $q = $this->send_message_($data['mobile'], $this->merchant_momo_message_content($data['code']));
+        return array('status'=>201, 'message'=> 'Merchant account updated successfully', 'smsStatus'=>$q);
+      }
+      return array('status'=>204, 'message'=> 'Error updating merchant momo number');
     }
 
 

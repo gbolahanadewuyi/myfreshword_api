@@ -124,6 +124,14 @@ Class PayModel extends CI_Model {
     return array('status'=>404, 'message'=> 'Error deleting bank details');
   }
 
+  function deleteMomoData($id){
+    $q =   $this->db->where('merchant_id',$id)->delete($this->momoTable);
+    if($q == true){
+      return array('status' => 202, 'message'=> 'Mobile Money Details deleted successfully'  );
+    }
+    return array('status'=>404, 'message'=> 'Error deleting Momo details');
+  }
+
   function setDefaultPaymentMerchant($id, $data){
     $q = $this->db->select()->from($this->payDefault)->where('merchant_id', $id)->limit(1)->get()->row();
     if($q == ""){
