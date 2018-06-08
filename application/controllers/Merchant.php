@@ -12,6 +12,7 @@ Class Merchant extends REST_Controller{
     parent:: __construct();
     $this->load->model('MyModel');
     $this->load->model('PayModel', 'pay');
+    $this->load->model('NotificationModel', 'notify');
   }
 
   function setPaymentDefault_post(){
@@ -89,12 +90,74 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
-  function addMomoChannel_post(){
 
+
+  function addMomoChannel_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('network', 'Network', 'trim|required');
+      $this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+          $this->response($data, REST_Controller::HTTP_OK);
+          return false;
+      }
+      $q = $this->pay->add_Momo_details($response['id'], $_POST);
+      if($q['status'] == 201){
+        $this->response($q, REST_Controller::HTTP_CREATED);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_NOT_FOUND);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+  //user will select at least of the payments added to receive payment
   function defaultPayChannel_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('defaultPay', 'Default Channel', 'trim|required');
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+          $this->response($data, REST_Controller::HTTP_OK);
+          return false;
+      }
+      $q = $this->pay->setDefaultPaymentMerchant($reponse['id'], $data);
+      if($q['status'] ==201){
+        $this->response($q, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_NOT_FOUND);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
 
+
+
+  function bankDetails_delete(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+        $q = $this->pay->deleteBankData($response['id']);
+        if($q['status'] == 202){
+          $this->response($q, REST_Controller::HTTP_ACCEPTED);
+          return false;
+        }
+        $this->response($q,REST_Controller::HTTP_NOT_FOUND);
+        return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
   //this should be part of the data  that has to be run
@@ -107,9 +170,25 @@ Class Merchant extends REST_Controller{
         return false;
       }
       $this->response($q, REST_Controller::HTTP_NOT_FOUND);
+      return false;
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+
+  function all_notification_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $q = $this->notify->getNotificationStatus($response['id']);
+      if($q == false){
+        $message = array('status'=> 404, 'message'=> 'all notifications are turned off');
+        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+        return false;
+      }
+      $this->response($q, REST_Controller::HTTP_Ok);
+      return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
 
 }//end of class

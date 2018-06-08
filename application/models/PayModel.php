@@ -74,7 +74,19 @@ Class PayModel extends CI_Model {
   }
 
   function add_Momo_details($id,$data){
-
+    $a = $this->get_checkMomoPayments($id);
+    if($a == ""){
+      $q = $this->db->insert($this->momoTable, $data);
+      if($q == true){
+        return array('status'=> 201, 'message'=> 'Your mobile money details has  successfully being added');
+      }
+      return array('status'=>404, 'message'=> 'Error mobile money details');
+    }
+    $b = $this->db->where('merchant_id',$id)->update($this->momoTable,$data);
+    if($b == true){
+      return array('status'=> 201, 'message'=> 'Your mobile money details has successfully being updated');
+    }
+    return array('status'=>404, 'message'=> 'Error updating momo  details');
   }
 
   function chooseMerchantDefaultPay($id, $data){
@@ -104,5 +116,27 @@ Class PayModel extends CI_Model {
     return array('status'=>200, 'message'=> 'payment default has been set by merchant');
   }
 
+  function deleteBankData($id){
+    $q =   $this->db->where('merchant_id',$id)->delete($this->bankTable);
+    if($q == true){
+      return array('status' => 202, 'message'=> 'Bank Details deleted successfully'  );
+    }
+    return array('status'=>404, 'message'=> 'Error deleting bank details');
+  }
 
+  function setDefaultPaymentMerchant($id, $data){
+    $q = $this->db->select()->from($this->payDefault)->where('merchant_id', $id)->limit(1)->get()->row();
+    if($q == ""){
+      $a  = $this->db->insert($this->payDefault, $data);
+      if($a == true){
+        return array('status'=> 201, 'message'=> 'Default payment has been created');
+      }
+      return array('status'=>404, 'message'=> 'Error creating default payment');
+    }
+    $b = $this->db->where('merchant_id', $id)->update($this->payDefault, $data);
+    if($b == true){
+      return array('status'=>201, 'message'=> 'Default payment has been updated successfully');
+    }
+    return array('status'=>404, 'message'=> 'Error updating default payment');
+  }
 }
