@@ -346,6 +346,10 @@ Class Merchant extends REST_Controller{
         $this->response($b, REST_Controller::HTTP_NOT_FOUND);
         return false;
       }
+      if($b['status'] == 204){
+        $this->response($b, REST_Controller::HTTP_NO_CONTENT);
+        return false;
+      }
       $this->response($b, REST_Controller::HTTP_CREATED);
       return false;
     }
