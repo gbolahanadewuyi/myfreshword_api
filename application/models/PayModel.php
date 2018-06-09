@@ -156,7 +156,7 @@ Class PayModel extends CI_Model {
     $data=array('confirm'=>1);
     $a = $this->db->where('merchant_id', $id)->update($this->momoTable, $data);
     if($a == true){
-      return array('satus'=>201, 'message'=>'Mobile Money successfully confirmed');
+      return array('status'=>201, 'message'=>'Mobile Money successfully confirmed');
     }
     return array('status'=>404, 'message'=>'Error confirming mobile money number');
   }
