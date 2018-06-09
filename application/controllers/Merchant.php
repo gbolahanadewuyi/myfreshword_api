@@ -336,10 +336,11 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+
   function confirmMomoCode_get(){
-    $code = (int) $this->get('code');
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
+      $code = (int) $this->get('code');
       $b = $this->pay->confirm_Momo($response['id'], $code);
       if($b['status'] == 404){
         $this->response($b, REST_Controller::HTTP_NOT_FOUND);

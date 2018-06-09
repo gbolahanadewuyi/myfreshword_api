@@ -149,7 +149,7 @@ Class PayModel extends CI_Model {
   }
 
   function confirm_Momo($id, $code){
-    $q =   $this->db->select('*')->from($this->momoTable)->where('merchant_id', $id)->where('code', $code)->limit(1)->get()->row();
+    $q =   $this->db->select()->from($this->momoTable)->where('merchant_id', $id)->where('code', $code)->limit(1)->get()->row();
     if($q == ""){
       return array('status'=>204, 'message'=> 'Invalid confirmation code');
     }
