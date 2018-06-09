@@ -119,7 +119,7 @@ Class PayModel extends CI_Model {
   function deleteBankData($id){
     $q =   $this->db->where('merchant_id',$id)->delete($this->bankTable);
     if($q == true){
-      return array('status' => 202, 'message'=> 'Bank Details deleted successfully'  );
+      return array('status' => 202, 'message'=> 'Bank Details deleted successfully');
     }
     return array('status'=>404, 'message'=> 'Error deleting bank details');
   }

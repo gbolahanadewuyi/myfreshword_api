@@ -163,7 +163,7 @@ Class Merchant extends REST_Controller{
   function momoDetails_delete(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-      $q = $this->pay->deleteMomData($response['id']);
+      $q = $this->pay->deleteMomoData($response['id']);
       if($q['status'] == 202){
         $this->response($q, REST_Controller::HTTP_ACCEPTED);
         return false;
