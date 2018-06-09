@@ -147,4 +147,17 @@ Class PayModel extends CI_Model {
     }
     return array('status'=>404, 'message'=> 'Error updating default payment');
   }
+
+  function confirm_Momo($id, $code){
+    $q =   $this->db->select('*')->from($this->momoTable)->where('merchant_id', $id)->where('code', $code)->limit(1)->get()->row();
+    if($q == ""){
+      return array('status'=>204, 'message'=> 'Invalid confirmation code');
+    }
+    $data=array('confirm'=>1);
+    $a = $this->db->where('merchant_id', $id)->update($this->momoTable, $data);
+    if($a == true){
+      return array('satus'=>201, 'message'=>'Mobile Money successfully confirmed');
+    }
+    return array('status'=>404, 'message'=>'Error confirming mobile money number');
+  }
 }
