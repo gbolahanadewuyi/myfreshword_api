@@ -5,6 +5,7 @@ Class NewsFeedModel extends CI_Model {
 
   protected $newsTable = "news_feed_category";
   protected $feedTable = "merchant_feed";
+  
   public function __construct(){
     parent:: __construct();
 

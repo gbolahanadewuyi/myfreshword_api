@@ -1227,6 +1227,7 @@ class MyModel extends CI_Model {
     //merchant feed
     public function insert_feed_data($data, $img){
       $newFeed = array(
+            'category'          => $data['news_cat'],
             'title'             => $data['feed_title'],
             'message'           => $data['feed_message'],
             'image'             => $img,
@@ -1309,6 +1310,7 @@ class MyModel extends CI_Model {
     public function update_merchant_feed($id, $data, $email, $img){
       if($img == ""){
         $updateData = array(
+          'category'          =>$data['news_cat'],
           'title'             => $data['feed_title'],
           'message'           => $data['feed_message'],
           //'image'             => $img,
@@ -1317,6 +1319,7 @@ class MyModel extends CI_Model {
         );
       }else{
         $updateData = array(
+          'category'          =>$data['news_cat'],
           'title'             => $data['feed_title'],
           'message'           => $data['feed_message'],
           'image'             => $img,

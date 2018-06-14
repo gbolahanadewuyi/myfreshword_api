@@ -1151,7 +1151,7 @@ class App extends REST_Controller {
     if($response['status']==200){
 
       $data= array('success'=> false, 'messages' => array());
-
+      $this->form_validation->set_rules('news_cat', 'Category', 'trim|required');
       $this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
       $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
       $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
@@ -1233,7 +1233,7 @@ class App extends REST_Controller {
       // }
 
       $data= array('success'=> false, 'messages' => array());
-
+      $this->form_validation->set_rules('news_cat', 'Category', 'trim|required');
       $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
       $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
       $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
