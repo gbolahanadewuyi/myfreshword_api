@@ -13,6 +13,8 @@ Class Merchant extends REST_Controller{
     $this->load->model('MyModel');
     $this->load->model('PayModel', 'pay');
     $this->load->model('NotificationModel', 'notify');
+    $this->load->model('TransModel', 'trans');
+
   }
 
   function setPaymentDefault_post(){
@@ -339,7 +341,7 @@ Class Merchant extends REST_Controller{
 
   function confirmMomoCode_get(){
     $response = $this->MyModel->merchant_auth();
-    if($response['status']==200){
+    if($response['status']==200){}
       $code = (int) $this->get('code');
       $b = $this->pay->confirm_Momo($response['id'], $code);
       if($b['status'] == 404){
@@ -352,6 +354,21 @@ Class Merchant extends REST_Controller{
       }
       $this->response($b, REST_Controller::HTTP_CREATED);
       return false;
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
+  //let this query fetch the required data needed from the datatabse
+  function all_transactions_data_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+      $data = array(
+        'totalPurchases'=>$this->trans->total_sales($response['id']),
+        ''
+      )
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
