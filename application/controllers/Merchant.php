@@ -365,9 +365,8 @@ Class Merchant extends REST_Controller{
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
       $data = array(
-        'totalPurchases'=>$this->trans->total_sales($response['id']),
-        ''
-      )
+        'totalPurchases'=>$this->trans->total_sales($response['id'])
+      );
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
