@@ -944,13 +944,13 @@ class App extends REST_Controller {
               $row = array();
               $row[] = $prod->prod_name;
               $row[] = $prod->prod_preacher;
-              //$row[] = $prod->prod_church;
+              $row[] = $prod->prod_church;
               $row[] = $prod->prod_price;
               $row[] = $prod->currency;
               $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_tags;
-              //$row[] = $prod->prod_uniqid;
-              //$row[] = $prod->prod_download_count;
+              $row[] = $prod->prod_uniqid;
+              $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
               $favicon = $this->MyModel->favicon_show($prod->prod_tags);
