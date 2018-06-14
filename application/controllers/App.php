@@ -949,7 +949,7 @@ class App extends REST_Controller {
               $row[] = $prod->prod_price;
               $row[] = $prod->currency;
               $row[] = $prod->prod_tags;
-              $row[] = $prod->prod_uniqid;
+              //$row[] = $prod->prod_uniqid;
               $row[] = $prod->prod_download_count;
               $row[] = $prod->prod_date;
              	//if($payee->network == 'MTN'):
