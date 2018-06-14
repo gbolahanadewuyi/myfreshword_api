@@ -942,12 +942,12 @@ class App extends REST_Controller {
           foreach ($list as $prod) {
               $no++;
               $row = array();
+              $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_name;
               $row[] = $prod->prod_preacher;
               $row[] = $prod->prod_church;
               $row[] = $prod->prod_price;
               $row[] = $prod->currency;
-              $row[] =  '<img src="'.$prod->img_link.'" height="100px">';
               $row[] = $prod->prod_tags;
               $row[] = $prod->prod_uniqid;
               $row[] = $prod->prod_download_count;
