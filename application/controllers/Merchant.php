@@ -367,6 +367,7 @@ Class Merchant extends REST_Controller{
       $data = array(
         'totalPurchases'=>$this->trans->total_sales($response['id'])
       );
+      
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
