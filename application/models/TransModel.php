@@ -95,10 +95,10 @@ Class TransModel extends CI_Model{
    }
 
    function total_balance($id){
-     $this->db->select_sum('balance');
+     $this->db->select_sum('debit_commission');
      $this->db->where('merchant_id', $id);
      $result = $this->db->get($this->withdrawTable)->row();
-     return $result->balance;
+     return $result->debit_commission;
    }
 
 }
