@@ -90,7 +90,7 @@ Class TransModel extends CI_Model{
    function  actual_balance($id){
      $total_sales     = $this->total_sales($id);
      $total_balance   = $this->total_balance($id);
-     $result = $total - $total_balance;
+     $result = $total_sales - $total_balance;
      return $result;
    }
 
