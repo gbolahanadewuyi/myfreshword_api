@@ -358,16 +358,11 @@ Class Merchant extends REST_Controller{
   }
 
   //let this query fetch the required data needed from the datatabse
-  function all_transactions_data_post(){
+  function all_transactions_data_get(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-
-      $_POST = json_decode(file_get_contents('php://input'), TRUE);
-
-      $data = array(
-        'totalPurchases'=>$this->trans->total_sales($response['id'])
-      );
-      
+      $q = $this->trans->get_purchase_history($response['id']);
+      $this->response($q, REST_Controller::HTTP_OK);
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }

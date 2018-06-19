@@ -13,18 +13,15 @@ Class TransModel extends CI_Model{
    //this should be the list of the merchant transaction passed  and inserted containing
    //the list of the products purchased
    //this soughta represents the same data from the cart table
-   function get_purchase_history($id, $filter, $from, $to, $type){
-     if($filter == 0){
-       return $q = $this->db->select()->from($this->transTable)->where('merchant_id', $id)->get()->result();
-     }
-     return   $q = $this->date_range_filter($from, $to, $type, $id);
+   function get_purchase_history($id){
+      return $q = $this->db->select()->from($this->transTable)->where('merchant_id', $id)->get()->result();
    }
 
 
-   //total number of transactions
-   function total_transactions_data(){
+   // function get_transactions_history(){
+   //   $q = $this->db->select('*')->from($this)->where()->get()->result();
+   // }
 
-   }
 
    function get_withdrawal_history($id, $filter, $from, $to, $type){
      //date range filter status
@@ -82,7 +79,7 @@ Class TransModel extends CI_Model{
      return $pstAmt;
    }
 
-   //calculating the total number of purchases for merchant made users 
+   //calculating the total number of purchases for merchant made users
    function total_sales($id){
      $this->db->select_sum('price');
      $this->db->where('merchant_id', $id);
