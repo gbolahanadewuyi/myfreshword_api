@@ -368,10 +368,11 @@ Class Merchant extends REST_Controller{
   }
 
 
-  function total_sales_get(){
+  function total_get(){
     $response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-      $q['total_sales']= $this->trans->total_sales($response['id']);
+      $q['total_sales']     = $this->trans->total_sales($response['id']);
+      $q['actual_balance']  = $this->trans->actual_balance($response['id']);
       $this->response($q, REST_Controller::HTTP_OK);
     }
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);

@@ -69,15 +69,15 @@ Class TransModel extends CI_Model{
 
    //amount with deduction
    //this can also be used to represent total sales
-   function actual_balance($id, $pstAmt){
-     if($pstAmt == ""){
-       $this->db->select_sum('price');
-       $this->db->where('merchant_id', $id);
-       $result = $this->db->get($this->transTable)->row();
-       return $result->price;
-     }
-     return $pstAmt;
-   }
+   // function actual_balance($id, $pstAmt){
+   //   if($pstAmt == ""){
+   //     $this->db->select_sum('price');
+   //     $this->db->where('merchant_id', $id);
+   //     $result = $this->db->get($this->transTable)->row();
+   //     return $result->price;
+   //   }
+   //   return $pstAmt;
+   // }
 
    //calculating the total number of purchases for merchant made users
    function total_sales($id){
@@ -87,6 +87,18 @@ Class TransModel extends CI_Model{
      return $result->price;
    }
 
+   function  actual_balance($id){
+     $total_sales     = $this->total_sales($id);
+     $total_balance   = $this->total_balance($id);
+     $result = $total - $total_balance;
+     return $result;
+   }
 
+   function total_balance($id){
+     $this->db->select_sum('balance');
+     $this->db->where('merchant_id', $id);
+     $result = $this->db->get($this->withdrawTable)->row();
+     return $result->balance;
+   }
 
 }
