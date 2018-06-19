@@ -23,12 +23,8 @@ Class TransModel extends CI_Model{
    // }
 
 
-   function get_withdrawal_history($id, $filter, $from, $to, $type){
-     //date range filter status
-     if($filter == 0){
+   function get_withdrawal_history($id){
        return $q = $this->db->select()->from($this->withdrawTable)->where('merchant_id', $id)->get()->result();
-     }
-     return $q = $this->date_range_filter($from, $to, $type, $id);
    }
 
 

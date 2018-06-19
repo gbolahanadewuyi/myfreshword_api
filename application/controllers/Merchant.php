@@ -367,6 +367,15 @@ Class Merchant extends REST_Controller{
     $this->response($response, REST_Controller::HTTP_NOT_FOUND);
   }
 
+  function all_withdrawal_data_get(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $q = $this->MyModel->get_withdrawal_history($response['id']);
+      $this->response($q, REST_Controller::HTTP_OK);
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
 
   function total_get(){
     $response = $this->MyModel->merchant_auth();
