@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-include('PayyModel.php');
+include('PayModel.php');
 Class TransModel extends PayModel{
 
     protected $transTable     = "completedTrans";
