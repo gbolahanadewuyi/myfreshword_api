@@ -1,14 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-
-Class TransModel extends CI_Model{
+include('PayyModel.php');
+Class TransModel extends PayModel{
 
     protected $transTable     = "completedTrans";
     protected $withdrawTable  = "withdrawal_merchant";
 
-    function __construct(){
-     parent::__construct();
-    }
+
+    // function __construct(){
+    //  parent::__construct();
+    // }
 
    //this should be the list of the merchant transaction passed  and inserted containing
    //the list of the products purchased
@@ -62,7 +63,9 @@ Class TransModel extends CI_Model{
      return $res;
    }
 
-
+   function calcPercent($num){
+     return ($num/100)*20;
+   }
    //amount with deduction
    //this can also be used to represent total sales
    // function actual_balance($id, $pstAmt){
@@ -95,6 +98,19 @@ Class TransModel extends CI_Model{
      $this->db->where('merchant_id', $id);
      $result = $this->db->get($this->withdrawTable)->row();
      return $result->debit_commission;
+   }
+
+
+
+   // run this and send the money to the user selected account
+   function net_amount_transfer($amount, $id){
+      if($amount > $this->actual_balance($id)){
+        return array('status'=>false, 'message'=> 'Insufficient Funds');
+      }
+      $q = $this->calcPercent($amount);//gets the amount after percentage deduction
+      $res = $amount - $q;//send this money to the merchant designated account
+      return $res;//so run curl function on this to send money to publisher account
+
    }
 
 }

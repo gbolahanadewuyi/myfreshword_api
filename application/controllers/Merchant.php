@@ -388,4 +388,27 @@ Class Merchant extends REST_Controller{
   }
 
 
+  function withdrawal_post(){
+    $response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+      $data= array('success'=> false, 'messages' => array());
+      $this->form_validation->set_rules('defaultCredit', 'Channel', 'trim|required');
+      $this->form_validation->set_rules('withDrawAmt', 'Withdrawal Amount', 'trim|required');
+
+      $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+              $data['messages'][$key] = form_error($key);
+          }
+          $this->response($data, REST_Controller::HTTP_OK);
+          return false;
+      }
+
+    }
+    $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  }
+
 }//end of class
