@@ -154,7 +154,7 @@ Class TransModel extends CI_Model{
       if($channel == "bank"){
         $m = $this->get_checkBankPayments($id);
         if($m == ""){
-          return array('status'=>204, 'message'=> );
+          return array('status'=>204, 'message'=>'no bank account has been set up ' );
         }
 
         //so basically run this query  and get feedback data and store it in the database
