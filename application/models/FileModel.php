@@ -2,7 +2,7 @@
 
 
 Class FileModel extends CI_Model {
-  protected $fileTable = "file_category";
+    protected $fileTable = "file_category";
 
     public function __construct(){
       parent:: __construct();

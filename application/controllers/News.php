@@ -23,12 +23,12 @@ Class News extends REST_Controller{
   }
 
 
-  //get user feed from this endpoint 
+  //get user feed from this endpoint
   function feed_get(){
     $r = $this->my->header_auth();
     if($r['status']==200){
       $q = $this->news->get_all_feed_data();
-      if($q['status'] == 204 ){
+      if(isset($q['status']) && $q['status'] == 204 ){
         $this->response($q, REST_Controller::HTTP_NO_CONTENT);
         return false;
       }
