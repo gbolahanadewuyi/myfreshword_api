@@ -1,7 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH . '/libraries/REST_Controller.php';
+require_once APPPATH . '/libraries/JWT.php';
 
-Class Notifications extends CI_Controller {
+use \Firebase\JWT\JWT;
+
+Class Notifications extends REST_Controller{
 
 
     function __construct(){
@@ -34,7 +38,7 @@ Class Notifications extends CI_Controller {
           return false;
         }
         $this->response($b, REST_Controller::HTTP_NOT_FOUND);
-        return false;
+        return false;po
       }
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
