@@ -137,7 +137,7 @@ Class NotificationModel extends CI_Model{
 
    //get all the notification objects
    function get_all_notifications($id){
-     $q  = $this->db->select("*")->from($this->notificationsTable)->where('merchant_id',$id)->get()->result();
+     $q  = $this->db->select("*")->from($this->notificationsTable)->where('merchant_id',$id)->order_by('id','desc')->get()->result();
      if($q == " "){
        return array('status'=>204, 'result'=> 'you have no notifications');
      }
@@ -147,7 +147,7 @@ Class NotificationModel extends CI_Model{
 
    //get notification if merchant clicks on this
    function get_notification_id($merchant_id, $id){
-     $q  = $this->db->select('id, icon, title, content, date')->from($this->notificationsTable)->where('merchant_id',$merchant_id)->where('id', $id)->->order_by('id','desc')->get()->row();
+     $q  = $this->db->select('id, icon, title, content, date')->from($this->notificationsTable)->where('merchant_id',$merchant_id)->where('id', $id)->get()->row();
      if($q == ""){
        return array('status'=>204, 'result'=> 'notification data does not exist');
      }
