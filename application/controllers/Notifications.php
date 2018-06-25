@@ -38,7 +38,7 @@ Class Notifications extends REST_Controller{
           return false;
         }
         $this->response($b, REST_Controller::HTTP_NOT_FOUND);
-        return false;po
+        return false;
       }
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
