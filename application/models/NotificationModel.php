@@ -10,6 +10,8 @@ Class NotificationModel extends CI_Model{
    protected $pushNotify      = "pushNotify";
    protected $purchaseNotify  = "purchaseNotify";
    protected $commentNotify   = "commentNotify";
+   protected $notificationsTable = "merchant_notification_messages";// this is where the notification message content is
+
 
 
    function __construct(){
@@ -130,5 +132,39 @@ Class NotificationModel extends CI_Model{
      }
      return array('status'=>201, 'message'=> 'Comment Notificaton successfully notified');
    }
+
+
+
+   //get all the notification objects
+   function get_all_notifications($id){
+     $q  = $this->db->select("*")->from($this->notificationsTable)->where('merchant_id',$id)->get()->result();
+     if($q == " "){
+       return array('status'=>204, 'result'=> 'you have no notifications');
+     }
+     return array('status'=>200, 'result'=>$q);
+   }
+
+
+   //get notification if merchant clicks on this
+   function get_notification_id($merchant_id, $id){
+     $q  = $this->db->select("*")->from($this->notificationsTable)->where('merchant_id',$merchant_id)->where('id', $id)->get()->row();
+     if($q == " "){
+       return array('status'=>204, 'result'=> 'notification data does not exist');
+     }
+     return array('status'=>200, 'result'=>$q);
+   }
+
+
+   //comment thread
+   function get_all_comment_thread(){
+
+   }
+
+
+   //single out and show that comment data
+   function get_comment_thread_id(){
+
+   }
+
 
 }
