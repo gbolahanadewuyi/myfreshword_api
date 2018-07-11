@@ -31,6 +31,7 @@ Class Notifications extends REST_Controller{
       $this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
     }
 
+
     function read_get(){
       $response = $this->MyModel->merchant_auth();
       if($response['status'] == 200){

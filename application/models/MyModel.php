@@ -1358,6 +1358,25 @@ class MyModel extends CI_Model {
        }
     }
 
+    //public function search feed data from user
+    public function search_all_feed($search_term){
+      $this->db->select('*');
+      $this->db->from('merchant_feed');
+      $this->db->like('title', $search_term);
+      $this->db->order_by('id','desc');
+      $query = $this->db->get();
+      $res=$query->result();//so basically we are going to return an array of the results
+       if(count($res) > 0){
+         return $res;
+       }else{
+         return array('status'=>404, 'message'=>'No news post feed with that title');
+       }
+    }
+
+    // public function search_all_author(){
+    //
+    // }
+
     public function update_merchant_profile($updateData, $img){
 
       $result = $this->check_password($updateData['password']);

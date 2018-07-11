@@ -51,6 +51,27 @@ class App extends REST_Controller {
 			$this->response($response, REST_Controller::HTTP_OK);
   }
 
+  //NEW LOGIN FOR MYFRESHWORD LOGIN  PAGE
+  public function mobile_login_post(){
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+    $username = $_POST['mobile'];
+    $password = $_POST['password'];
+    $response= array('success'=> false, 'messages' => array());
+    $this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
+    $this->form_validation->set_rules('password', 'Password', 'trim|required');
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+             $response['messages'][$key] = form_error($key);
+        }
+        $this->response($response, REST_Controller::HTTP_OK);
+        return false;
+    }
+    else{
+
+    }
+  }
+
 
   //user forgot password resets the same process in themeportal web
   public function forgot_password_post(){
@@ -753,6 +774,22 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  public function feed_search_query_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->search_all_feed($_POST['feed_search']);
+      $this->response($q,REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  // public function author_search_query_post(){
+  //
+  // }
 
 
 /*================================================================================================================
