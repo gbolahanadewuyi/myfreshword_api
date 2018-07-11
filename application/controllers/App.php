@@ -801,6 +801,55 @@ class App extends REST_Controller {
     }
   }
 
+  public function filter_audio_get(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $q = $this->MyModel->audio_fetch();
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+
+    }
+
+  }
+
+  public function filter_video_get(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $q = $this->MyModel->video_fetch();
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function filter_book_get(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $q = $this->MyModel->book_fetch();
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
   // public function author_search_query_post(){
   //
   // }
