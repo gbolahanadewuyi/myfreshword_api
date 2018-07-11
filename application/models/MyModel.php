@@ -57,6 +57,45 @@ class MyModel extends CI_Model {
         }
     }
 
+    //this authentication is for mobile phone login request
+    public function mobile_login($user_mobile, $password){
+      $q  = $this->db->select('user_pwd,user_id,user_status,user_uname, user_mobile')->from('ts_user')->where('user_mobile',$user_mobile)->get()->row();
+      if($q == ""){
+          return array('status' => 204,'message' => 'Username not found.');
+      }else if($q->user_status == 2){//means account needs activation
+          return array('status' => 204,'message' => 'Your account is inactive.', 'mobile'=>$q->user_mobile);
+      }
+      else {
+
+            $hashed_password = $q->user_pwd;
+            $id              = $q->user_id;
+
+            if ($hashed_password == md5($password)) {
+
+               $last_login = date('Y-m-d H:i:s');
+               $token_set = substr( md5(rand()), 0, 7);
+               $token = hash('sha256', $token_set);
+               $expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
+               $this->db->trans_start();
+               $this->db->where('user_id',$id)->update('ts_user',array('last_login' => $last_login));
+               $this->db->insert('users_authentication',array('users_id' => $id,'token' => $token,'expired_at' => $expired_at));
+               if ($this->db->trans_status() === FALSE){
+                  $this->db->trans_rollback();
+                  return array('status' => 500,'message' => 'Internal server error.');
+               } else {
+                  $this->db->trans_commit();
+                  return array('status' => 200,'message' => 'Successfully login.','id' => $id, 'token' => $token);
+               }
+
+            } else {
+               return array('status' => 204,'message' => 'Wrong password.');
+            }
+        }
+    }
+
+
+
+
     public function merchant_login($email, $password){
       $q  = $this->db->select('id, email, password, approved')->from('ts_merchant')->where('email',$email)->get()->row();
       if($q == ""){

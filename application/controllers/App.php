@@ -54,7 +54,7 @@ class App extends REST_Controller {
   //NEW LOGIN FOR MYFRESHWORD LOGIN  PAGE
   public function mobile_login_post(){
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
-    $username = $_POST['mobile'];
+    $user_mobile = $_POST['mobile'];
     $password = $_POST['password'];
     $response= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
@@ -68,7 +68,21 @@ class App extends REST_Controller {
         return false;
     }
     else{
+      $response = $this->MyModel->login($user_mobile,$password);
+      if($response['status'] == 204){//no content
+        $this->response($response, REST_Controller::HTTP_NO_CONTENT);
+        return false;
+      }
 
+      if($response['status'] == 500){
+        $this->response($response, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+        return false;
+      }
+
+      if($response['status'] == 200){
+        $this->response($response, REST_Controller::HTTP_OK);
+        return false;
+      }
     }
   }
 
