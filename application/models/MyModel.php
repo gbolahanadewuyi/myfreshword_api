@@ -61,7 +61,7 @@ class MyModel extends CI_Model {
     public function mobile_login($user_mobile, $password){
       $q  = $this->db->select('user_pwd,user_id,user_status,user_uname, user_mobile')->from('ts_user')->where('user_mobile',$user_mobile)->get()->row();
       if($q == ""){
-          return array('status' => 204,'message' => 'Username not found.');
+          return array('status' => 204,'message' => 'Mobile not found.');
       }else if($q->user_status == 2){//means account needs activation
           return array('status' => 204,'message' => 'Your account is inactive.', 'mobile'=>$q->user_mobile);
       }
