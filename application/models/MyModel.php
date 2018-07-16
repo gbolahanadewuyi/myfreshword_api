@@ -958,6 +958,37 @@ class MyModel extends CI_Model {
         return $this->db->select('*')->from('ts_products')->where('type_list','Book')->order_by('prod_id','desc')->get()->result();
       }
 
+      //where like statement for the queries below search filter
+      public function audio_by_title($search_term){
+        $this->db->select('*');
+        $this->db->from('ts_products');
+        $this->db->like('prod_name', $search_term);
+        $this->db->where('type_list','Audio');
+        $this->db->order_by('prod_id','desc');
+        $query = $this->db->get();
+        return $res=$query->result();
+      }
+
+      public function video_by_title($search_term){
+        $this->db->select('*');
+        $this->db->from('ts_products');
+        $this->db->like('prod_name', $search_term);
+        $this->db->where('type_list','Video');
+        $this->db->order_by('prod_id','desc');
+        $query = $this->db->get();
+        return $res=$query->result();
+      }
+
+      public function book_by_title($title_data){
+        $this->db->select('*');
+        $this->db->from('ts_products');
+        $this->db->like('prod_name', $search_term);
+        $this->db->where('type_list','Book');
+        $this->db->order_by('prod_id','desc');
+        $query = $this->db->get();
+        return $res=$query->result();
+      }
+
       public function create_merchant($data){
         $query =  $this->db->insert('ts_merchant',$data);
         if($query == true){

@@ -241,10 +241,12 @@ class App extends REST_Controller {
      $this->response($data, REST_Controller::HTTP_OK);
   }
 
+
   public function preachers_get(){
     $query = $this->MyModel->get_all_preachers();
     $this->response($query, REST_Controller::HTTP_OK);
   }
+
 
 
   protected function mail_user($toEmail, $subject, $message){
@@ -813,9 +815,8 @@ class App extends REST_Controller {
       }
     }
     else{
-
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
-
   }
 
   public function filter_video_get(){
@@ -838,6 +839,58 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $q = $this->MyModel->book_fetch();
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+
+  public function filter_audio_search_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->audio_by_title($_POST['feed_search']);
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function filter_video_search_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->video_by_title($_POST['feed_search']);
+      if(count($q) > 0){
+        $this->response($q, REST_Controller::HTTP_OK);
+      }
+      else {
+        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function filter_book_search_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $q = $this->MyModel->book_by_title($_POST['feed_search']);
       if(count($q) > 0){
         $this->response($q, REST_Controller::HTTP_OK);
       }
