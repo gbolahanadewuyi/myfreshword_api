@@ -70,7 +70,7 @@ class App extends REST_Controller {
     else{
       $response = $this->MyModel->mobile_login($user_mobile,$password);
       if($response['status'] == 204){//no content
-        $this->response($response, REST_Controller::HTTP_NO_CONTENT);
+        $this->response($response, REST_Controller::HTTP_OK);
         return false;
       }
 
@@ -791,6 +791,7 @@ class App extends REST_Controller {
     }
   }
 
+
   public function feed_search_query_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -802,6 +803,8 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+
 
   public function filter_audio_get(){
     $response = $this->MyModel->header_auth();
@@ -819,6 +822,8 @@ class App extends REST_Controller {
     }
   }
 
+
+
   public function filter_video_get(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -834,6 +839,7 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
 
   public function filter_book_get(){
     $response = $this->MyModel->header_auth();
@@ -852,6 +858,9 @@ class App extends REST_Controller {
   }
 
 
+/*
+*/
+
   public function filter_audio_search_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -869,6 +878,7 @@ class App extends REST_Controller {
     }
   }
 
+
   public function filter_video_search_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -885,6 +895,8 @@ class App extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+
 
   public function filter_book_search_post(){
     $response = $this->MyModel->header_auth();
