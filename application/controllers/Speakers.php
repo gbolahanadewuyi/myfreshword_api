@@ -40,11 +40,11 @@ Class Speakers extends REST_Controller{
     }
   }
 
- function author_id_get(){
+ function author_get(){
    $id = (int) $this->get('id');
    $q = $this->sp->get_speaher_id($id);
    if($q == ""){
-     $this->response($q, REST_Controller::HTTP_NO_CONTENT););
+     $this->response($q, REST_Controller::HTTP_NO_CONTENT);
      return false;
    }
    $this->response($q, REST_Controller::HTTP_OK);

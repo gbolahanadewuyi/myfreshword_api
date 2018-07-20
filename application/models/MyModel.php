@@ -979,6 +979,7 @@ class MyModel extends CI_Model {
         return $res=$query->result();
       }
 
+
       public function book_by_title($title_data){
         $this->db->select('*');
         $this->db->from('ts_products');
@@ -989,6 +990,7 @@ class MyModel extends CI_Model {
         return $res=$query->result();
       }
 
+
       public function create_merchant($data){
         $query =  $this->db->insert('ts_merchant',$data);
         if($query == true){
@@ -998,6 +1000,7 @@ class MyModel extends CI_Model {
           return array('status'=>400, 'message'=> 'Error creating merchant account');
         }
       }
+
 
       public function merchant_insert_product($data){
        $query =   $query = $this->db->insert('ts_products', $data);
