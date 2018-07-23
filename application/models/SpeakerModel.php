@@ -11,31 +11,11 @@ Class SpeakerModel extends CI_Model {
   }
 
   function get_speaker_data($id){
-      $q = $this->db->select('*')->from($this->speakerTable)->get();
-      $res = $this->count_val($q->num_rows());
-      $results = array_merge($q->result(), $res);
-      return array('status'=>200, 'result'=>$results);
-    // }
-    // return array('status'=>204, 'message'=> 'No Content found');
-  }
-
-  function count_val($val){
-    for ($x = 0; $x <= $val; $x++) {
-      //echo "The number is: $x <br>";
-      return array($x=>false);
+    $q = $this->db->select('*')->from($this->speakerTable)->get();
+      return array('status'=>200, 'result'=>$q->result());
     }
+    return array('status'=>204, 'message'=> 'No Content found');
   }
-
-
-  function append_to_res($id){
-    $query = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $id)->get()->result();
-    if($query == ""){
-      return array('follow'=>false);
-    }
-    return $query;
-  }
-
-
 
   // //return follow true or return follow false
   // function follow_status($id){//this is the user id
