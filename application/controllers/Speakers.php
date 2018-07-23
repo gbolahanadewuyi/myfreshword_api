@@ -85,8 +85,30 @@ Class Speakers extends REST_Controller{
    }
  }
 
- function unfollow_get(){
+ function follow_speaker_get(){
+   $response = $this->MyModel->header_auth();
+   if($response['status']==200){
+     $id = (int) $this->get('id');
+     $data['speaker_id'] = $id;
+     $data['ts_users_id']= $response['id'];
+     $q = $this->sp->avoid_duplicates($data);
+     if($q == true){
+       $message['status']   = 201;
+       $message['message']  = "Author / Speaker followed successfully";
+       $this->response($message, REST_Controller::HTTP_CREATED);
+     }else{
+       $message['status']   = 400;
+       $message['message']  = "Error following author or preacher";
+       $this->response($message, REST_Controller::HTTP_NOT_FOUND);
+     }
+   }else{
+     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+   }
+ }
+
+ function unfollow_speaker_get(){
 
  }
+
 
 }

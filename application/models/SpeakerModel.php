@@ -86,6 +86,13 @@ Class SpeakerModel extends CI_Model {
     return $query;
   }
 
+  function avoid_duplicates($data){
+    $query = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $data['user_id'])->where('speaker_id', $data['speaker_id'])->get()->row();
+    if($query == ""){
+      return $this->new_follow_speaker($data);
+    }
+    return false;
+  }
 
   function adding_followers(){
 
