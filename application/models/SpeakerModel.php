@@ -20,11 +20,11 @@ Class SpeakerModel extends CI_Model {
 
 
   function get_follower_data($ts_user_id){
-    $q = $this->db->select('*')->from($this->speakerFollowers)->get()->result();
-    if($q != ""){
-      return array('status'=>200, 'result'=>$q);
+    $q = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $ts_user_id)->get()->result();
+    if($q == ""){
+      return array('status'=>204, 'message'=> 'No Content found');
     }
-    return array('status'=>204, 'message'=> 'No Content found');
+    return array('status'=>200, 'result'=>$q);
   }
 
 
