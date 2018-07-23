@@ -106,6 +106,8 @@ Class Speakers extends REST_Controller{
    }
  }
 
+
+
  function unfollow_speaker_get(){
 
  }
