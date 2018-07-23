@@ -67,9 +67,19 @@ Class Speakers extends REST_Controller{
  }
 
 
- //user click on the follow button and hits this endpoint
- function follow_get(){
-
+ function speaker_followers(){
+   $response = $this->MyModel->header_auth();
+   if($response['status']==200){
+     $q = $this->sp->get_follower_data($response['id']);
+     if($q == ""){
+       $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+       return false;
+     }
+     $this->response($q, REST_Controller::HTTP_OK);
+   }
+   else{
+     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+   }
  }
 
  function unfollow_get(){
