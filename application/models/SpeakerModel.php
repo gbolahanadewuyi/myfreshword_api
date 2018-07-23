@@ -12,7 +12,7 @@ Class SpeakerModel extends CI_Model {
 
   function get_speaker_data($id){
       $q = $this->db->select('*')->from($this->speakerTable)->get();
-      $res = $this->count_val($q->num_rows())
+      $res = $this->count_val($q->num_rows());
       $results = array_merge($q->result(), $res);
       return array('status'=>200, 'result'=>$results);
     }
