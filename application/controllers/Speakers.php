@@ -98,7 +98,7 @@ Class Speakers extends REST_Controller{
        $this->response($message, REST_Controller::HTTP_CREATED);
      }else{
        $message['status']   = 400;
-       $message['message']  = "Error following author or preacher";
+       $message['message']  = "Already following author";
        $this->response($message, REST_Controller::HTTP_NOT_FOUND);
      }
    }else{
