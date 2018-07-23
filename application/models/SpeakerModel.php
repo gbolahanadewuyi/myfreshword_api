@@ -15,8 +15,8 @@ Class SpeakerModel extends CI_Model {
       $res = $this->count_val($q->num_rows());
       $results = array_merge($q->result(), $res);
       return array('status'=>200, 'result'=>$results);
-    }
-    return array('status'=>204, 'message'=> 'No Content found');
+    // }
+    // return array('status'=>204, 'message'=> 'No Content found');
   }
 
   function count_val($val){
