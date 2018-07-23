@@ -71,7 +71,7 @@ Class Speakers extends REST_Controller{
    $response = $this->MyModel->header_auth();
    if($response['status']==200){
      $q = $this->sp->get_follower_data($response['id']);
-     if($q == ""){
+     if($q['status'] == 204){
        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
        return false;
      }
