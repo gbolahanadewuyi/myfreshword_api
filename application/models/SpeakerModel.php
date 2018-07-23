@@ -15,7 +15,7 @@ Class SpeakerModel extends CI_Model {
     $a = [];
     $follow = array('follow'=>false);
     foreach($q as $b){
-      $a = array_merge($b,$follow);
+      $a = array_merge($b[],$follow);
     }
     if($q != ""){
       return array('status'=>200, 'result'=>$a);
