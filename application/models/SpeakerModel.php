@@ -11,18 +11,16 @@ Class SpeakerModel extends CI_Model {
   }
 
   function get_speaker_data(){
-    $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();
-
-    foreach($q as $b){
-      $a = [];
-      $follow = array('follow'=>false);
-      $a = array_merge($b,$follow);
-      if($q != ""){
-        return array('status'=>200, 'result'=>$a);
+      $q = $this->db->select('*')->from($this->speakerTable)->get();
+      $param = array('follow'=>false);
+      for($i=0; $i<$q->num_rows(); $i++){
+        array_merge( $q->result_array()[$i], $param);
       }
-      return array('status'=>204, 'message'=> 'No Content found');
-    }
 
+    // if($q != ""){
+    //   return array('status'=>200, 'result'=>$a);
+    // }
+    // return array('status'=>204, 'message'=> 'No Content found');
   }
 
 
