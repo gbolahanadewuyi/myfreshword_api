@@ -50,13 +50,20 @@ Class Speakers extends REST_Controller{
 
  //this gets a particular speaker data
  function author_get(){
-   $id = (int) $this->get('id');
-   $q = $this->sp->get_speaher_id($id);
-   if($q == ""){
-     $this->response($q, REST_Controller::HTTP_NO_CONTENT);
-     return false;
+   $response = $this->MyModel->header_auth();
+   if($response['status']==200){
+     $id = (int) $this->get('id');
+     $q = $this->sp->get_speaher_id($id);
+     if($q == ""){
+       $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+       return false;
+     }
+     $this->response($q, REST_Controller::HTTP_OK);
    }
-   $this->response($q, REST_Controller::HTTP_OK);
+   else{
+     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+   }
+
  }
 
 

@@ -10,14 +10,61 @@ Class SpeakerModel extends CI_Model {
     parent:: __construct();
   }
 
-  function get_speaker_data(){
-    $q = $this->db->select('*')->from($this->speakerTable)->get()->result();
-    if($q == true){
-      return array('status'=>200, 'result'=>$q);
+  function get_speaker_data($id){
+      $q = $this->db->select('*')->from($this->speakerTable)->get();
+      $res = $this->count_val($q->num_rows())
+      $results = array_merge($q->result(), $res);
+      return array('status'=>200, 'result'=>$results);
     }
     return array('status'=>204, 'message'=> 'No Content found');
   }
 
+  function count_val($val){
+    for ($x = 0; $x <= $val; $x++) {
+      //echo "The number is: $x <br>";
+      return array($x=>false);
+    }
+  }
+
+
+  function append_to_res($id){
+    $query = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $id)->get()->result();
+    if($query == ""){
+      return array('follow'=>false);
+    }
+    return $query;
+  }
+
+
+
+  // //return follow true or return follow false
+  // function follow_status($id){//this is the user id
+  //   $query = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $id)->get()->result();//this will only bring back the speakers user is following
+  //   foreach($query as $res){
+  //     if($res->speaker_id ){}
+  //   }
+  //
+  // }
+  //
+  //
+  // //select the match from the table
+  // function following($id){//results returned from speaker followers
+  //   $q = $this->db->select('*')->from($this->speakerTable)->where('id', $id)->get()->result();
+  // }
+  //
+  // function get_followers($id){//this is the authentication id
+  //   $query = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $id)->get();//this will only bring back the speakers user is following
+  //   if($query->num_rows() > 0){
+  //     return array('count'   => $query->num_rows(),'result'  => $query->result());
+  //   }
+  //
+  //   $q = $this->db->select('*')->from($this->speakerTable)->get();
+  //   // return array(
+  //   //
+  //   // );
+  //
+  //
+  // }
 
   function get_speaher_id($id){
     return $this->db->select('*')->from($this->speakerTable)->where('id',$id)->order_by('id','desc')->get()->row();
