@@ -85,6 +85,7 @@ Class Speakers extends REST_Controller{
    }
  }
 
+
  function follow_speaker_get(){
    $response = $this->MyModel->header_auth();
    if($response['status']==200){
@@ -109,7 +110,18 @@ Class Speakers extends REST_Controller{
 
 
  function unfollow_speaker_get(){
-
+   $response = $this->MyModel->header_auth();
+   if($response['status']==200){
+     $id = (int) $this->get('id');
+     $data['speaker_id'] = $id;
+     $data['ts_users_id']= $response['id'];
+     $q = $this->sp->unfollow_speaker($data['ts_users_id'] , $data['speaker_id']);
+     if($q['status'] ==204){
+       $this->response($q, REST_Controller::HTTP_OK);
+     }
+   }else{
+     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+   }
  }
 
 

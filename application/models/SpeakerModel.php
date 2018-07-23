@@ -111,8 +111,8 @@ Class SpeakerModel extends CI_Model {
 
 
   //if a user decides to unfollow the speaker
-  function unfollow_speaker($user_id){
-    $q = $this->db->where('ts_users_id',$user_id)->delete($this->speakerFollowers);
+  function unfollow_speaker($user_id, $speaker_id){
+    $q = $this->db->where('ts_users_id',$user_id)->where('speaker_id', $speaker_id)->delete($this->speakerFollowers);
     if($q == true){
       return array('status'=>204, 'message'=> 'Speaker unfollowed successfully');
     }
