@@ -75,7 +75,10 @@ Class Speakers extends REST_Controller{
        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
        return false;
      }
-     $this->response($q, REST_Controller::HTTP_OK);
+     if($q['status'] ==200){
+       $this->response($q, REST_Controller::HTTP_OK);
+       return false;
+     }
    }
    else{
      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
