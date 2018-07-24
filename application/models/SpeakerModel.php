@@ -12,12 +12,23 @@ Class SpeakerModel extends CI_Model {
 
 
 
-function get_speaker_data(){
+function get_speaker_data($query){
       $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array
+
+      $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();
+
+
+
       $arrObject = array();
-      $arr_2 = array('follow'=>false);
+      //$arr_2 = array();
       foreach($q as $res){
-        $arrObject[]= array_merge($res, $arr_2);
+        foreach($que as $due){
+          if($due['speaker_id'] == $res['id']){
+            $resulta = array('follow'=>true);
+          }
+          $resulta = array('follow'=>false);
+        }
+        $arrObject[]= array_merge($res, $resulta);
       }
       return array('status'=>200, 'result'=>  $arrObject);
 
@@ -27,13 +38,20 @@ function get_speaker_data(){
   }
 
 
-  function get_follower_data($ts_user_id){
-    $q = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $ts_user_id)->get()->result();
-    if($q == ""){
-      return array('status'=>204, 'message'=> 'No Content found');
+  function get_follower_data($ts_user_id, $array){//array is for the speaker id
+    $q = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $ts_user_id)->get()->result_array();
+    foreach($q as $res){
+      if($res == $array){
+        return array('follow'=>true);
+      }
+      return array('follow'=>false);
     }
-    return array('status'=>200, 'result'=>$q);
+    // if($q == ""){
+    //   return array('status'=>204, 'message'=> 'No Content found');
+    // }
+    // return array('status'=>200, 'result'=>$q);
   }
+
 
 
 
