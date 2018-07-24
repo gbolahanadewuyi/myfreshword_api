@@ -619,13 +619,19 @@ class App extends REST_Controller {
       $data = array(
         'prod_purchase_by' => $param['email']
       );
-      $q = $this->MyModel->delete_all_cart($data);
-      if($q['status'] == 200){
-        $message = array('status'=>201, 'message'=>'Free items success');
-        $this->response($message, REST_Controller::HTTP_CREATED);
-      }
-      $message = array('status'=>200, 'message'=>'Error updating cart after purchase');
-      $this->response($message, REST_Controller::HTTP_OK);//using these responses for nathan
+      $message = array('status'=>201, 'message'=>'Free items success');
+      $this->response($message, REST_Controller::HTTP_CREATED);
+      //running a clear cart data from the mobile application side
+      
+      // $q = $this->MyModel->delete_all_cart($data);
+      //
+      // if($q['status'] == 200){
+      //
+      // }
+      //
+      //
+      // $message = array('status'=>200, 'message'=>'Error updating cart after purchase');
+      // $this->response($message, REST_Controller::HTTP_OK);//using these responses for nathan
       return false;
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
