@@ -20,14 +20,12 @@ function get_speaker_data($query){
 
 
       $arrObject = array();
+      $var = array('follow'=>false);
       //$arr_2 = array();
       foreach($q as $res){
         foreach($que as $due){
           if($res['id'] === $due['speaker_id']){
             $var = array('follow'=>true);
-          }
-          if($res['id'] != $due['speaker_id']){
-            $var = array('follow'=>false);
           }
         }
         $arrObject[]= array_merge($res, $var);
