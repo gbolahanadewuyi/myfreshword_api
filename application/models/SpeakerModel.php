@@ -43,14 +43,25 @@ function get_speaker_data($query){
 
 
   function array_search_x( $array, $name ){
+
+    // foreach( $array as $item ){
+    //     if ( is_array( $item ) && isset( $item['speaker_id'] )){
+    //         if (strpos($item['speaker_id'], $name) !== false) { // changed this line
+    //             return array('follow'=>true);
+    //         }
+    //     }
+    // }
+    // return  array('follow'=>false); // or whatever else you'd like
+
+
     foreach( $array as $item ){
         if ( is_array( $item ) && isset( $item['speaker_id'] )){
-            if (strpos($item['speaker_id'], $name) !== false) { // changed this line
-                return array('follow'=>true);
+            if ( $item['speaker_id'] == $name ){ // or other string comparison
+              return array('follow'=>true);
             }
         }
     }
-    return  array('follow'=>false);; // or whatever else you'd like
+    return  array('follow'=>false);
   }
 
   function get_follower_data($ts_user_id){//array is for the speaker id
