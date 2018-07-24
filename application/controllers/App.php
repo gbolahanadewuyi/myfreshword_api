@@ -616,13 +616,13 @@ class App extends REST_Controller {
         );
         $this->db->insert('ts_paid_prod', $data);
       }
-      $data = array(
-        'prod_purchase_by' => $param['email']
-      );
+      // $data = array(
+      //   'prod_purchase_by' => $param['email']
+      // );
       $message = array('status'=>201, 'message'=>'Free items success');
       $this->response($message, REST_Controller::HTTP_CREATED);
       //running a clear cart data from the mobile application side
-      
+
       // $q = $this->MyModel->delete_all_cart($data);
       //
       // if($q['status'] == 200){
