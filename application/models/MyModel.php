@@ -677,6 +677,11 @@ class MyModel extends CI_Model {
       }
     }
 
+    public function delete_all_cart($data){
+      $query = $this->db->where('prod_purchase_by',$data['prod_purchase_by'])->delete('ts_cart');//this will take the email of the user and empty the cart
+      return array('status'=> 200, 'message'=> 'Empty Cart Data');
+
+    }
     //trying to merge arrays here
     public  function library_data($email){
       $query =  $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();

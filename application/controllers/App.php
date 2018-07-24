@@ -597,6 +597,41 @@ class App extends REST_Controller {
     }
   }
 
+
+  public function checkout_all_free_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      foreach($_POST['cart_data'] as $db_data){
+        $data = array(
+          'prod_name'   =>  $db_data['prod_name'],
+          'prod_uniqid' =>  $db_data['prod_uniqid'],
+          'file_link'   =>  $db_data['file_link'],
+          'type'        =>  $db_data['prod_type'],
+          'paid'        =>  0,
+          'free'        =>  1,
+          'user_acc'    =>  $db_data['prod_purchase_by'],
+          'img_link'    =>  $db_data['prod_img_link'],
+          'prod_price'  =>  $db_data['prod_price']
+        );
+        $this->db->insert('ts_paid_prod', $data);
+      }
+      $data = array(
+        'prod_purchase_by' => $param['email']
+      );
+      $q = $this->MyModel->delete_all_cart($data);
+      if($q['status'] == 200)){
+        $message = array('status'=>201, 'message'=>'Free items success');
+        $this->response($message, REST_Controller::HTTP_CREATED);
+      }
+      $message = array('status'=>200, 'message'=>'Error updating cart after purchase');
+      $this->response($message, REST_Controller::HTTP_OK);//using these responses for nathan-->not the best of ways to call this 
+      return false;
+    }
+    $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+  }
+
+
   public function clear_library_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
