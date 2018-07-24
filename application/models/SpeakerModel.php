@@ -36,7 +36,7 @@ function get_speaker_data($query){
         $arrObject[]= array_merge($res, $a);
       }
        //krsort($arrObject);
-      return array('status'=>200, 'result'=> krsort($arrObject));
+      return array('status'=>200, 'result'=> $arrObject);
 
       // if($q != ""){
       // }
