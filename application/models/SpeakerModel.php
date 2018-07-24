@@ -20,15 +20,19 @@ function get_speaker_data($query){
 
 
       $arrObject = array();
-      $var = array('follow'=>0);
       //$arr_2 = array();
       foreach($q as $res){
         foreach($que as $due){
-          if($res['id'] === $due['speaker_id']){
-            $var = array('follow'=>1);
-          }
+
+          // if($res['id'] === $due['speaker_id']){
+          //   $var = array('follow'=>1);
+          // }else{
+          //   $var = array('follow'=>0);
+          // }
+
+          $a = $this->array_search_x($due, $res['id']);
         }
-        $arrObject[]= array_merge($res, $var);
+        $arrObject[]= array_merge($res, $a);
       }
       return array('status'=>200, 'result'=>  $arrObject);
 
@@ -37,6 +41,17 @@ function get_speaker_data($query){
       // return array('status'=>204, 'message'=> 'No Content found');
   }
 
+
+  function array_search_x( $array, $name ){
+    foreach( $array as $item ){
+        if ( is_array( $item ) && isset( $item['speaker_id'] )){
+            if (strpos($item['speaker_id'], $name) !== false) { // changed this line
+                return array('follow'=>true);
+            }
+        }
+    }
+    return  array('follow'=>false);; // or whatever else you'd like
+  }
 
   function get_follower_data($ts_user_id){//array is for the speaker id
     $q = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $ts_user_id)->get()->result_array();
