@@ -10,17 +10,14 @@ Class SpeakerModel extends CI_Model {
     parent:: __construct();
   }
 
-  function get_speaker_data(){
-      $q = $this->db->select('*')->from($this->speakerTable)->get();
-      $param = array('follow'=>false);
-      for($i=0; $i<$q->num_rows(); $i++){
-        array_merge( $q->result_array()[$i], $param);
-        if($q != ""){
-          return array('status'=>200, 'result'=>$a);
-        }
-        return array('status'=>204, 'message'=> 'No Content found');
-      }
 
+
+function get_speaker_data(){
+      $q = $this->db->select('*')->from($this->speakerTable)->get();
+      if($q != ""){
+        return array('status'=>200, 'result'=>$a);
+      }
+      return array('status'=>204, 'message'=> 'No Content found');
 
   }
 
@@ -106,6 +103,8 @@ Class SpeakerModel extends CI_Model {
   function adding_followers(){
 
   }
+
+
 
   //so if there isnt any followers or if there is
   function check_followers($user_id, $data){//user id will be passed by the token
