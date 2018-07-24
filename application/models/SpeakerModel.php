@@ -13,16 +13,16 @@ Class SpeakerModel extends CI_Model {
 
 
 function get_speaker_data($query){
-      $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array
+      $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array returns id of the speaker
 
-      $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();
+      $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();//returns speaker_id
 
 
 
       $arrObject = array();
       //$arr_2 = array();
       foreach($q as $res){
-        foreach($que as $due){
+        //foreach($que as $due){
 
           // if($res['id'] === $due['speaker_id']){
           //   $var = array('follow'=>1);
@@ -31,7 +31,7 @@ function get_speaker_data($query){
           // }
 
           $a = $this->array_search_x($due, $res['id']);
-        }
+        //}
         $arrObject[]= array_merge($res, $a);
       }
       return array('status'=>200, 'result'=>  $arrObject);
