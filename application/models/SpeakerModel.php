@@ -38,18 +38,13 @@ function get_speaker_data($query){
   }
 
 
-  function get_follower_data($ts_user_id, $array){//array is for the speaker id
+  function get_follower_data($ts_user_id){//array is for the speaker id
     $q = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $ts_user_id)->get()->result_array();
-    foreach($q as $res){
-      if($res == $array){
-        return array('follow'=>true);
-      }
-      return array('follow'=>false);
+
+    if($q == ""){
+      return array('status'=>204, 'message'=> 'No Content found');
     }
-    // if($q == ""){
-    //   return array('status'=>204, 'message'=> 'No Content found');
-    // }
-    // return array('status'=>200, 'result'=>$q);
+    return array('status'=>200, 'result'=>$q);
   }
 
 
