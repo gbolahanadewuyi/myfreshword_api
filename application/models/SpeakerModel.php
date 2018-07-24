@@ -35,7 +35,7 @@ function get_speaker_data($query){
         //}
         $arrObject[]= array_merge($res, $a);
       }
-      arsort($arrObject);
+      arsort($arrObject['follow']);
       return array('status'=>200, 'result'=>  $arrObject);
 
       // if($q != ""){
