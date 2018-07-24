@@ -19,10 +19,11 @@ function get_speaker_data(){
       foreach($q as $res){
         $arrObject[]= array_merge($res, $arr_2);
       }
-      if($q != ""){
-        return array('status'=>200, 'result'=>$q);
-      }
-      return array('status'=>204, 'message'=> 'No Content found');
+      return array('status'=>200, 'result'=>  $arrObject);
+
+      // if($q != ""){
+      // }
+      // return array('status'=>204, 'message'=> 'No Content found');
   }
 
 
