@@ -15,7 +15,7 @@ Class SpeakerModel extends CI_Model {
 function get_speaker_data(){
       $q = $this->db->select('*')->from($this->speakerTable)->get()->result();
       if($q != ""){
-        return array('status'=>200, 'result'=>$a);
+        return array('status'=>200, 'result'=>$q);
       }
       return array('status'=>204, 'message'=> 'No Content found');
   }
