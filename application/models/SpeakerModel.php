@@ -31,6 +31,7 @@ function get_speaker_data($query){
           // }
 
           $a = $this->array_search_x($que, $res['id']);
+          arsort($a);
         //}
         $arrObject[]= array_merge($res, $a);
       }
