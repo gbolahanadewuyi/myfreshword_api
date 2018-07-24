@@ -30,7 +30,7 @@ function get_speaker_data($query){
           //   $var = array('follow'=>0);
           // }
 
-          $a = $this->array_search_x($due, $res['id']);
+          $a = $this->array_search_x($que, $res['id']);
         //}
         $arrObject[]= array_merge($res, $a);
       }
