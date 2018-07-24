@@ -23,14 +23,14 @@ function get_speaker_data($query){
       //$arr_2 = array();
       foreach($q as $res){
         foreach($que as $due){
-          if($due['speaker_id'] === $res['id']){
-            $resulta = array('follow'=>true);
-          }else{
-            $resulta = array('follow'=>false);
+          if($res['id'] === $due['speaker_id']){
+            $var = array('follow'=>true);
+          }
+          if($res['id'] != $due['speaker_id']){
+            $var = array('follow'=>false);
           }
         }
-        $arrObject[]= array_merge($res, $resulta);
-
+        $arrObject[]= array_merge($res, $var);
       }
       return array('status'=>200, 'result'=>  $arrObject);
 
