@@ -34,6 +34,7 @@ Class News extends REST_Controller{
         $this->response($q, REST_Controller::HTTP_NO_CONTENT);
         return false;
       }
+        
       $this->response($q, REST_Controller::HTTP_OK);
       return false;
     }

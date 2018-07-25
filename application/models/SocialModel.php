@@ -12,8 +12,8 @@ Class SocialModel extends CI_Model {
 
 
     //get all comments
-    function comments_all_data(){
-      return $this->db->select()->from($this->comment_table)->order_by('id','desc')->get()->result();
+    function comments_all_data($id){
+      return $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $id)->order_by('id','desc')->get()->result();
     }
 
     //this will count comments on  a particular thread
