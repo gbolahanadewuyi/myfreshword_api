@@ -786,8 +786,8 @@ class MyModel extends CI_Model {
     }
 
     private function check_if_freshword_transaction_id_exist($data){
-      $query = $this->db->select('*')->from('payment_response')->where('freshword_transaction_id',$data['freshword_transaction_id'])->get()->row();
-      if($query->freshword_transaction_id ==  $data['freshword_transaction_id']){
+      $query = $this->db->select()->from('payment_response')->where('freshword_transaction_id',$data['freshword_transaction_id'])->get()->row();
+      if($query != ""){
           return $q = $this->complete_payment($data);
       }else {
         return array('status'=>400, 'message'=> 'Freshword transaction id is invalid');
