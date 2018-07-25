@@ -82,6 +82,9 @@ class Social extends REST_Controller {
           foreach($_POST as $key =>$value){
                $data['messages'][$key] = form_error($key);
           }
+          $this->response($data, REST_Controller::HTTP_OK);
+          return false;
+
       }
       else{
         $comment_info = array(
