@@ -47,7 +47,7 @@ Class News extends REST_Controller{
           //   $var = array('follow'=>0);
           // }
 
-          $a = $this->array_search_x($b, $res['id']);
+          $a = $this->news->array_search_x($b, $res['id']);
 
         //}
         $obj[]= array_merge($res, $a);
@@ -58,8 +58,8 @@ Class News extends REST_Controller{
       $arr = array();
       $c = $this->db->select()->from('merchant_like_thread')->get()->result_array();
       foreach($q as $resi){
-        
-        $d= $this->array_search_x($c, $resi['id']);
+
+        $d= $this->news->array_search_x($c, $resi['id']);
 
         //}
         $arr[]= array_merge($obj, $a);
