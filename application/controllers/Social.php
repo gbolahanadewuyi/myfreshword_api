@@ -85,8 +85,8 @@ class Social extends REST_Controller {
       }
       else{
         $comment_info = array(
-          'merchant_feed_id'    =>  $_POST['feed_id'],
-          'ts_user_id'          =>  $_POST['user_id'],
+          'merchant_feed_id'    =>  $_POST['feed_id'],//feed id in the loop
+          'ts_user_id'          =>  $response['id'],//authentication id
           'message'             =>  $_POST['comment_data']
         );
 
