@@ -2,8 +2,8 @@
 
 Class SocialModel extends CI_Model {
 
-    protected $like_table     = "merchant_comment_thread";
-    protected $comment_table  = "merchant_like_thread";
+    protected $comment_table     = "merchant_comment_thread";
+    protected $like_table  = "merchant_like_thread";
 
 
     function __construct(){
