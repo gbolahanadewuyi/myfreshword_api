@@ -4,7 +4,7 @@ Class SocialModel extends CI_Model {
 
     protected $comment_table     = "merchant_comment_thread";
     protected $like_table  = "merchant_like_thread";
-
+    protected $user_table  = "ts_user";
 
     function __construct(){
       parent:: __construct();
@@ -93,4 +93,9 @@ Class SocialModel extends CI_Model {
       return $query = $this->db->insert($this->like_table, $data);
     }
 
+
+    function  user_detail($id){
+      $query = $this->db->select()->from($this->user_table)->where('user_id', $id)->get()->row();
+      return $query;
+    }
 }

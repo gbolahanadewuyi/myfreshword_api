@@ -52,9 +52,23 @@ class Social extends REST_Controller {
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
+  }
+  //this will take the loop
+  public function user_detail_get(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $q = $this->soc->user_detail($id);
+      $message['status'] =  200;
+      $message['results'] = $q;
+      $this->response($message, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+
 
   }
-
 
   //this will allow you to post to one comment
   public function comment_post(){
