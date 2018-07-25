@@ -137,9 +137,6 @@ class Social extends REST_Controller {
   }
 
 
-  public function comment_delete(){
-
-  }
 
   public function update_comment_post(){
 
