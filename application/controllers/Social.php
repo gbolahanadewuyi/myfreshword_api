@@ -71,8 +71,41 @@ class Social extends REST_Controller {
   }
 
   //this will allow you to post to one comment
-  public function comment_post(){
+  public function create_comment_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $data= array('success'=> false, 'messages' => array());
+  		$this->form_validation->set_rules('comment_data', 'Comment', 'required');
+  		$this->form_validation->set_error_delimiters('<span>', '</span>');
+      if ($this->form_validation->run() === FALSE){
+          foreach($_POST as $key =>$value){
+               $data['messages'][$key] = form_error($key);
+          }
+      }
+      else{
+        $comment_info = array(
+          'merchant_feed_id'    =>  $_POST['feed_id'],
+          'ts_user_id'          =>  $_POST['user_id'],
+          'message'             =>  $_POST['comment_data']
+        );
 
+        $q = $this->soc->create_comment($comment_info);
+        if($q == true){
+          $message['status'] =  201;
+          $message['message'] = 'Comment created successfully';
+          $this->response($message, REST_Controller::HTTP_OK);
+          return false;
+        }
+        $message['status'] =  400;
+        $message['message'] = 'Error creating comment';
+        $this->response($message, REST_Controller::HTTP_OK);
+
+      }
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
   }
 
 
