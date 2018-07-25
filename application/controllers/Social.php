@@ -66,8 +66,6 @@ class Social extends REST_Controller {
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
-
-
   }
 
   //this will allow you to post to one comment
@@ -111,6 +109,27 @@ class Social extends REST_Controller {
     }
   }
 
+  public function comment_delete(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $data['id'] = $id;
+      $data['user_id'] = $response['id'];
+      $q = $this->soc->delete_comment($data);
+      if($q == true){
+        $message['status'] =  204;
+        $message['message'] = 'Comment deleted successfully';
+        $this->response($message, REST_Controller::HTTP_OK);
+        return false;
+      }
+      $message['status'] =  400;
+      $message['message'] = 'Error deleting comment';
+      $this->response($message, REST_Controller::HTTP_OK);
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 
   //this will just get comment id
   public function comment_get(){

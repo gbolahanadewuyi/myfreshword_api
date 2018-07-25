@@ -31,8 +31,8 @@ Class SocialModel extends CI_Model {
 
 
     //function delete one comment
-    function delete_comment($id){
-      $query = $this->db->where('id',$id)->delete($this->comment_table);
+    function delete_comment($data){
+      $query = $this->db->where('id',$data['id'])->where('ts_user_id',$data['user_id'])->delete($this->comment_table);
       return $query;
     }
 
