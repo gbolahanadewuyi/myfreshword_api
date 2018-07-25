@@ -2,7 +2,10 @@
 
 Class SocialModel extends CI_Model {
 
-    protected
+    protected $like_table     = "merchant_comment_thread";
+    protected $comment_table  = "merchant_like_thread";
+
+
     function __construct(){
       parent:: __construct();
     }
@@ -10,47 +13,84 @@ Class SocialModel extends CI_Model {
 
     //get all comments
     function comments_all_data(){
-
+      return $this->db->select()->from($this->comment_table)->order_by('id','desc')->get()->result();
     }
 
-
-    function count_comments(){
-
+    //this will count comments on  a particular thread
+    function count_comments($data){
+      $query = $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $data['id'])->get();
+      return $query->num_rows();//basically this tells you the number of comments associated to a particular merchant thread
     }
 
     //get just one comment
-    function comment_one_data(){
-
+    //fetch just one data from the comment
+    function comment_one_data($id){
+      $query  = $this->db->select()->from($this->comment_table)->where('id', $id)->get()->row();
+      return $query;
     }
 
 
     //function delete one comment
-    function delete_comment(){
-
+    function delete_comment($id){
+      $query = $this->db->where('id',$id)->delete($this->comment_table);
+      return $query;
     }
 
 
 
-    function update_comment(){
-
+    function create_comment($data){
+      $query = $this->db->insert($this->comment_table, $data);
+      return $query;
     }
 
 
+    function update_comment($id, $data){
+      $query = $this->db->where('id',$id)->update($this->comment_table,$data);
+      return $query;
+    }
+
+
+    //get all the likes data from the table
     function likes_all_data(){
+      return $this->db->select()->from($this->like_table)->order_by('id','desc')->get()->result();
+    }
 
+    function count_all_likes_on_feed(){
+      return $this->db->select()->from($this->like_table)->get()->num_rows();
     }
 
 
+    //so basically you will runnning this through a loop
+    function  count_likes_by_merchant_feed($id){
+      return $query = $this->db->select()->from($this->like_table)->where('merchant_feed_id', $id)->get()->num_rows();
+    }
 
-    //function should avoid users from liking more than once 
-    function avoid_like_duplicates(){
+    //will also  have to run this through a loop as well
+    function count_comments_by_merchant_feed($id){
+      return $query = $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $id)->get()->num_rows();
+    }
 
+
+    function get_one_like($id){
+      return $query = $this->db->select()->from($this->like_table)->where('id', $id)->get()->row();
+    }
+
+    //function should avoid users from liking more than once
+    function avoid_like_duplicates($data){
+      $query = $this->get_one_like($data['id']);
+      if($query == ""){
+        $a = $this->like_post_data($data);
+        if($a == true){
+          return array('status'=>201, 'message'=>'feed liked successfully');
+        }
+      }
+      return array('status'=>400, 'message'=> 'Feed thread already liked');
     }
 
 
     //this should just insert data into the database one
-    function like_feed_data(){
-
+    function like_post_data($data){
+      return $query = $this->db->insert($this->like_table, $data);
     }
 
 }
