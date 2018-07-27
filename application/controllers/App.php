@@ -740,7 +740,7 @@ class App extends REST_Controller {
   }
 
   public function upload_profile_photo_post(){
-    $response = $this->MyModel->header_auth();
+        $response = $this->MyModel->header_auth();
         if($response['status']==200){
           $config['upload_path']   = './public/images/products/';
           $config['allowed_types'] = 'gif|jpg|png';//allowing only images
@@ -760,10 +760,10 @@ class App extends REST_Controller {
              );
              $this->MyModel->update_profile_image($response['id'], $imgData);
              $this->response($success, REST_Controller::HTTP_OK);
-        }else{
+        }
+        else{
           $this->response($response,REST_Controller::HTTP_NOT_FOUND);
         }
-    }
   }
 
 
