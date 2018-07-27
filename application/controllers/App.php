@@ -740,30 +740,30 @@ class App extends REST_Controller {
   }
 
   public function upload_profile_photo_post(){
-        $response = $this->MyModel->header_auth();
-        if($response['status']==200){
-          $config['upload_path']   = './public/images/products/';
-          $config['allowed_types'] = 'gif|jpg|png';//allowing only images
-          $config['max_size']      = 1024;
-          $this->load->library('upload', $config);
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+        $config['upload_path']   = './public/images/products/';
+        $config['allowed_types'] = 'gif|jpg|png';//allowing only images
+        $config['max_size']      = 1024;
+        $this->load->library('upload', $config);
 
-          if ( ! $this->upload->do_upload('image_file')) {
-             $error = array('status'=>false, 'error' => $this->upload->display_errors());
-             //echo json_encode($error);
-             $this->response($error, REST_Controller::HTTP_OK);
-          }else {
-             $data = $this->upload->data();
-             $success = ['status'=>true,'success'=>$data['file_name']];
-             //echo json_encode($success);
-             $imgData = array(
-               'user_photo'     =>  'http://myfreshword.com/myfreshword/api/public/images/profile_photos/'.$data['file_name']
-             );
-             $this->MyModel->update_profile_image($response['id'], $imgData);
-             $this->response($success, REST_Controller::HTTP_OK);
-        }
-        else{
-          $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-        }
+        if ( ! $this->upload->do_upload('image_file')) {
+           $error = array('status'=>false, 'error' => $this->upload->display_errors());
+           //echo json_encode($error);
+           $this->response($error, REST_Controller::HTTP_OK);
+        }else {
+           $data = $this->upload->data();
+           $success = ['status'=>true,'success'=>$data['file_name']];
+           //echo json_encode($success);
+           $imgData = array(
+             'user_photo'     =>  'http://myfreshword.com/myfreshword/api/public/images/profile_photos/'.$data['file_name']
+           );
+           $this->MyModel->update_profile_image($response['id'], $imgData);
+           $this->response($success, REST_Controller::HTTP_OK);
+       }
+    }else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }      
   }
 
 
