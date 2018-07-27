@@ -130,9 +130,21 @@ function get_speaker_data($query){
     $search_term="%".$search_term."%";
     $sql="SELECT * FROM $this->speakerTable WHERE name LIKE ? ";
     $query=$this->db->query($sql,array($search_term));
-    $res=$query->result_array();//so basically we are going to return an array of the results
-     if(count($res) > 0){
-       return $res;
+    $q=$query->result_array();//so basically we are going to return an array of the results
+     if(count($q) > 0){
+       //return $res;
+
+       $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();//returns speaker_id
+       $arrObject = array();
+       //$arr_2 = array();
+       foreach($q as $res){
+         $a = $this->array_search_x($que, $res['id']);
+
+         $arrObject[]= array_merge($res, $a);
+       }
+       return array('status'=>200, 'result'=> $arrObject);
+
+
      }
      else {
        return array('status'=>400 , 'message'=> 'Sorry No results found');
