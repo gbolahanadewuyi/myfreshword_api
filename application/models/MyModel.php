@@ -1220,6 +1220,12 @@ class MyModel extends CI_Model {
       return $this->db->where('prod_id',$id)->update('ts_products',$data);
     }
 
+
+    //upload and update photo for mobile endpoint
+    public function upload_profile_image($id,$data){
+      $query = $this->db->where('user_id',$id)->update('ts_users',$data);
+    }
+
     public function update_file($id, $data){
       return $this->db->where('prod_id',$id)->update('ts_products',$data);
     }
