@@ -700,7 +700,9 @@ class MyModel extends CI_Model {
 
     //should contain email and id param of the product to be deleted
     public function delete_library_data($data){
-      return $this->db->where('user_acc', $data['email'])->where('id', $data['id'])->delete('ts_paid_prod');
+      $query = $this->db->select('user_email')->from('ts_user')->where('user_id', $data['id'])->get()->row();
+      $this->db->where('user_acc', $query['email'])->where('id', $data['id'])->delete('ts_paid_prod');
+      return array('status'=>204, 'message'=>'Library removed from library');
     }
 
     public function payIN_endpoint($phoneNumber,$payAmount, $churchAccount){
