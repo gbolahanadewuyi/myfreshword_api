@@ -43,6 +43,24 @@ function get_speaker_data($query){
       // return array('status'=>204, 'message'=> 'No Content found');
   }
 
+  function search_with_follow_value($query){
+    $q = $this->search_speaker($query);
+    if(isset($q['status']) && $q['status'] == 400){
+      return $q;
+    }
+    else{
+      $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();//returns speaker_id
+      $arrObject = array();
+      //$arr_2 = array();
+      foreach($q as $res){
+        $a = $this->array_search_x($que, $res['id']);
+
+        $arrObject[]= array_merge($res, $a);
+      }
+      return array('status'=>200, 'result'=> $arrObject);
+    }
+  }
+
 
   function array_search_x( $array, $name ){
 

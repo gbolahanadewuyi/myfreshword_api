@@ -697,6 +697,12 @@ class MyModel extends CI_Model {
       return  $query = $this->db->insert('ts_paid_prod',$data );
     }
 
+
+    //should contain email and id param of the product to be deleted
+    public function delete_library_data($data){
+      return $this->db->where('user_acc', $data['email'])->where()->delete('ts_paid_prod');
+    }
+
     public function payIN_endpoint($phoneNumber,$payAmount, $churchAccount){
 
         $curl = curl_init();
