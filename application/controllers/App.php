@@ -638,6 +638,23 @@ class App extends REST_Controller {
   }
 
 
+  public function delete_file_delete(){
+    $id = (int) $this->get('id');
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $query = $this->MyModel->delete_library_data($response['id']);
+      if($query['status'] ==204){
+        $this->response($query, REST_Controller::HTTP_OK);
+      }else{
+        $message = array('status'=>400, 'message'=>'error deleting product');
+        $this->response($message, REST_Controller::HTTP_OK);
+      }
+    }
+    else{
+      $this->response($data,REST_Controller::HTTP_OK);
+    }
+  }
+
   public function clear_library_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
@@ -649,8 +666,7 @@ class App extends REST_Controller {
       }else{
         $data = array('status'=>400, 'message'=> 'Error with cart data processing');
       }
-      $this->response($data,REST_Controller::HTTP_OK);
-    }
+      $this->response($data,REST_Controller::HTTP_OK);    }
     else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
