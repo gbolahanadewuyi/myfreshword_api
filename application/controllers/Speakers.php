@@ -37,7 +37,7 @@ Class Speakers extends REST_Controller{
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $q = $this->sp->search_speaker($_POST['feed_search']);
+      $q = $this->sp->search_with_follow_value($_POST['feed_search']);
       if(count($q) > 0){
         $this->response($q, REST_Controller::HTTP_OK);
       }
