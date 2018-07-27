@@ -63,17 +63,6 @@ function get_speaker_data($query){
 
 
   function array_search_x( $array, $name ){
-
-    // foreach( $array as $item ){
-    //     if ( is_array( $item ) && isset( $item['speaker_id'] )){
-    //         if (strpos($item['speaker_id'], $name) !== false) { // changed this line
-    //             return array('follow'=>true);
-    //         }
-    //     }
-    // }
-    // return  array('follow'=>false); // or whatever else you'd like
-
-
     foreach( $array as $item ){
         if ( is_array( $item ) && isset( $item['speaker_id'] )){
             if ( $item['speaker_id'] == $name ){ // or other string comparison
@@ -141,7 +130,7 @@ function get_speaker_data($query){
     $search_term="%".$search_term."%";
     $sql="SELECT * FROM $this->speakerTable WHERE name LIKE ? ";
     $query=$this->db->query($sql,array($search_term));
-    $res=$query->result();//so basically we are going to return an array of the results
+    $res=$query->result_array();//so basically we are going to return an array of the results
      if(count($res) > 0){
        return $res;
      }
