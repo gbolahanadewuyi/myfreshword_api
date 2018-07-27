@@ -53,6 +53,8 @@ class Social extends REST_Controller {
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+  
   //this will take the loop
   public function user_detail_get(){
     $id = (int) $this->get('id');
@@ -76,6 +78,7 @@ class Social extends REST_Controller {
       $data= array('success'=> false, 'messages' => array());
   		$this->form_validation->set_rules('comment_data', 'Comment', 'required');
   		$this->form_validation->set_error_delimiters('<span>', '</span>');
+
       if ($this->form_validation->run() === FALSE){
           foreach($_POST as $key =>$value){
                $data['messages'][$key] = form_error($key);

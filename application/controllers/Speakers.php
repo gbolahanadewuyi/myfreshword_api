@@ -31,11 +31,13 @@ Class Speakers extends REST_Controller{
     }
   }
 
+
+
   function search_speaker_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $q = $this->MyModel->search_speaker($_POST['feed_search']);
+      $q = $this->sp->search_speaker($_POST['feed_search']);
       if(count($q) > 0){
         $this->response($q, REST_Controller::HTTP_OK);
       }
