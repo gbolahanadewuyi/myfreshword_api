@@ -61,9 +61,9 @@ Class Speakers extends REST_Controller{
        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
        return false;
      }
-    $arrObject = array();
-    $arrObject[]= array_merge($q, $j);
-    $this->response($arrObject, REST_Controller::HTTP_OK);
+     $resp = $q;
+     $resp['followers']  = $j;
+    $this->response($resp, REST_Controller::HTTP_OK);
    }
    else{
      $this->response($response,REST_Controller::HTTP_NOT_FOUND);

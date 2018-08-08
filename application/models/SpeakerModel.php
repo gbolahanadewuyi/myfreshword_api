@@ -160,7 +160,7 @@ function get_speaker_data($query){
 
   //so if there isnt any followers or if there is
   function check_followers($user_id, $data){//user id will be passed by the token
-    $q  = $this->db->select('ts_users_id')->from($this->speakerFollowers)->where('ts_users_id',$user_id)->get()->row();
+    $q  = $this->db->select('ts_users_id')->from($this->speakerFollowers)->where('ts_users_id',$user_id)->get()->result_array();
     if($q == ""){
       //so here you have to insert data into the database
        return $q = $this->new_follow_speaker($data);
@@ -171,7 +171,7 @@ function get_speaker_data($query){
 
   //so if there isnt any followers or if there is
   function get_followers($speaker_id){//user id will be passed by the token
-    $q  = $this->db->select('count(ts_users_id)')->from($this->speakerFollowers)->where('speaker_id',$speaker_id)->get()->row();
+    $q  = $this->db->select('count(ts_users_id)')->from($this->speakerFollowers)->where('speaker_id',$speaker_id)->get()->result_array();
     return $q;
   }
 
