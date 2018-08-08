@@ -169,6 +169,12 @@ function get_speaker_data($query){
   }
 
 
+  //so if there isnt any followers or if there is
+  function get_followers($speaker_id){//user id will be passed by the token
+    $q  = $this->db->select count('ts_users_id')->from($this->speakerFollowers)->where('speaker_id',$speaker_id)->get()->row();
+    return $q;
+  }
+
   //if a user decides to unfollow the speaker
   function unfollow_speaker($user_id, $speaker_id){
     $q = $this->db->where('ts_users_id',$user_id)->where('speaker_id', $speaker_id)->delete($this->speakerFollowers);

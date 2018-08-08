@@ -56,11 +56,13 @@ Class Speakers extends REST_Controller{
    if($response['status']==200){
      $id = (int) $this->get('id');
      $q = $this->sp->get_speaher_id($id);
+     $j = $this->sp->get_followers($id);
      if($q == ""){
        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
        return false;
      }
-     $this->response($q, REST_Controller::HTTP_OK);
+     $resp = array_merge($q,$j);
+     $this->response($resp, REST_Controller::HTTP_OK);
    }
    else{
      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
