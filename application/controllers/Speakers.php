@@ -61,8 +61,8 @@ Class Speakers extends REST_Controller{
        $this->response($q, REST_Controller::HTTP_NO_CONTENT);
        return false;
      }
-     $resp = (array) json_decode($q);
-     $resp['followers']  = $j->count(ts_users_id);
+     $resp = (array) $q;
+     // $resp['followers'] = $j;
     $this->response($resp, REST_Controller::HTTP_OK);
    }
    else{
