@@ -62,7 +62,7 @@ Class Speakers extends REST_Controller{
        return false;
      }
      $resp = (array) json_decode($q);
-     $resp['followers']  = $j;
+     $resp['followers']  = $j['count(ts_users_id)'];
     $this->response($resp, REST_Controller::HTTP_OK);
    }
    else{
