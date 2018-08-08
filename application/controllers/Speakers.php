@@ -62,7 +62,7 @@ Class Speakers extends REST_Controller{
        return false;
      }
      $resp = $q;
-     $resp['followers']  = $j;
+     $resp['followers']  = $j['followers'];
     $this->response($resp, REST_Controller::HTTP_OK);
    }
    else{
