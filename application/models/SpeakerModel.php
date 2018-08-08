@@ -171,7 +171,7 @@ function get_speaker_data($query){
 
   //so if there isnt any followers or if there is
   function get_followers($speaker_id){//user id will be passed by the token
-    $q  = $this->db->select count('ts_users_id')->from($this->speakerFollowers)->where('speaker_id',$speaker_id)->get()->row();
+    $q  = $this->db->select('count(ts_users_id)')->from($this->speakerFollowers)->where('speaker_id',$speaker_id)->get()->row();
     return $q;
   }
 
