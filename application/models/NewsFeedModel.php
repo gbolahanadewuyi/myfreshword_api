@@ -49,8 +49,8 @@ Class NewsFeedModel extends CI_Model {
     foreach( $array as $item ){
         if ( is_array( $item ) && isset( $item['merchant_feed_id'] )){
             if ( $item['merchant_feed_id'] == $name ){ // or other string comparison
-              $a = $this->db->select()->from('merchant_like_thread')->where('merchant_feed_id', $item['merchant_feed_id'])->get()->num_rows();//this counts the associated likes
-              $b = $this->db->select()->from('merchant_comment_thread')->where('merchant_feed_id', $item['merchant_feed_id'])->get()->num_rows();//this counts the associated likes
+              $a = $this->db->select('*')->from('merchant_like_thread')->where('merchant_feed_id', $item['merchant_feed_id'])->get()->num_rows();//this counts the associated likes
+              $b = $this->db->select('*')->from('merchant_comment_thread')->where('merchant_feed_id', $item['merchant_feed_id'])->get()->num_rows();//this counts the associated likes
               return array('likes_count'=>$a, 'comments_count'=>$b);
             }
         }
