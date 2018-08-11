@@ -5,6 +5,7 @@ Class SocialModel extends CI_Model {
     protected $comment_table     = "merchant_comment_thread";
     protected $like_table  = "merchant_like_thread";
     protected $user_table  = "ts_user";
+    protected $feedTable = "merchant_feed";
 
     function __construct(){
       parent:: __construct();
@@ -46,6 +47,9 @@ Class SocialModel extends CI_Model {
 
     function update_comment($id, $data){
       $query = $this->db->where('id',$id)->update($this->comment_table,$data);
+      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->row();
+      $feeditem['comments_count'] += 1;
+      $updatecommentcount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
       return $query;
     }
 
@@ -90,7 +94,11 @@ Class SocialModel extends CI_Model {
 
     //this should just insert data into the database one
     function like_post_data($data){
-      return $query = $this->db->insert($this->like_table, $data);
+      $query = $this->db->insert($this->like_table, $data);
+      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->row();
+      $feeditem['likes_count'] += 1;
+      $updatelikescount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
+      return $query;
     }
 
 
