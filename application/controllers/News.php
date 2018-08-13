@@ -36,7 +36,7 @@ Class News extends REST_Controller{
       }
       $result = array();
       foreach ($q as $res) {
-        $feedliked = $this.soc->get_one_like($res['id'],$r['id']);
+        $feedliked = $this->soc->get_one_like($res['id'],$r['id']);
         $result[]= array_merge($res, $feedliked);
       }
       $this->response($result, REST_Controller::HTTP_OK);
