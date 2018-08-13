@@ -41,15 +41,15 @@ Class SocialModel extends CI_Model {
 
     function create_comment($data){
       $query = $this->db->insert($this->comment_table, $data);
+      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->row();
+      $feeditem['comments_count'] += 1;
+      $updatecommentcount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
       return $query;
     }
 
 
     function update_comment($id, $data){
       $query = $this->db->where('id',$id)->update($this->comment_table,$data);
-      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->row();
-      $feeditem['comments_count'] += 1;
-      $updatecommentcount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
       return $query;
     }
 
