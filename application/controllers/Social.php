@@ -32,6 +32,14 @@ class Social extends REST_Controller {
   }
 
   public function like_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $a = $this->soc->avoid_like_duplicates();
+      $message = array('status'=>200, 'results'=>$a);
+      $this->response($message, REST_Controller::HTTP_OK);
+    }else {
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
 
   }
 
@@ -54,7 +62,7 @@ class Social extends REST_Controller {
     }
   }
 
-  
+
   //this will take the loop
   public function user_detail_get(){
     $id = (int) $this->get('id');
