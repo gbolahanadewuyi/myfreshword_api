@@ -77,32 +77,51 @@ Class SocialModel extends CI_Model {
     }
 
 
-    function get_one_like($id){
-      return $query = $this->db->select()->from($this->like_table)->where('id', $id)->get()->row();
+    function get_one_like($merchant_id,$user_id){
+      $wherearray = array('merchant_feed_id' => $merchant_id,'ts_user_id' => $user_id);
+      return $query = $this->db->select('like')->from($this->like_table)->where($wherearray)->get()->row();
     }
 
     //function should avoid users from liking more than once
     function avoid_like_duplicates($data){
-      $query = $this->get_one_like($data['id']);
+      $query = $this->get_one_like($data['merchant_feed_id'],$data['ts_user_id']);
       if($query == ""){
         $a = $this->like_post_data($data);
         if($a == true){
           return array('status'=>201, 'message'=>'feed liked successfully');
         }
+        else {
+          return array('status'=>404, 'message'=>'feed like error');
+        }
+      }else{
+        $a = $this->unlike_post_data($query[0][id],$data);
+        if($a == true){
+          return array('status'=>201, 'message'=>'feed unliked');
+        }
+        else {
+          return array('status'=>404, 'message'=>'feed unlike error');
+        }
       }
-      return array('status'=>400, 'message'=> 'Feed thread already liked');
+
     }
 
 
     //this should just insert data into the database one
     function like_post_data($data){
       $query = $this->db->insert($this->like_table, $data);
-      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->row();
-      $feeditem['likes_count'] += 1;
+      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->result_array();
+      $feeditem[0]['likes_count'] += 1;
       $updatelikescount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
       return $query;
     }
 
+    function unlike_post_data($likeid,$data){
+      $query = $this->db->where('id',$likeid)->delete($this->like_table);
+      $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->result_array();
+      $feeditem[0]['likes_count'] -= 1;
+      $updatelikescount = $this->db->where('id',$feeditem['id'])->update($this->feedTable,$feeditem);
+      return $query;
+    }
 
     function  user_detail($id){
       $query = $this->db->select()->from($this->user_table)->where('user_id', $id)->get()->row();

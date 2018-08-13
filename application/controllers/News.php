@@ -34,8 +34,12 @@ Class News extends REST_Controller{
         $this->response($q, REST_Controller::HTTP_NO_CONTENT);
         return false;
       }
-        
-      $this->response($q, REST_Controller::HTTP_OK);
+      $result = array();
+      foreach ($q as $res) {
+        $feedliked = $this.soc->get_one_like($res['id'],$r['id']);
+        $result[]= array_merge($res, $feedliked);
+      }
+      $this->response($result, REST_Controller::HTTP_OK);
       return false;
     }
     $this->response($r,REST_Controller::HTTP_NOT_FOUND);
