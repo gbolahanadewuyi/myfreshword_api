@@ -84,7 +84,7 @@ Class SocialModel extends CI_Model {
 
     //function should avoid users from liking more than once
     function avoid_like_duplicates($data){
-      print_r($data)
+      print_r($data);
       $query = $this->get_one_like($data['merchant_feed_id'],$data['ts_user_id']);
       print_r($query);
       if($query == ""){
