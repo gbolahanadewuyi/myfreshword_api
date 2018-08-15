@@ -86,7 +86,7 @@ Class SocialModel extends CI_Model {
     function avoid_like_duplicates($data){
       // print_r($data);
       $query = $this->get_one_like($data['merchant_feed_id'],$data['ts_user_id']);
-      print_r($query);
+      // print_r($query);
       if(isset($query[0])){ //if use has like value for feed in like table
         $a = $this->unlike_post_data($query[0]['id'],$data);
         if($a == true){
@@ -113,20 +113,20 @@ Class SocialModel extends CI_Model {
     function like_post_data($data){
       $query = $this->db->insert($this->like_table, $data);
       $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->result_array();
-      print_r($feeditem);
+      // print_r($feeditem);
       $feeditem[0]['likes_count'] += 1;
       $updatelikescount = $this->db->where('id',$feeditem[0]['id'])->update($this->feedTable,$feeditem[0]);
-      print_r($updatelikescount);
+      // print_r($updatelikescount);
       return $query;
     }
 
     function unlike_post_data($likeid,$data){
       $query = $this->db->where('id',$likeid)->delete($this->like_table);
       $feeditem = $this->db->select()->from($this->feedTable)->where('id',$data['merchant_feed_id'])->get()->result_array();
-      print_r($feeditem);
+      // print_r($feeditem);
       $feeditem[0]['likes_count'] -= 1;
       $updatelikescount = $this->db->where('id',$feeditem[0]['id'])->update($this->feedTable,$feeditem[0]);
-      print_r($updatelikescount);
+      // print_r($updatelikescount);
       return $query;
     }
 
