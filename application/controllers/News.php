@@ -28,7 +28,7 @@ Class News extends REST_Controller{
   //get user feed from this endpoint
   function feed_get(){
     $r = $this->my->header_auth();
-    print_r($r);
+    // print_r($r);
     if($r['status']==200){
       $q = $this->news->get_all_feed_data();
       if(isset($q['status']) && $q['status'] == 204 ){
@@ -39,7 +39,7 @@ Class News extends REST_Controller{
       foreach ($q as $res) {
         $feedliked = $this->soc->get_one_like($res['id'],$r['id']);
         // print_r($feedliked);
-        $result[]= array_merge($res, ['liked' => is_null($feedliked[0]['like'])]);
+        $result[]= array_merge($res, ['liked' => is_null($feedliked['0']['like'])]);
       }
       $this->response($result, REST_Controller::HTTP_OK);
       return false;
