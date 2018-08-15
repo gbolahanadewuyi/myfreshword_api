@@ -87,24 +87,24 @@ Class SocialModel extends CI_Model {
       // print_r($data);
       $query = $this->get_one_like($data['merchant_feed_id'],$data['ts_user_id']);
       print_r($query);
-      // if($query == ""){
-      //   $a = $this->like_post_data($data);
-      //   if($a == true){
-      //     return array('status'=>201, 'message'=>'feed liked successfully');
-      //   }
-      //   else {
-      //     return array('status'=>404, 'message'=>'feed like error'); //database like update error
-      //   }
-      // }
-      // else{
+      if($query == ""){
+        $a = $this->like_post_data($data);
+        if($a == true){
+          return array('status'=>201, 'message'=>'feed liked successfully');
+        }
+        else {
+          return array('status'=>404, 'message'=>'feed like error'); //database like update row error
+        }
+      }
+      else{
         $a = $this->unlike_post_data($query[0]['id'],$data);
         if($a == true){
           return array('status'=>201, 'message'=>'feed unliked');
         }
         else {
-          return array('status'=>404, 'message'=>'feed unlike error');
+          return array('status'=>404, 'message'=>'feed unlike error'); //database like delete row error
         }
-      // }
+      }
 
     }
 
