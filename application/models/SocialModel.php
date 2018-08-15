@@ -79,7 +79,7 @@ Class SocialModel extends CI_Model {
 
     function get_one_like($merchant_id,$user_id){
       $wherearray = array('merchant_feed_id' => $merchant_id,'ts_user_id' => $user_id);
-      return $query = $this->db->select('like')->from($this->like_table)->where($wherearray)->get()->result_array();
+      return $query = $this->db->select()->from($this->like_table)->where($wherearray)->get()->result_array();
     }
 
     //function should avoid users from liking more than once
