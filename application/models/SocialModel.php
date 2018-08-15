@@ -94,7 +94,7 @@ Class SocialModel extends CI_Model {
           return array('status'=>404, 'message'=>'feed like error');
         }
       }else{
-        $a = $this->unlike_post_data($query[0][id],$data);
+        $a = $this->unlike_post_data($query[0]['id'],$data);
         if($a == true){
           return array('status'=>201, 'message'=>'feed unliked');
         }
