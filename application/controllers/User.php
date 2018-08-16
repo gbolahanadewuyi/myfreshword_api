@@ -49,7 +49,7 @@ class User extends REST_Controller {
     
     
     public function user_get(){
-      $id = $this->get('id');
+      $id = (int) $this->get('id');
       $query = $this->Users_model->get_user_id($id);
       $this->set_response($query, REST_Controller::HTTP_OK);
     }
