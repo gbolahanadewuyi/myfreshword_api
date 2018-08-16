@@ -46,6 +46,14 @@ class User extends REST_Controller {
       $query = $this->Users_model->get_users();
       $this->set_response($query, REST_Controller::HTTP_OK);
     }
+    
+    
+    public function user_get(){
+      $id = $this->get('id');
+      $query = $this->Users_model->get_user_id($id);
+      $this->set_response($query, REST_Controller::HTTP_OK);
+    }
+    
 
 
 }

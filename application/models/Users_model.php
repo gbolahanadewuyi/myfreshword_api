@@ -20,16 +20,16 @@ class Users_model extends CI_Model {
 
     public function get_users(){
 
-        $this->db->select('*');
+        $this->db->select('user_id','user_uname');
         //$this->db->where('user_email', $user_email  );
-        $this->db->from('users');
+        $this->db->from('ts_user');
         return $this->db->get()->result();
     }
 
     public function get_user_id($id){
-      $this->db->select('*');
-      $this->db->where('id', $id  );
-      $this->db->from('users');
+      $this->db->select('user_id','user_uname');
+      $this->db->where('user_id', $id  );
+      $this->db->from('ts_user');
       return $this->db->get()->row();
     }
 }
