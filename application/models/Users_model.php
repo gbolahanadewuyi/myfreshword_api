@@ -33,10 +33,10 @@ class Users_model extends CI_Model {
       // print_r($query);
 
       if(isset($query[0])){
-        return array("status"=>201,"message"=>"no user with specified id found");
+        return $query[0];
       }
       else {
-        return $query[0];
+        return array("status"=>201,"message"=>"no user with specified id found");
       }
 
     }
