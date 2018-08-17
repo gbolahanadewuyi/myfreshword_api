@@ -27,15 +27,14 @@ class Users_model extends CI_Model {
     }
 
     public function get_user_id($id){
-      $query = $this->db->select('user_id,user_uname')->from('ts_user')->where('user_id', $id)->get()->result();//
+      $query = $this->db->select('user_id,user_uname')->from('ts_user')->where('user_id', $id)->get()->result_array();//
       print_r($query);
 
-      if(is_array($query) && isset($query['user_id'])){
+      if(isset($query[0])){
         return array("status"=>201,"message"=>"no user with specified id found");
       }
       else {
-
-        return $query;
+        return $query[0];
       }
 
     }
