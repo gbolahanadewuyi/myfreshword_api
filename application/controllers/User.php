@@ -55,15 +55,15 @@ class User extends REST_Controller {
 
 
     public function user_get(){
-      $response = $this->MyModel->header_auth();
-      if($response['status']==200){
+      // $response = $this->MyModel->header_auth();
+      // if($response['status']==200){
         $id = $this->get('id');
         $query = $this->Users_model->get_user_id($id);
         $this->set_response($query, REST_Controller::HTTP_OK);
-      }
-      else{
-        $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-      }
+      // }
+      // else{
+      //   $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+      // }
     }
 
 
