@@ -8,6 +8,7 @@ class User extends REST_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('MyModel');
         $this->load->model('Users_model');
     }
 
@@ -42,18 +43,29 @@ class User extends REST_Controller {
 
 
     public function data_get(){
+      $response = $this->MyModel->header_auth();
+      if($response['status']==200){
+        $query = $this->Users_model->get_users();
+        $this->set_response($query, REST_Controller::HTTP_OK);
+      }
+      else{
+        $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+      }
+    }
 
-      $query = $this->Users_model->get_users();
-      $this->set_response($query, REST_Controller::HTTP_OK);
-    }
-    
-    
+
     public function user_get(){
-      $id = (int) $this->get('id');
-      $query = $this->Users_model->get_user_id($id);
-      $this->set_response($query, REST_Controller::HTTP_OK);
+      $response = $this->MyModel->header_auth();
+      if($response['status']==200){
+        $id = $this->get('id');
+        $query = $this->Users_model->get_user_id($id);
+        $this->set_response($query, REST_Controller::HTTP_OK);
+      }
+      else{
+        $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+      }
     }
-    
+
 
 
 }
