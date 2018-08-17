@@ -35,7 +35,7 @@ class Users_model extends CI_Model {
       }
       else {
 
-        return $query[0];
+        return $query;
       }
 
     }
