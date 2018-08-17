@@ -30,7 +30,7 @@ class Users_model extends CI_Model {
       $this->db->select('user_id,user_uname');
       $this->db->from('ts_user');
       $this->db->where('user_id', $id);
-      $query = $this->db->get();
+      $query = $this->db->get()->result();
       print_r($query);
       // return $this->db->get()->result();
     }
