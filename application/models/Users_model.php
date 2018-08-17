@@ -27,10 +27,11 @@ class Users_model extends CI_Model {
     }
 
     public function get_user_id($id){
-      $this->db->select('user_id,user_uname');
-      $this->db->from('ts_user');
-      $this->db->where('user_id', $id);
-      $query = $this->db->get()->result();
+      // $this->db->select('user_id,user_uname');
+      // $this->db->from('ts_user');
+      // $this->db->where('user_id', $id);
+
+      $query = $this->db->select('user_id,user_uname')->from('ts_user')->where('ts_users_id', $id)->get()->result_array();//
       print_r($query);
       // return $this->db->get()->result();
     }
