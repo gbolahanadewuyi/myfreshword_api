@@ -341,7 +341,8 @@ class App extends REST_Controller {
 
 
   public function all_product_get(){
-     $response = $this->MyModel->auth($this->get('userid'),$this->get('token'));
+     // $response = $this->MyModel->auth($_GET['userid'],$_GET['token']);
+     $response = $this->MyModel->header_auth();
      if($response['status'] == 200){
        $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
        $this->response($resp, REST_Controller::HTTP_OK);
@@ -1236,6 +1237,7 @@ class App extends REST_Controller {
       $data= array('success'=> false, 'messages' => array());
       $this->form_validation->set_rules('prod_tags', 'Category', 'trim|required');//type
       $this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
+      $this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
       $this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
       $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
       $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
@@ -1256,6 +1258,7 @@ class App extends REST_Controller {
         $prodData = array(
           'prod_name'             =>      $_POST['prod_name'],
           'prod_urlname'          =>      $this->MyModel->replace_hyphens($_POST['prod_name']),
+          'prod_preacher_id'      =>      $_POST['prod_preacher_id'],
           'prod_preacher'         =>      $_POST['prod_preacher'],
           'prod_church'           =>      $_POST['prod_church'],
           //'prod_image'            =>      $_POST['prod_image'],
@@ -1338,6 +1341,7 @@ class App extends REST_Controller {
           $data= array('success'=> false, 'messages' => array());
           $this->form_validation->set_rules('prod_tags', 'Product Type', 'trim|required');//type
           $this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
+          $this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
           $this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
           $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
           $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
@@ -1573,7 +1577,7 @@ class App extends REST_Controller {
 public function merchant_news_feed_get(){
   $response = $this->MyModel->merchant_auth();
   if($response['status']==200){
-    $email= $this->get('email');
+    $email = $this->get['email'];
     $config = array();
     $config["base_url"] = base_url() . "merchant/news_feed";
     $config["total_rows"] = $this->MyModel->count_merchant_feed($email);

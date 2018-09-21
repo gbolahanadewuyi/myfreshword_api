@@ -55,8 +55,8 @@ class Social extends REST_Controller {
   }
 
 
-  public function all_comments_get($id){
-    // $id = (int) $this->get('id');
+  public function all_comments_get(){
+    $id = (int) $this->get('id');
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $q = $this->soc->comments_all_data($id);
