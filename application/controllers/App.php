@@ -1070,8 +1070,8 @@ class App extends REST_Controller {
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
     $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
-    $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique');
-    $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required|is_unique');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required');
+    $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
     $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'trim|required');
     $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
