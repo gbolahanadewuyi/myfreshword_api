@@ -1078,8 +1078,8 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('avatar_img', 'Avatar Image', 'trim|required|jpg|png|jpeg');
-    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+    $this->form_validation->set_rules('avatar_img', 'Avatar Image', 'required|jpg|png|jpeg');
+    // $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
     if ($this->form_validation->run() === FALSE){
         foreach($_POST as $key =>$value){
@@ -1093,7 +1093,7 @@ class App extends REST_Controller {
         'email'               =>  $_POST['email'],
         'mobile_number'       =>  $_POST['mobile_number'],
         'date_of_birth'       =>  $_POST['date_of_birth'],
-        'gender'        				=>  $_POST['gender'],
+        'gender'        			=>  $_POST['gender'],
         'nationality'        	=>  $_POST['nationality'],
         'marital_status'      =>  $_POST['marital_status'],
         'address'      				=>  $_POST['address'],
