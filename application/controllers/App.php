@@ -1054,6 +1054,58 @@ class App extends REST_Controller {
     }
 
     $this->response($data, REST_Controller::HTTP_OK);
+	}
+	
+
+  public function church_membership_register_post(){
+
+		$config['upload_path'] = './public/images/church_members/';
+		$config['allowed_types'] = 'jpeg|jpg|png';
+		$config['max_size'] = '100';
+		$config['max_width'] = '300';
+		$config['max_height'] = '300';
+		$this->load->helper(array('form', 'url'));
+
+    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+
+    $data= array('success'=> false, 'messages' => array());
+    $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
+    $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
+    $this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique');
+    $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required|is_unique');
+    $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'trim|required');
+    $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+    $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
+    $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
+    $this->form_validation->set_rules('address', 'Address', 'trim|required');
+    $this->form_validation->set_rules('avatar_img', 'Avatar Img', 'trim|required|jpg|png|jpeg');
+    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
+    if ($this->form_validation->run() === FALSE){
+        foreach($_POST as $key =>$value){
+            $data['messages'][$key] = form_error($key);
+        }
+    }
+    else{
+      $churchMemberData = array(
+        'first_name'          =>  $_POST['first_name'],
+        'last_name'           =>  $_POST['last_name'],
+        'email'               =>  $_POST['email'],
+        'mobile_number'       =>  $_POST['mobile_number'],
+        'date_of_birth'       =>  $_POST['date_of_birth'],
+        'gener'        				=>  $_POST['gender'],
+        'nationality'        	=>  $_POST['nationality'],
+        'marital_status'      =>  $_POST['marital_status'],
+        'address'      				=>  $_POST['address'],
+        'location'            =>  $_POST['location'],
+        'avatar_img'      	  =>  $_POST['avatar_img']
+       
+      );
+      $data['success']    = true;
+      $data['messages']   = $this->MyModel->create_church_member($churchMemberData);
+    }
+
+    $this->response($data, REST_Controller::HTTP_OK);
   }
 
 
