@@ -80,8 +80,8 @@ $live = ENVIRONMENT == 'production';
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '35.190.219.223',
-	'username' => 'nii',
-	'password' => 'Welcome1#',
+	'username' => 'mac',
+	'password' => 'Some1ilove',
 	'database' => 'myfreshword',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
