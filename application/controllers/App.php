@@ -1061,7 +1061,7 @@ class App extends REST_Controller {
 
 		$config['upload_path'] = './public/images/church_members/';
 		$config['allowed_types'] = 'jpeg|jpg|png';
-		$config['max_size'] = '100';
+		$config['max_size'] = '2048';
 		$config['max_width'] = '300';
 		$config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
@@ -1078,7 +1078,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('avatar_img', 'Avatar Img', 'trim|required|jpg|png|jpeg');
+    $this->form_validation->set_rules('avatar_img', 'Avatar Image', 'trim|required|jpg|png|jpeg');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
     if ($this->form_validation->run() === FALSE){
@@ -1093,7 +1093,7 @@ class App extends REST_Controller {
         'email'               =>  $_POST['email'],
         'mobile_number'       =>  $_POST['mobile_number'],
         'date_of_birth'       =>  $_POST['date_of_birth'],
-        'gener'        				=>  $_POST['gender'],
+        'gender'        				=>  $_POST['gender'],
         'nationality'        	=>  $_POST['nationality'],
         'marital_status'      =>  $_POST['marital_status'],
         'address'      				=>  $_POST['address'],
