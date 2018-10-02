@@ -102,9 +102,9 @@ $db['default'] = array(
 if(!$live){
 	$db['default'] = array(
 		'dsn'	=> '',
-		'hostname' => '127.0.0.1',
-		'username' => 'root',
-		'password' => '',
+		'hostname' => '35.190.219.223',
+		'username' => 'mac',
+		'password' => 'Some1ilove',
 		'database' => 'myfreshword',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
