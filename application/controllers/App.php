@@ -1057,6 +1057,14 @@ class App extends REST_Controller {
 	
 
   public function church_membership_register_post(){
+
+		$config['upload_path'] = './public/images/church_members/';
+		$config['allowed_types'] = 'jpeg|jpg|png';
+		$config['max_size'] = '100';
+		$config['max_width'] = '300';
+		$config['max_height'] = '300';
+		$this->load->helper(array('form', 'url'));
+
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
     $data= array('success'=> false, 'messages' => array());
@@ -1090,9 +1098,8 @@ class App extends REST_Controller {
         'address'      				=>  $_POST['address'],
         'location'            =>  $_POST['location'],
         'avatar_img'      	  =>  $_POST['avatar_img']
-        // 'approval_code'       =>  $this->MyModel->generate_merchant_activation_code()
+       
       );
-      // $data['sms']        = $this->MyModel->send_code( $regData['mobile'], $regData['approval_code']);
       $data['success']    = true;
       $data['messages']   = $this->MyModel->create_church_member($churchMemberData);
     }
