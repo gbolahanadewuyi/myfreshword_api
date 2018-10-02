@@ -1065,7 +1065,9 @@ class App extends REST_Controller {
 		$config['max_width'] = '300';
 		$config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
-
+		$this->load->library('upload', $config);
+		
+		$this->upload->initialize($config);
     $_POST = json_decode(file_get_contents('php://input'), TRUE);
 
     $data= array('success'=> false, 'messages' => array());
@@ -1099,7 +1101,6 @@ class App extends REST_Controller {
         'address'      				=>  $_POST['address'],
         'location'            =>  $_POST['location'],
         'avatar_img'      	  =>  $_POST['avatar_img']
-       
       );
       $data['success']    = true;
       $data['messages']   = $this->MyModel->create_church_member($churchMemberData);
