@@ -1080,7 +1080,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('avatar_img', 'Avatar Image', 'required|jpg|png|jpeg');
+    $this->form_validation->set_rules('member_photo', 'Avatar Image', 'required|jpg|png|jpeg');
     // $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
     if ($this->form_validation->run() === FALSE){
@@ -1100,7 +1100,7 @@ class App extends REST_Controller {
         'marital_status'      =>  $_POST['marital_status'],
         'address'      				=>  $_POST['address'],
         'location'            =>  $_POST['location'],
-        'avatar_img'      	  =>  $_POST['avatar_img']
+        'member_photo'      	  =>  $_POST['member_photo']
       );
       $data['success']    = true;
       $data['messages']   = $this->MyModel->create_church_member($churchMemberData);
