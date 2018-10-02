@@ -1012,6 +1012,17 @@ class MyModel extends CI_Model {
         else{
           return array('status'=>400, 'message'=> 'Error creating merchant account');
         }
+			}
+			
+			//Create Church Mmembership
+      public function create_church_member($data){
+        $query =  $this->db->insert('mfw_church_membership',$data);
+        if($query == true){
+          return array('status'=>200, 'message'=> 'Member created successfully');
+        }
+        else{
+          return array('status'=>400, 'message'=> 'Error adding membership data');
+        }
       }
 
 
