@@ -1098,7 +1098,6 @@ class App extends REST_Controller {
         'gender'        			=>  $_POST['gender'],
         'nationality'        	=>  $_POST['nationality'],
         'marital_status'      =>  $_POST['marital_status'],
-        'address'      				=>  $_POST['address'],
         'address'            =>  $_POST['address'],
         'member_photo'      	=>  $_POST['member_photo']
       );
