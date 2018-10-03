@@ -1099,7 +1099,7 @@ class App extends REST_Controller {
         'nationality'        	=>  $_POST['nationality'],
         'marital_status'      =>  $_POST['marital_status'],
         'address'      				=>  $_POST['address'],
-        'location'            =>  $_POST['location'],
+        'address'            =>  $_POST['address'],
         'member_photo'      	=>  $_POST['member_photo']
       );
       $data['success']    = true;
