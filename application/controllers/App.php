@@ -1083,14 +1083,12 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
     // $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
-    if ($this->form_validation->run() === FALSE){
-			echo form_error($data);
-			
-        // foreach($_POST as $key =>$value){
-        //     $data['messages'][$key] = form_error($key);
-        // }
-    }
-    else{
+    // if ($this->form_validation->run() === FALSE){
+    //     foreach($_POST as $key =>$value){
+    //         $data['messages'][$key] = form_error($key);
+    //     }
+    // }
+    // else{
       $churchMemberData = array(
         'first_name'          =>  $_POST['first_name'],
         'last_name'           =>  $_POST['last_name'],
@@ -1106,7 +1104,7 @@ class App extends REST_Controller {
       );
       $data['success']    = true;
       $data['messages']   = $this->MyModel->create_church_member($churchMemberData);
-    }
+    // }
 
     $this->response($data, REST_Controller::HTTP_OK);
   }
