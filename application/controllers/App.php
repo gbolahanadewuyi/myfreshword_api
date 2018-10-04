@@ -1059,6 +1059,9 @@ class App extends REST_Controller {
 
   public function church_membership_register_post(){
 
+		$response = $this->MyModel->merchant_auth();
+    if($response['status']==200){
+			
 		$config['upload_path'] = './public/images/church_members/';
 		$config['allowed_types'] = 'jpeg|jpg|png';
 		$config['max_size'] = '2048';
@@ -1083,32 +1086,30 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		
-		if($this->form_validation->run($this)){
-			$data['success'] = true;
-	}else{
-			foreach ($_POST as $key => $value) {
-					# code...
+		if ($this->form_validation->run() === FALSE){
+			foreach($_POST as $key =>$value){
 					$data['messages'][$key] = form_error($key);
 			}
-			
 	}
-
-	$churchMemberData = array(
-		'first_name'          =>  $_POST['first_name'],
-		'last_name'           =>  $_POST['last_name'],
-		'email'               =>  $_POST['email'],
-		'mobile_number'       =>  $_POST['mobile_number'],
-		'date_of_birth'       =>  $_POST['date_of_birth'],
-		'gender'        			=>  $_POST['gender'],
-		'nationality'        	=>  $_POST['nationality'],
-		'marital_status'      =>  $_POST['marital_status'],
-		'address'            =>  $_POST['address'],
-		'member_photo'      	=>  $_POST['member_photo']
-	);
-	$data['success']    = true;
-	$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
-	
+	else{
+		$churchMemberData = array(
+			'first_name'          =>  $_POST['first_name'],
+			'last_name'           =>  $_POST['last_name'],
+			'email'               =>  $_POST['email'],
+			'mobile_number'       =>  $_POST['mobile_number'],
+			'date_of_birth'       =>  $_POST['date_of_birth'],
+			'gender'        			=>  $_POST['gender'],
+			'nationality'        	=>  $_POST['nationality'],
+			'marital_status'      =>  $_POST['marital_status'],
+			'address'            =>  $_POST['address'],
+			'member_photo'      	=>  $_POST['member_photo']
+		);
+		
+		$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
+		$data = array('success'=>true,'message'=>$query);
+	}
     $this->response($data, REST_Controller::HTTP_OK);
+  }
   }
 
 
