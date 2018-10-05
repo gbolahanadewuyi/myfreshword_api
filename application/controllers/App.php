@@ -1057,61 +1057,61 @@ class App extends REST_Controller {
 	}
 	
 
-  public function church_membership_register_post(){
+  // public function church_membership_register_post(){
 
-		$_POST = json_decode(file_get_contents('php://input'), TRUE);
-		$response = $this->MyModel->merchant_auth();
-    if($response['status']==200){
+	// 	$_POST = json_decode(file_get_contents('php://input'), TRUE);
+	// 	$response = $this->MyModel->merchant_auth();
+  //   if($response['status']==200){
 			
-		$config['upload_path'] = './public/images/church_members/';
-		$config['allowed_types'] = 'jpeg|jpg|png';
-		$config['max_size'] = '2048';
-		$config['max_width'] = '300';
-		$config['max_height'] = '300';
-		$this->load->helper(array('form', 'url'));
-		$this->load->library('upload', $config);
+	// 	$config['upload_path'] = './public/images/church_members/';
+	// 	$config['allowed_types'] = 'jpeg|jpg|png';
+	// 	$config['max_size'] = '2048';
+	// 	$config['max_width'] = '300';
+	// 	$config['max_height'] = '300';
+	// 	$this->load->helper(array('form', 'url'));
+	// 	$this->load->library('upload', $config);
 		
-		$this->upload->initialize($config);
+	// 	$this->upload->initialize($config);
    
 
-    $data= array('success'=> false, 'messages' => array());
-    $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
-    $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
-    $this->form_validation->set_rules('email', 'Email', 'trim|required');
-    $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
-    $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'trim|required');
-    $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
-    $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
-    $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
-    $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
-    $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+  //   $data= array('success'=> false, 'messages' => array());
+  //   $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
+  //   $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
+  //   $this->form_validation->set_rules('email', 'Email', 'trim|required');
+  //   $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+  //   $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'trim|required');
+  //   $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+  //   $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
+  //   $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
+  //   $this->form_validation->set_rules('address', 'Address', 'trim|required');
+  //   $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
+  //   $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
-		if ($this->form_validation->run() === FALSE){
-			foreach($_POST as $key =>$value){
-					$data['messages'][$key] = form_error($key);
-			}
-	}
-	else{
-		$churchMemberData = array(
-			'first_name'          =>  $_POST['first_name'],
-			'last_name'           =>  $_POST['last_name'],
-			'email'               =>  $_POST['email'],
-			'mobile_number'       =>  $_POST['mobile_number'],
-			'date_of_birth'       =>  $_POST['date_of_birth'],
-			'gender'        			=>  $_POST['gender'],
-			'nationality'        	=>  $_POST['nationality'],
-			'marital_status'      =>  $_POST['marital_status'],
-			'address'            =>  $_POST['address'],
-			'member_photo'      	=>  $_POST['member_photo']
-		);
+	// 	if ($this->form_validation->run() === FALSE){
+	// 		foreach($_POST as $key =>$value){
+	// 				$data['messages'][$key] = form_error($key);
+	// 		}
+	// }
+	// else{
+	// 	$churchMemberData = array(
+	// 		'first_name'          =>  $_POST['first_name'],
+	// 		'last_name'           =>  $_POST['last_name'],
+	// 		'email'               =>  $_POST['email'],
+	// 		'mobile_number'       =>  $_POST['mobile_number'],
+	// 		'date_of_birth'       =>  $_POST['date_of_birth'],
+	// 		'gender'        			=>  $_POST['gender'],
+	// 		'nationality'        	=>  $_POST['nationality'],
+	// 		'marital_status'      =>  $_POST['marital_status'],
+	// 		'address'            =>  $_POST['address'],
+	// 		'member_photo'      	=>  $_POST['member_photo']
+	// 	);
 		
-		$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
-		$data = array('success'=>true,'message'=>$query);
-	}
-    $this->response($data, REST_Controller::HTTP_OK);
-  }
-  }
+	// 	$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
+	// 	$data = array('success'=>true,'message'=>$query);
+	// }
+  //   $this->response($data, REST_Controller::HTTP_OK);
+  // }
+  // }
 
 
 
