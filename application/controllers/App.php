@@ -1059,6 +1059,7 @@ class App extends REST_Controller {
 
   public function church_membership_register_post(){
 
+		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 		$response = $this->MyModel->merchant_auth();
     if($response['status']==200){
 			
@@ -1071,7 +1072,7 @@ class App extends REST_Controller {
 		$this->load->library('upload', $config);
 		
 		$this->upload->initialize($config);
-    $_POST = json_decode(file_get_contents('php://input'), TRUE);
+   
 
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
@@ -1085,7 +1086,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
     $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		
+
 		if ($this->form_validation->run() === FALSE){
 			foreach($_POST as $key =>$value){
 					$data['messages'][$key] = form_error($key);
