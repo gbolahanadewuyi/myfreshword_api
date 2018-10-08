@@ -635,7 +635,39 @@ class App extends REST_Controller {
       return false;
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+	}
+	
+
+
+	// Add To Library
+	public function addto_library_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+			
+			
+			// foreach($_POST['cart_data'] as $db_data){
+      //   $data = array(
+      //     'prod_name'   =>  $db_data['prod_name'],
+      //     'prod_uniqid' =>  $db_data['prod_uniqid'],
+      //     'file_link'   =>  $db_data['file_link'],
+      //     'type'        =>  $db_data['prod_type'],
+      //     'paid'        =>  0,
+      //     'free'        =>  1,
+      //     'user_acc'    =>  $db_data['prod_purchase_by'],
+      //     'img_link'    =>  $db_data['prod_img_link'],
+      //     'prod_price'  =>  $db_data['prod_price']
+      //   );
+				$this->db->insert('library', $data);
+				
+      $message = array('status'=>201, 'message'=>'Free items success');
+      $this->response($message, REST_Controller::HTTP_CREATED);
+    
+      return false;
+    }
+    $this->response($response,REST_Controller::HTTP_NOT_FOUND);
   }
+  
 
 
   public function delete_file_delete(){
@@ -1062,15 +1094,15 @@ class App extends REST_Controller {
 		$response = $this->MyModel->merchant_auth();
     if($response['status']==200){
 			
-		$config['upload_path'] = './public/images/church_members/';
-		$config['allowed_types'] = 'jpeg|jpg|png';
-		$config['max_size'] = '2048';
-		$config['max_width'] = '300';
-		$config['max_height'] = '300';
+		// $config['upload_path'] = './public/images/church_members/';
+		// $config['allowed_types'] = 'jpeg|jpg|png';
+		// $config['max_size'] = '2048';
+		// $config['max_width'] = '300';
+		// $config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
-		$this->load->library('upload', $config);
+		// $this->load->library('upload', $config);
 		
-		$this->upload->initialize($config);
+		// $this->upload->initialize($config);
    
 
     $data= array('success'=> false, 'messages' => array());
@@ -1083,7 +1115,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
+    // $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
     $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
 		if ($this->form_validation->run() === FALSE){
@@ -1101,8 +1133,8 @@ class App extends REST_Controller {
 			'gender'        			=>  $_POST['gender'],
 			'nationality'        	=>  $_POST['nationality'],
 			'marital_status'      =>  $_POST['marital_status'],
-			'address'            =>  $_POST['address'],
-			'member_photo'      	=>  $_POST['member_photo']
+			'address'            =>  $_POST['address']
+			// 'member_photo'      	=>  $_POST['member_photo']
 		);
 		
 		$data['messages']   = $this->MyModel->create_church_member($churchMemberData);

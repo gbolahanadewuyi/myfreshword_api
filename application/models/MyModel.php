@@ -1016,7 +1016,7 @@ class MyModel extends CI_Model {
 			
 			//Create Church Mmembership
       public function create_church_member($data){
-        $query =  $this->db->insert('mfw_church_membership',$data);
+        $query =  $this->db->insert('mfw_church_membership', $data);
         if($query == true){
           return array('status'=>200, 'message'=> 'Member created successfully');
         }
