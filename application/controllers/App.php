@@ -340,16 +340,26 @@ class App extends REST_Controller {
   // }
 
 
-  public function all_product_get(){
-     // $response = $this->MyModel->auth($_GET['userid'],$_GET['token']);
-     $response = $this->MyModel->header_auth();
-     if($response['status'] == 200){
-       $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
-       $this->response($resp, REST_Controller::HTTP_OK);
-     }else{
-       $this->response($response, REST_Controller::HTTP_NOT_FOUND);
-     }
-  }
+	public function all_product_get(){
+    $response = $this->MyModel->auth($this->get('userid'),$this->get('token'));
+    if($response['status'] == 200){
+      $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
+      $this->response($resp, REST_Controller::HTTP_OK);
+    }else{
+      $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+    }
+ }
+
+  // public function all_product_get(){
+  //    $response = $this->MyModel->auth($_GET['userid'],$_GET['token']);
+  //    $response = $this->MyModel->header_auth();
+  //    if($response['status'] == 200){
+  //      $resp = $this->MyModel->audio_all_data();//this is pulling all data not just audio
+  //      $this->response($resp, REST_Controller::HTTP_OK);
+  //    }else{
+  //      $this->response($response, REST_Controller::HTTP_NOT_FOUND);
+  //    }
+  // }
 
   public function product_by_id_get(){
     $response = $this->MyModel->auth($this->get('userid'),$this->get('token'));
