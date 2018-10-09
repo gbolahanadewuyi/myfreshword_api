@@ -644,7 +644,7 @@ class App extends REST_Controller {
 | Controller method for Adding An Item To Library
 |--------------------------------------------------------------------------
 |
-| Here is where you add a product to the users library once they tab add 
+| Here is where you add a product to the users library once they tab add
 | Now create something great!
 |
 */
@@ -652,14 +652,14 @@ class App extends REST_Controller {
 	public function addto_library_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
-      $_POST = json_decode(file_get_contents('php://input'), TRUE);
-			
+      $dataPost = json_decode(file_get_contents('php://input'), TRUE);
+			// foreach($_POST['cart_data'] as $db_data){
 			$data = array(
 				'prod_uniqid'     =>  $dataPost['prod_uniqid'],
-				'prod_userid'			=>  $dataPost['prod_description']
+				'userid'			=>  $dataPost['userid']
 			);
 			$query['insert_query'] = $this->MyModel->addto_library($data);
-
+      // }
       $message = array('status'=>201, 'message'=>'Items Added To Library Success');
       $this->response($message, REST_Controller::HTTP_CREATED);
 
@@ -1093,7 +1093,7 @@ class App extends REST_Controller {
 		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 		$response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-			
+
 		// $config['upload_path'] = './public/images/church_members/';
 		// $config['allowed_types'] = 'jpeg|jpg|png';
 		// $config['max_size'] = '2048';
@@ -1101,9 +1101,9 @@ class App extends REST_Controller {
 		// $config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
 		// $this->load->library('upload', $config);
-		
+
 		// $this->upload->initialize($config);
-   
+
 
 
     $data= array('success'=> false, 'messages' => array());
