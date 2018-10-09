@@ -789,7 +789,7 @@ class App extends REST_Controller {
            $success = ['status'=>true,'success'=>$data['file_name']];
            //echo json_encode($success);
            $imgData = array(
-             'user_photo'     =>  'http://myfreshword.com/myfreshword/api/public/images/profile_photos/'.$data['file_name']
+             'user_photo'     =>  'http://api.myfreshword.com/public/images/profile_photos/'.$data['file_name']
            );
            $this->MyModel->update_profile_image($response['id'], $imgData);
            $this->response($success, REST_Controller::HTTP_OK);
@@ -1227,7 +1227,7 @@ class App extends REST_Controller {
            //echo json_encode($success);
            $imgData = array(
              'prod_image'   =>  $data['file_name'],
-             'img_link'     =>  'http://myfreshword.com/myfreshword/api/public/images/products/'.$data['file_name']
+             'img_link'     =>  'http://api.myfreshword.com/public/images/products/'.$data['file_name']
            );
            $this->MyModel->update_image($id, $imgData);
            $this->response($success, REST_Controller::HTTP_OK);
@@ -1525,7 +1525,7 @@ class App extends REST_Controller {
           $data = $this->upload->data();
           $success = ['status'=>true,'success'=>$data['file_name']];
           //echo json_encode($success);
-          $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
+          $img =   'http://api.myfreshword.com/feed_upload/'.$data['file_name'];
 
           //so run insertion since the validation for the form has been passed correctly
           $data = $this->MyModel->insert_feed_data($_POST,$img);
@@ -1612,7 +1612,7 @@ class App extends REST_Controller {
                 $data = $this->upload->data();
                 $success = ['status'=>true,'success'=>$data['file_name']];
                 //echo json_encode($success);
-                $img =   'http://myfreshword.com/myfreshword/api/feed_upload/'.$data['file_name'];
+                $img =   'http://api.myfreshword.com/feed_upload/'.$data['file_name'];
                 //so run insertion since the validation for the form has been passed correctly
                 $data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
               }
@@ -1756,7 +1756,7 @@ public function merchant_update_profile_post(){
               $data = $this->upload->data();
               $success = ['status'=>true,'success'=>$data['file_name']];
               //echo json_encode($success);
-              $img =   'http://myfreshword.com/myfreshword/api/profile_photos/'.$data['file_name'];
+              $img =   'http://api.myfreshword.com/profile_photos/'.$data['file_name'];
 
               //so run insertion since the validation for the form has been passed correctly
               $data = $this->MyModel->update_merchant_profile($_POST,$img);
