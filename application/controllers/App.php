@@ -558,7 +558,7 @@ class App extends REST_Controller {
     if($response['status']==200){
       $param = json_decode(file_get_contents('php://input'), TRUE);
       $data = array(
-        'email'               => $param['email']
+        'userid'               => $param['userid']
       );
       $query = $this->MyModel->library_data($data['email']);
       $this->response($query,REST_Controller::HTTP_OK);

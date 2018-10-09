@@ -727,9 +727,9 @@ class MyModel extends CI_Model {
 
     }
     //trying to merge arrays here
-    public  function library_data($email){
-      $query =  $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
-      return array_merge($query,$this->free_library_data());
+    public  function library_data($userid){
+      $query =  $this->db->select('prod_uniqid')->from('ts_Library')->where('userid',$userid)->order_by('id','desc')->get()->result();
+      return array($query);
     }
 
 
