@@ -245,7 +245,7 @@ class MyModel extends CI_Model {
       //   return $query;
       // }
 
-        return $this->db->select(*)->from('ts_preachers')->order_by('id','desc')->get()->result();
+        return $this->db->select()->from('ts_preachers')->order_by('id','desc')->get()->result();
     }
 
     public function audio_all_data()
