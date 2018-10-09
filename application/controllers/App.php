@@ -1088,7 +1088,7 @@ class App extends REST_Controller {
 	}
 
 
-  public function church_membership_register_post(){
+  public function merchantchurch_membership_register_post(){
 
 		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 		$response = $this->MyModel->merchant_auth();
