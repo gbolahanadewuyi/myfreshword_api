@@ -729,7 +729,7 @@ class MyModel extends CI_Model {
     //trying to merge arrays here
     public  function library_data($userid){
       $query =  $this->db->select('prod_uniqid')->from('ts_Library')->where('userid',$userid)->order_by('id','desc')->get()->result();
-      return array($query);
+      return array('results'=>$query);
     }
 
 
