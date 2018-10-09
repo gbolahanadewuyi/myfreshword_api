@@ -1093,16 +1093,17 @@ class App extends REST_Controller {
 		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 		$response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-
-		$config['upload_path'] = './public/images/church_members/';
-		$config['allowed_types'] = 'jpeg|jpg|png';
-		$config['max_size'] = '2048';
-		$config['max_width'] = '300';
-		$config['max_height'] = '300';
+			
+		// $config['upload_path'] = './public/images/church_members/';
+		// $config['allowed_types'] = 'jpeg|jpg|png';
+		// $config['max_size'] = '2048';
+		// $config['max_width'] = '300';
+		// $config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
-		$this->load->library('upload', $config);
-
-		$this->upload->initialize($config);
+		// $this->load->library('upload', $config);
+		
+		// $this->upload->initialize($config);
+   
 
 
     $data= array('success'=> false, 'messages' => array());
