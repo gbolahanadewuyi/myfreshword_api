@@ -625,6 +625,40 @@ class MyModel extends CI_Model {
 
 
     }
+		
+			/*
+|--------------------------------------------------------------------------
+| Model for Adding An Item To Library
+|--------------------------------------------------------------------------
+|
+| Here is where you add a product to the users library once they tab add 
+| Now create something great!
+|
+*/
+    public function addto_library($data = array()){
+
+        $checkLib = $this->check_if_item_is_purchased($data);
+        if($checkLib['success'] ==  true){
+          $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
+            if($query == ""){//if query didnt bring back anything
+              $insertDB = $this->db->insert('ts_cart',$data);
+                        if($insertDB == true){
+                          return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$insertDB);
+                        }else{
+                          return array('success'=>false, 'message'=> 'Error adding product to cart', 'db_query'=>$insertDB);
+                        }
+            }else{
+              return array(
+                'success'=>false,
+                'message'=> 'Product already added'
+              );
+            }
+        }else{
+          return $checkLib;
+        }
+
+
+    }
 
     public function check_if_item_is_purchased($data = array()){
       $query = $this->db->select()->from('ts_paid_prod')->where('prod_uniqid',$data['prod_uniqid'])->where('user_acc',$data['prod_purchase_by'])->get()->row();

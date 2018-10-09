@@ -639,28 +639,29 @@ class App extends REST_Controller {
 	
 
 
-	// Add To Library
+
+	/*
+|--------------------------------------------------------------------------
+| Controller method for Adding An Item To Library
+|--------------------------------------------------------------------------
+|
+| Here is where you add a product to the users library once they tab add 
+| Now create something great!
+|
+*/
+
 	public function addto_library_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
 			
-			
-			// foreach($_POST['cart_data'] as $db_data){
-      //   $data = array(
-      //     'prod_name'   =>  $db_data['prod_name'],
-      //     'prod_uniqid' =>  $db_data['prod_uniqid'],
-      //     'file_link'   =>  $db_data['file_link'],
-      //     'type'        =>  $db_data['prod_type'],
-      //     'paid'        =>  0,
-      //     'free'        =>  1,
-      //     'user_acc'    =>  $db_data['prod_purchase_by'],
-      //     'img_link'    =>  $db_data['prod_img_link'],
-      //     'prod_price'  =>  $db_data['prod_price']
-      //   );
-				$this->db->insert('library', $data);
-				
-      $message = array('status'=>201, 'message'=>'Free items success');
+			$data = array(
+				'prod_uniqid'     =>  $dataPost['prod_uniqid'],
+				'prod_userid'			=>  $dataPost['prod_description']
+			);
+			$query['insert_query'] = $this->MyModel->addto_library($data);
+
+      $message = array('status'=>201, 'message'=>'Items Added To Library Success');
       $this->response($message, REST_Controller::HTTP_CREATED);
     
       return false;
