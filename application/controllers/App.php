@@ -636,7 +636,7 @@ class App extends REST_Controller {
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
 	}
-	
+
 
 
 	// Add To Library
@@ -644,8 +644,8 @@ class App extends REST_Controller {
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
       $_POST = json_decode(file_get_contents('php://input'), TRUE);
-			
-			
+
+
 			// foreach($_POST['cart_data'] as $db_data){
       //   $data = array(
       //     'prod_name'   =>  $db_data['prod_name'],
@@ -659,15 +659,15 @@ class App extends REST_Controller {
       //     'prod_price'  =>  $db_data['prod_price']
       //   );
 				$this->db->insert('library', $data);
-				
+
       $message = array('status'=>201, 'message'=>'Free items success');
       $this->response($message, REST_Controller::HTTP_CREATED);
-    
+
       return false;
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
   }
-  
+
 
 
   public function delete_file_delete(){
@@ -795,7 +795,7 @@ class App extends REST_Controller {
        }
     }else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-    }      
+    }
   }
 
 
@@ -1086,14 +1086,14 @@ class App extends REST_Controller {
 
     $this->response($data, REST_Controller::HTTP_OK);
 	}
-	
+
 
   public function church_membership_register_post(){
 
 		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 		$response = $this->MyModel->merchant_auth();
     if($response['status']==200){
-			
+
 		$config['upload_path'] = './public/images/church_members/';
 		$config['allowed_types'] = 'jpeg|jpg|png';
 		$config['max_size'] = '2048';
@@ -1101,9 +1101,9 @@ class App extends REST_Controller {
 		$config['max_height'] = '300';
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('upload', $config);
-		
+
 		$this->upload->initialize($config);
-   
+
 
     $data= array('success'=> false, 'messages' => array());
     $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
@@ -1136,7 +1136,7 @@ class App extends REST_Controller {
 			'address'            =>  $_POST['address']
 			// 'member_photo'      	=>  $_POST['member_photo']
 		);
-		
+
 		$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
 		$data = array('success'=>true,'message'=>$query);
 	}
@@ -1327,8 +1327,8 @@ class App extends REST_Controller {
       $this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
       $this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
       $this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-      $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-      $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
+      //$this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
+      //$this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
       $this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]');//this is the theme
       $this->form_validation->set_rules('prod_essay', 'Description', 'trim|required');//and this is the essay
       $this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
@@ -1359,9 +1359,9 @@ class App extends REST_Controller {
           'prod_cateid'           =>      1,
           'prod_subcateid'        =>      0,
           'prod_filename'         =>      0,
-          'prod_price'            =>      $_POST['prod_price'],
+          'prod_price'            =>      0,
           'prod_plan'             =>      0,
-          'prod_free'             =>      0,
+          'prod_free'             =>      1,
           'prod_featured'         =>      0,
           'prod_status'           =>      1,
           'prod_uniqid'           =>      $this->MyModel->generate_product_unique_code(),
@@ -1372,7 +1372,7 @@ class App extends REST_Controller {
           'type_list'             =>      $_POST['prod_tags'],
           //'file_link'             =>      $_POST['file_link'],
           'merchant_email'        =>      $_POST['merchant_email'],
-          'currency'              =>      $_POST['prod_currency'],
+          'currency'              =>      'GHS',
           'prod_date'             =>      date('Y-m-d H:i:s')
         );
         $query = $this->MyModel->merchant_insert_product($prodData);
