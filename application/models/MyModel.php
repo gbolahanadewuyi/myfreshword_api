@@ -238,14 +238,9 @@ class MyModel extends CI_Model {
     }
 
     public function get_all_preachers(){
-      // $query = $this->check_auth_client();
-      // if($query === true){
-      //
-      // }else{
-      //   return $query;
-      // }
 
-        return $this->db->select('id,name')->from('speakers')->order_by('id','desc')->get()->result();
+        $q= $this->db->select('id,name')->from('speakers')->order_by('id','desc')->get()->result();
+        return array('status'=>200, 'result'=>$q);
     }
 
     public function audio_all_data()
