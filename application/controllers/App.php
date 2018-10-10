@@ -1328,8 +1328,8 @@ class App extends REST_Controller {
       $this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
       $this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
       $this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-      $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-      $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
+      // $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
+      // $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
       $this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]');//this is the theme
       $this->form_validation->set_rules('prod_essay', 'Description', 'trim|required');//and this is the essay
       $this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
@@ -1360,7 +1360,7 @@ class App extends REST_Controller {
           'prod_cateid'           =>      1,
           'prod_subcateid'        =>      0,
           'prod_filename'         =>      0,
-          'prod_price'            =>      $_POST['prod_price'],
+          // 'prod_price'            =>      $_POST['prod_price'],
           'prod_plan'             =>      0,
           'prod_free'             =>      0,
           'prod_featured'         =>      0,
@@ -1373,7 +1373,7 @@ class App extends REST_Controller {
           'type_list'             =>      $_POST['prod_tags'],
           //'file_link'             =>      $_POST['file_link'],
           'merchant_email'        =>      $_POST['merchant_email'],
-          'currency'              =>      $_POST['prod_currency'],
+          // 'currency'              =>      $_POST['prod_currency'],
           'prod_date'             =>      date('Y-m-d H:i:s')
         );
         $query = $this->MyModel->merchant_insert_product($prodData);
