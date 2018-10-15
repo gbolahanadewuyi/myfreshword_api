@@ -249,14 +249,6 @@ class App extends REST_Controller
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	//fetch membership bio data
-
-	public function church_members_get()
-	{
-		$query = $this->MyModel->get_all_church_members();
-		$this->response($query, REST_Controller::HTTP_OK);
-	}
-
 
 
 	protected function mail_user($toEmail, $subject, $message)
@@ -1122,8 +1114,6 @@ class App extends REST_Controller
 			$this->upload->initialize($config);
 
 
-
-
 			$data = array('success' => false, 'messages' => array());
 			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
 			$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
@@ -1137,10 +1127,8 @@ class App extends REST_Controller
     // $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
-
 			if ($this->form_validation->run() === false) {
-			// echo json_encode(validation_errors());
-			// die();
+
 				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
@@ -1165,6 +1153,14 @@ class App extends REST_Controller
 		}
 	}
 
+
+		//fetch membership bio data
+
+		public function get_church_membership_data_get()
+		{
+			$query = $this->MyModel->get_all_church_members();
+			$this->response($query, REST_Controller::HTTP_OK);
+		}
 
 
 	public function merchant_login_post()
