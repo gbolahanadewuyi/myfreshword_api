@@ -558,9 +558,9 @@ class App extends REST_Controller {
     if($response['status']==200){
       $param = json_decode(file_get_contents('php://input'), TRUE);
       $data = array(
-        'email'               => $param['email']
+        'userid'               => $response['id']
       );
-      $query = $this->MyModel->library_data($data['email']);
+      $query = $this->MyModel->library_data($data['userid']);
       $this->response($query,REST_Controller::HTTP_OK);
     }
     else{
@@ -636,7 +636,6 @@ class App extends REST_Controller {
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
 	}
-	
 
 
 
@@ -645,7 +644,7 @@ class App extends REST_Controller {
 | Controller method for Adding An Item To Library
 |--------------------------------------------------------------------------
 |
-| Here is where you add a product to the users library once they tab add 
+| Here is where you add a product to the users library once they tab add
 | Now create something great!
 |
 */
@@ -653,22 +652,22 @@ class App extends REST_Controller {
 	public function addto_library_post(){
     $response = $this->MyModel->header_auth();
     if($response['status']==200){
-      $_POST = json_decode(file_get_contents('php://input'), TRUE);
-			
+      $dataPost = json_decode(file_get_contents('php://input'), TRUE);
+			// foreach($_POST['cart_data'] as $db_data){
 			$data = array(
 				'prod_uniqid'     =>  $dataPost['prod_uniqid'],
-				'prod_userid'			=>  $dataPost['prod_description']
+				'userid'			=>  $dataPost['userid']
 			);
 			$query['insert_query'] = $this->MyModel->addto_library($data);
-
+      // }
       $message = array('status'=>201, 'message'=>'Items Added To Library Success');
       $this->response($message, REST_Controller::HTTP_CREATED);
-    
+
       return false;
     }
     $this->response($response,REST_Controller::HTTP_NOT_FOUND);
   }
-  
+
 
 
   public function delete_file_delete(){
@@ -796,7 +795,7 @@ class App extends REST_Controller {
        }
     }else{
       $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-    }      
+    }
   }
 
 
@@ -1087,7 +1086,7 @@ class App extends REST_Controller {
 
     $this->response($data, REST_Controller::HTTP_OK);
 	}
-	
+
 
   public function church_membership_register_post(){
 
@@ -1105,8 +1104,10 @@ class App extends REST_Controller {
 		$this->upload->initialize($config);
    
 
+
+
     $data= array('success'=> false, 'messages' => array());
-    $this->form_validation->set_rules('firs_tname', 'First Name', 'trim|required');
+    $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
     $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
     $this->form_validation->set_rules('email', 'Email', 'trim|required');
     $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
@@ -1115,7 +1116,7 @@ class App extends REST_Controller {
     $this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
     $this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
     $this->form_validation->set_rules('address', 'Address', 'trim|required');
-    $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
+    // $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 	
 
@@ -1140,7 +1141,7 @@ class App extends REST_Controller {
 			'address'            =>  $_POST['address'],
 			'member_photo'      	=>  $_POST['member_photo']
 		);
-		
+
 		$data['messages']   = $this->MyModel->create_church_member($churchMemberData);
 		$data = array('success'=>true,'message'=>$query);
 	}
@@ -1365,7 +1366,7 @@ class App extends REST_Controller {
           'prod_filename'         =>      0,
           // 'prod_price'            =>      $_POST['prod_price'],
           'prod_plan'             =>      0,
-          'prod_free'             =>      0,
+          'prod_free'             =>      1,
           'prod_featured'         =>      0,
           'prod_status'           =>      1,
           'prod_uniqid'           =>      $this->MyModel->generate_product_unique_code(),

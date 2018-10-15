@@ -10,7 +10,13 @@ Class SpeakerModel extends CI_Model {
     parent:: __construct();
   }
 
-
+  function get_all_speakers($query){
+        $q = $this->db->select('id,name')->from($this->speakerTable)->get()->result_array();//getting object array returns id of the speaker
+        if($q == ""){
+          return array('status'=>204, 'message'=> 'No Content found');
+        }
+        return array('status'=>200, 'result'=>$q);
+    }
 
 function get_speaker_data($query){
       $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array returns id of the speaker

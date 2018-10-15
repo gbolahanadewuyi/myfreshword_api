@@ -238,14 +238,9 @@ class MyModel extends CI_Model {
     }
 
     public function get_all_preachers(){
-      // $query = $this->check_auth_client();
-      // if($query === true){
-      //
-      // }else{
-      //   return $query;
-      // }
 
-        return $this->db->select('preacher_name')->from('ts_preachers')->order_by('id','desc')->get()->result();
+        $q= $this->db->select('id,name')->from('speakers')->order_by('id','desc')->get()->result();
+        return array('status'=>200, 'result'=>$q);
     }
 
     public function audio_all_data()
@@ -625,38 +620,48 @@ class MyModel extends CI_Model {
 
 
     }
-		
+
 			/*
 |--------------------------------------------------------------------------
 | Model for Adding An Item To Library
 |--------------------------------------------------------------------------
 |
-| Here is where you add a product to the users library once they tab add 
+| Here is where you add a product to the users library once they tab add
 | Now create something great!
 |
 */
     public function addto_library($data = array()){
 
-        $checkLib = $this->check_if_item_is_purchased($data);
+        $checkLib = $this->confirm_item_library($data);
+
         if($checkLib['success'] ==  true){
-          $query = $this->db->select()->from('ts_cart')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['prod_purchase_by'])->where('paid',0)->get()->row();
-            if($query == ""){//if query didnt bring back anything
-              $insertDB = $this->db->insert('ts_cart',$data);
-                        if($insertDB == true){
-                          return array('success'=>true, 'message'=> 'Product added successfully', 'db_query'=>$insertDB);
-                        }else{
-                          return array('success'=>false, 'message'=> 'Error adding product to cart', 'db_query'=>$insertDB);
-                        }
-            }else{
-              return array(
-                'success'=>false,
-                'message'=> 'Product already added'
-              );
+          // $query = $this->db->select()->from('ts_Library')->where('prod_uniqid',$data['prod_uniqid'])->where('prod_purchase_by',$data['userid'])->get()->row();
+            // if($query == ""){//if query didnt bring back anything
+              $insertDB = $this->db->insert('ts_Library',$data);
+              if($insertDB == true){
+                          return array('success'=>true, 'message'=> 'Product added successfully to Library', 'db_query'=>$insertDB);
+                }else{
+                          return array('success'=>false, 'message'=> 'Error adding product to library', 'db_query'=>$insertDB);
+                         }
             }
-        }else{
+        else{
           return $checkLib;
         }
 
+
+    }
+
+    public function confirm_item_library($data = array()){
+      $query = $this->db->select()->from('ts_Library')->where('prod_uniqid',$data['prod_uniqid'])->where('userid',$data['userid'])->get()->row();
+      if($query == ""){
+        //move to next function
+        return array('success'=>true, 'message'=> 'Product not purchased to library yet');
+      }else{
+        return array(
+          'success'=>false,
+          'message'=> 'Product already purchased to library'
+        );
+      }
 
     }
 
@@ -717,9 +722,9 @@ class MyModel extends CI_Model {
 
     }
     //trying to merge arrays here
-    public  function library_data($email){
-      $query =  $this->db->select('*')->from('ts_paid_prod')->where('user_acc',$email)->order_by('id','desc')->get()->result();
-      return array_merge($query,$this->free_library_data());
+    public  function library_data($userid){
+      $query =  $this->db->select('prod_uniqid')->from('ts_Library')->where('userid',$userid)->order_by('id','desc')->get()->result();
+      return array('results'=>$query);
     }
 
 
@@ -1047,7 +1052,7 @@ class MyModel extends CI_Model {
           return array('status'=>400, 'message'=> 'Error creating merchant account');
         }
 			}
-			
+
 			//Create Church Mmembership
       public function create_church_member($data){
         $query =  $this->db->insert('mfw_church_membership', $data);

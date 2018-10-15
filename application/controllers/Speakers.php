@@ -31,7 +31,16 @@ Class Speakers extends REST_Controller{
     }
   }
 
-
+public function get_all()
+{
+  // code...
+  $q = $this->sp->get_all_speakers();
+  if($q['status'] ==204){
+    $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+    return false;
+  }
+  $this->response($q, REST_Controller::HTTP_OK);
+}
 
   function search_speaker_post(){
     $response = $this->MyModel->header_auth();
