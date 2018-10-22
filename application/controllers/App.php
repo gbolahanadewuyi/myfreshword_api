@@ -1099,10 +1099,39 @@ class App extends REST_Controller
 			$data['sms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
 			$data['success'] = true;
 			$data['messages'] = $this->MyModel->create_merchant($regData);
-		}
+		}  
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
+
+	  public function church_resident_post(){
+		  $_POST = json_decode(file_get_contents('php://input'), true);
+		  
+		  $data = array('success'=>false, 'messages'=> array());
+		  $this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+		  $this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+		  $this->form_validation->set_rules('rtitle', 'Title', 'trim|required');
+		  $this->form->valivdation->set_rules('org_id', 'ID', 'trim|required');
+		  $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		   
+		  if($this->form_validation->run()===false){
+			  foreach($_POST as $key => $value){
+				  $data['messages'][$key] = form_error($key);
+			  }
+		  }else{
+			  $chuchresidentdata = array(
+				 'first_name' => $_POST['rfirst_name'],
+				 'last_name'  => $_POST['rlast_name'],
+				 'title'     =>$_POST['rtitle'],
+				 'orgid'     =>$_POST['org_id']
+			  );
+			  $data['messages'] = $this->MyModel->create_resident($churchresidentdata);
+		       $data = array('success'=> true, 'message'=> $data);
+			}
+			$this->response($data, REST_Controller:: HTTP_OK);
+	  }
+
+
 
 
 	public function church_membership_register_post()

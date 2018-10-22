@@ -1125,6 +1125,16 @@ class MyModel extends CI_Model
 		}
 	}
 
+	public function create_resident($data){
+	  $query = $this->db->insert('ts_residentpastor', $data);
+	  if($query == true){
+		  return array ('status' =>200, 'message' => 'Resident Created successfully');
+	  }else {
+		  return array('status'=>400, 'message' =>'Error adding residents');
+	  }
+
+	}
+
 			//Create Church Mmembership
 	public function create_church_member($data)
 	{
