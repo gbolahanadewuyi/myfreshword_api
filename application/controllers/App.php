@@ -1156,11 +1156,11 @@ class App extends REST_Controller
 
 		//fetch membership bio data
 
-		public function get_church_membership_data_get()
-		{
-			$query = $this->MyModel->get_all_church_members();
-			$this->response($query, REST_Controller::HTTP_OK);
-		}
+	public function get_church_membership_data_get()
+	{
+		$query = $this->MyModel->get_all_church_members();
+		$this->response($query, REST_Controller::HTTP_OK);
+	}
 
 
 	public function merchant_login_post()
@@ -1537,8 +1537,9 @@ class App extends REST_Controller
 			} else {
 
         //this is where i upload the image for the merchant feed
-				$config['upload_path'] = './feed_upload/';
-				$config['allowed_types'] = 'gif|jpg|png';//allowing only images
+				$config['upload_path'] = './images/uploads';
+				$config['allowed_types']='gif|jpg|png';
+				$config['encrypt_name'] = TRUE;
 				$config['max_size'] = 1024;
 				$this->load->library('upload', $config);
 
