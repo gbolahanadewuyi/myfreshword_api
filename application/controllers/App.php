@@ -1506,13 +1506,26 @@ class App extends REST_Controller
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_profile_get()
-	{
+	public function merchant_profile_get() {
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_merchant_profile($response['id']);
+			$data = array(
+				'res' => $query,
+				'headerRes' => $response
+			);
+			$this->response($data, REST_Controller::HTTP_OK);
+		}
+		else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
+
+	//Get all Churches controller method
+	public function all_churches_get() {
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$query = $this->MyModel->get_all_churches($response['id']);
 			$data = array(
 				'res' => $query,
 				'headerRes' => $response
