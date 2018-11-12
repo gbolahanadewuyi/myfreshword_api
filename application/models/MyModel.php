@@ -146,7 +146,7 @@ class MyModel extends CI_Model
 
 	public function merchant_auth()
 	{
-                  
+
 		$merchant_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
 
@@ -1125,13 +1125,14 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public function create_resident($data){
-	  $query = $this->db->insert('ts_residentpastor', $data);
-	  if($query == true){
-		  return array ('status' =>200, 'message' => 'Resident Created successfully');
-	  }else {
-		  return array('status'=>400, 'message' =>'Error adding residents');
-	  }
+	public function create_resident($data)
+	{
+		$query = $this->db->insert('ts_residentpastor', $data);
+		if ($query == true) {
+			return array('status' => 200, 'message' => 'Resident Created successfully');
+		} else {
+			return array('status' => 400, 'message' => 'Error adding residents');
+		}
 
 	}
 
