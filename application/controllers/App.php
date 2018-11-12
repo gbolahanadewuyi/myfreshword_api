@@ -6,7 +6,7 @@ require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-useFirebaseJWTJWT;
+use \Firebase\JWT\JWT;
 class App extends REST_Controller
 
 {
