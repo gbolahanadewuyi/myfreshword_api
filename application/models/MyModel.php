@@ -355,10 +355,10 @@ class MyModel extends CI_Model {
 
     public function send_code($phone,$pin){
         //$pin = $this->generate_short_code();
-        $url = "http://api.mytxtbox.com/v3/messages/send?".
-                "From=freshword"
+        $url = "https://api.hubtel.com/v1/messages/send?".
+                "From=myFreshWord"
                 ."&To=$phone"
-                ."&Content=".urlencode("$pin")
+                ."&Content=".urlencode("myFreshWord secret code $pin")
                 ."&ClientId=dgsfkiil"
                 ."&ClientSecret=czywtkzd"
                 ."&RegisteredDelivery=true";
@@ -621,7 +621,7 @@ class MyModel extends CI_Model {
 
     }
 
-			/*
+/*
 |--------------------------------------------------------------------------
 | Model for Adding An Item To Library
 |--------------------------------------------------------------------------
@@ -647,8 +647,6 @@ class MyModel extends CI_Model {
         else{
           return $checkLib;
         }
-
-
     }
 
     public function confirm_item_library($data = array()){
@@ -775,6 +773,74 @@ class MyModel extends CI_Model {
           echo $response;
         }
     }
+
+
+//user subscriptions management
+    public  function subscribe($userid,$subscriptionPackage){
+      //check if user has no valid subscription
+      $hasValidSubscription = $this->isSubscribed($userid);
+
+      if($hasValidSubscription['status'] == 204){
+        //subscribe user here
+        switch ($subscriptionPackage) {
+          case 'BRONZE':
+            // code...
+            $amountPaid = '5'
+            $purchaseDate = date('Y-m-d H:i:s');
+            $expired = date("Y-m-d H:i:s", strtotime('+1 day'));
+            break;
+
+          case 'SILVER':
+            // code...
+            $amountPaid = '15'
+            $purchaseDate = date('Y-m-d H:i:s');
+            $expired = date("Y-m-d H:i:s", strtotime('+1 week'));
+            break;
+
+          case 'GOLD':
+            // code...
+            $amountPaid = '25'
+            $purchaseDate = date('Y-m-d H:i:s');
+            $expired = date("Y-m-d H:i:s", strtotime('+1 month'));
+            break;
+
+          case 'PLATINUM':
+            // code...
+            $amountPaid = '50'
+            $purchaseDate = date('Y-m-d H:i:s');
+            $expired = date("Y-m-d H:i:s", strtotime('+1 month'));
+            break;
+
+          case 'CONFERENCE':
+            // code...
+            $amountPaid = '15'
+            $purchaseDate = date('Y-m-d H:i:s');
+            $expired = date("Y-m-d H:i:s", strtotime('+1 week'));
+            break;
+
+          default:
+            // code...
+            return array('status' => 404,'message' => 'Error enrolling user to Subscription');
+            break;
+        }
+        $query =  $this->db->insert('ts_subscription',array('userid' => $userid,'subscriptionType' => $subscriptionPackage,'amountPaid' => $amountPaid,'purchaseDate' => $purchaseDate,'expired' => $expired));
+        return array('status' => 200,'message' => 'Subscription completed successfully.', 'results' =>$query );
+      }else{
+        return array('status' => 204,'message' => 'Subscription process failed because user already has a valid subscription');
+      }
+    }
+
+    public function isSubscribed($userid){
+      $query = $this->db->select('*')->from('ts_subscription')->where('userid',$userid)->where('expired >','NOW()')->get()->row();
+      if($query == true){
+        return array('status'=> 200, 'message'=> 'valid subscription found', 'results'=>$query);
+      }
+      else{
+        return array('status'=> 204, 'message'=> 'No valid Subscription package found');
+      }
+    }
+
+
 
     public function email_enable($data, $param){
       //enable email alerts  ===  Id from user profile details
@@ -1200,8 +1266,8 @@ class MyModel extends CI_Model {
 
     public function send_new_pass($phone,$newpass){
         //$pin = $this->generate_short_code();
-        $url = "http://api.mytxtbox.com/v3/messages/send?".
-                "From=freshword"
+        $url = "https://api.hubtel.com/v1/messages/send?".
+                "From=myFreshWord"
                 ."&To=$phone"
                 ."&Content=".urlencode("Your temporary password : $newpass , please do well to change your password after logging in .Thank You")
                 ."&ClientId=dgsfkiil"
@@ -1228,8 +1294,8 @@ class MyModel extends CI_Model {
     }
 
     public function send_reset_code($phone, $resetcode){
-      $url = "http://api.mytxtbox.com/v3/messages/send?".
-              "From=freshword"
+      $url = "https://api.hubtel.com/v1/messages/send?".
+              "From=myFreshWord"
               ."&To=$phone"
               ."&Content=".urlencode("Your account reset code : $resetcode")
               ."&ClientId=dgsfkiil"
@@ -1647,7 +1713,7 @@ class MyModel extends CI_Model {
 
     function send_message_($phone, $message){
 
-      $url = "http://api.mytxtbox.com/v3/messages/send?".
+      $url = "https://api.hubtel.com/v1/messages/send?".
               "From=myFreshWord"//dynamic
               ."&To=$phone"//dynamic
               ."&Content=".urlencode("$message")//dynamic

@@ -870,8 +870,37 @@ class App extends REST_Controller {
   }
 
 
+  public function subscribe_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $userid = $response['id'];
+      $subscriptionPackage = $_POST['subscriptionType'];
 
 
+      $query = $this->MyModel->subscribe($userid,$subscriptionPackage);
+      $this->response($query,REST_Controller::HTTP_OK);
+
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+
+  public function isSubscribed_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $userid = $response['id'];
+
+      $query = $this->MyModel->isSubscribed($userid);
+      $this->response($query,REST_Controller::HTTP_OK);
+
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 
 
   public function comments_title_post(){
