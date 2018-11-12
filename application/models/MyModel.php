@@ -146,7 +146,7 @@ class MyModel extends CI_Model
 
 	public function merchant_auth()
 	{
-
+                  
 		$merchant_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
 

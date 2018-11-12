@@ -138,7 +138,7 @@ class App extends REST_Controller
 		$this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 
-		if ($this->form_validation->run() === false) {
+		i f ($this->form_validation->run() === false) {
 			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
