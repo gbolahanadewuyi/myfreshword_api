@@ -1431,7 +1431,7 @@ class App extends REST_Controller
 
 	//Get all Churches controller method
 	public function all_churches_get() {
-		$response = $this->MyModel->merchant_auth();
+		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_all_churches($response['id']);
 			$data = array(
