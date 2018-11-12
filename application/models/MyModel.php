@@ -1357,6 +1357,16 @@ class MyModel extends CI_Model
 			return array('status' => 200, 'message' => $query);
 		}
 	}
+    //Get all churches and their ids
+	public function get_all_churches($id)
+	{
+		$query = $this->db->select('id,church_name')->from('ts_church')->where('id', $id)->get()->row();
+		if ($query == "") {
+			return array('status' => 400, 'message' => 'Error fetching all churches data');
+		} else {
+			return array('status' => 200, 'message' => $query);
+		}
+	}
 
 	public function update_image($id, $data)
 	{
