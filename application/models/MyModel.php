@@ -893,7 +893,8 @@ class MyModel extends CI_Model
 
 	public function isSubscribed($userid)
 	{
-		$query = $this->db->select('*')->from('ts_subscription')->where('userid', $userid)->where('expired >', 'NOW()')->get()->row();
+		$now = date('Y-m-d H:i:s');
+		$query = $this->db->select('*')->from('ts_subscription')->where('userid', $userid)->where('expired >', $now)->get()->row();
 		if ($query == true) {
 			return array('status' => 200, 'message' => 'valid subscription found', 'results' => $query);
 		} else {
@@ -1008,7 +1009,7 @@ class MyModel extends CI_Model
 	{//turn all off and set one as set_momo_default
 		$q = $this->user_momo_active($data);
 		if ($q['status'] == 200) {
-         //set default = 1 to set as active
+		//set default = 1 to set as active
 			$query = $this->db->where('payin_number', $data['payin_number'])->update('momo', $data);
 			if ($query == true) {
 				return array('status' => 200, 'message' => 'Number set as default');
