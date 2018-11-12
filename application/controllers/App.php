@@ -1430,20 +1430,20 @@ class App extends REST_Controller
 	}
 
 	//Get all Churches controller method
-	public function all_churches_get() {
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
-			$query = $this->MyModel->get_all_churches($response['id']);
-			$data = array(
-				'res' => $query,
-				'headerRes' => $response
-			);
-			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
-			$this->response($response, REST_Controller::HTTP_OK);
-		}
-	}
+	// public function all_churches_get() {
+	// 	$response = $this->MyModel->header_auth();
+	// 	if ($response['status'] == 200) {
+	// 		$query = $this->MyModel->get_all_churches($response['id']);
+	// 		$data = array(
+	// 			'res' => $query,
+	// 			'headerRes' => $response
+	// 		);
+	// 		$this->response($data, REST_Controller::HTTP_OK);
+	// 	}
+	// 	else {
+	// 		$this->response($response, REST_Controller::HTTP_OK);
+	// 	}
+	// }
 
 	// this has to be sequential now we need to return values here to proceed to the next endpoint
 	// this will be looped twice to the end point
