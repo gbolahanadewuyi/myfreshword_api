@@ -1345,7 +1345,7 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
 		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
 		$this->form_validation->set_rules('rtitle', 'Title', 'trim|required');
-		$this->form->valivdation->set_rules('org_id', 'ID', 'trim|required');
+		$this->form_valivdation->set_rules('org_id', 'ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
 			foreach($_POST as $key => $value) {
