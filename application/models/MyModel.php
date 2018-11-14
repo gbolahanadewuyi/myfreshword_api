@@ -893,6 +893,10 @@ class MyModel extends CI_Model
 
 	public function isSubscribed($userid)
 	{
+		//Using MySQL NOW() in Codeigniter
+		// $this->db->select('field_name', 'NOW()', FALSE);
+		// The FALSE in the set method prevents the NOW() being escaped
+
 		$now = date('Y-m-d H:i:s');
 		$query = $this->db->select('*')->from('ts_subscription')->where('userid', $userid)->where('expired >', $now)->get()->row();
 		if ($query == true) {
