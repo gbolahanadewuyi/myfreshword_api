@@ -2035,14 +2035,11 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_rules('facebook', 'Facebook', 'trim|required');
-			$this->form_validation->set_rules('twitter', 'Twitter', 'trim|required');
-			$this->form_validation->set_rules('youtube', 'Youtube', 'trim|required');
 			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
 			$this->form_validation->set_rules('location', 'Location', 'trim|required');
-			$this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
+			// $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach($_POST as $key => $value) {
