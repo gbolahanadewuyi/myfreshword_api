@@ -6,13 +6,11 @@ require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-useFirebaseJWTJWT;
+use \Firebase\JWT\JWT;
 class App extends REST_Controller
 
 {
-	public
-
-	function __construct()
+	public	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('MyModel');
@@ -20,9 +18,7 @@ class App extends REST_Controller
 		$this->load->library('hubtelApi');
 	}
 
-	public
-
-	function isLoggedin_post()
+	public function isLoggedin_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$response = $this->MyModel->auth($_POST['id'], $_POST['token']);
@@ -34,9 +30,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function login_post()
+	public function login_post()
 	{
 
 		// get from json body
@@ -63,9 +57,7 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function logout_post()
+	public function logout_post()
 	{
 		$response = $this->MyModel->logout();
 		$this->response($response, REST_Controller::HTTP_OK);
@@ -73,9 +65,7 @@ class App extends REST_Controller
 
 	// NEW LOGIN FOR MYFRESHWORD LOGIN  PAGE
 
-	public
-
-	function mobile_login_post()
+	public function mobile_login_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$user_mobile = $_POST['mobile'];
@@ -116,9 +106,7 @@ class App extends REST_Controller
 
 	// user forgot password resets the same process in themeportal web
 
-	public
-
-	function forgot_password_post()
+	public function forgot_password_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -160,9 +148,7 @@ class App extends REST_Controller
 	// activation for user who signs up by using email verification
 	//
 
-	public
-
-	function sign_up_post()
+	public function sign_up_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -202,9 +188,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function activate_account_post()
+	public function activate_account_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -237,9 +221,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function reset_password_post()
+	public function reset_password_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -273,9 +255,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function new_password_post()
+	public function new_password_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -301,9 +281,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function resend_post()
+	public function resend_post()
 	{ //this will stored by default
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		if ($_POST['mobile'] == null) {
@@ -324,16 +302,13 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function preachers_get()
+	public function preachers_get()
 	{
 		$query = $this->MyModel->get_all_preachers();
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	protected
-	function mail_user($toEmail, $subject, $message)
+	protected function mail_user($toEmail, $subject, $message)
 	{
 		$data = array(
 			'email' => 'admin@myfreshword.com',
@@ -347,17 +322,13 @@ class App extends REST_Controller
 
 	// list all the number of churches user is registered on
 
-	public
-
-	function church_list_get()
+	public function church_list_get()
 	{
 		$data = $this->MyModel->church_all_data();
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function feed_post()
+	public function feed_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -394,15 +365,11 @@ class App extends REST_Controller
 	// THIS PART CALLS API FOR DATA AFTER USER HAS LOGGED IN SUCCESSFULLY
 
 	*/
-	public
-
-	function change_password_post()
+	public function change_password_post()
 	{
 	}
 
-	public
-
-	function facebook_login_post()
+	public function facebook_login_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -416,9 +383,7 @@ class App extends REST_Controller
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function google_login_post()
+	public function google_login_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -433,9 +398,7 @@ class App extends REST_Controller
 
 	// get user profile data by id and apikey
 
-	public
-
-	function user_profile_get()
+	public function user_profile_get()
 	{
 		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
 		if ($response['status'] == 200) { //if header is passed
@@ -452,9 +415,7 @@ class App extends REST_Controller
 	//
 	// }
 
-	public
-
-	function all_product_get()
+	public function all_product_get()
 	{
 		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
 		if ($response['status'] == 200) {
@@ -466,9 +427,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function product_by_id_get()
+	public function product_by_id_get()
 	{
 		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
 		if ($response['status'] == 200) {
@@ -480,9 +439,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function mobile_money_post()
+	public function mobile_money_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -552,9 +509,7 @@ class App extends REST_Controller
 	//   $this->response($data,REST_Controller::HTTP_OK);
 	// }
 
-	public
-
-	function momo_app_post()
+	public function momo_app_post()
 	{
 		$responseHead = $this->MyModel->header_auth();
 		if ($responseHead['status'] == 200) {
@@ -580,9 +535,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function momo_default_post()
+	public function momo_default_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -597,9 +550,7 @@ class App extends REST_Controller
 
 	// this should pull data
 
-	public
-
-	function get_momo_data_post()
+	public function get_momo_data_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -615,26 +566,20 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function credit_card_post()
+	public function credit_card_post()
 	{
 		$data = json_decode(file_get_contents('php://input') , true);
 		$query = $this->MyModel->bin_checker($data['bin']);
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function head_post()
+	public function head_post()
 	{
 		$query = $this->MyModel->check_auth_client();
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function cardAdd_post()
+	public function cardAdd_post()
 	{ //this to add products to carts
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -664,9 +609,7 @@ class App extends REST_Controller
 
 	// on page load post run and get necessary data from cart
 
-	public
-
-	function cart_status_post()
+	public function cart_status_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -684,9 +627,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function remove_cart_item_post()
+	public function remove_cart_item_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -703,9 +644,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function library_post()
+	public function library_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -721,9 +660,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function checkout_post()
+	public function checkout_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -753,9 +690,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function checkout_all_free_post()
+	public function checkout_all_free_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -802,6 +737,37 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 	}
 
+  public function subscribe_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $_POST = json_decode(file_get_contents('php://input'), TRUE);
+      $userid = $response['id'];
+      $subscriptionPackage = $_POST['subscriptionType'];
+
+
+      $query = $this->MyModel->subscribe($userid,$subscriptionPackage);
+      $this->response($query,REST_Controller::HTTP_OK);
+
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+
+  public function isSubscribed_post(){
+    $response = $this->MyModel->header_auth();
+    if($response['status']==200){
+      $userid = $response['id'];
+
+      $query = $this->MyModel->isSubscribed($userid);
+      $this->response($query,REST_Controller::HTTP_OK);
+
+    }
+    else{
+      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
 	/*
 	|--------------------------------------------------------------------------
 	| Controller method for Adding An Item To Library
@@ -811,9 +777,7 @@ class App extends REST_Controller
 	| Now create something great!
 	|
 	*/
-	public
-
-	function addto_library_post()
+	public function addto_library_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -840,9 +804,7 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 	}
 
-	public
-
-	function delete_file_delete()
+	public function delete_file_delete()
 	{
 		$id = (int)$this->get('id');
 		$response = $this->MyModel->header_auth();
@@ -864,9 +826,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function clear_library_post()
+	public function clear_library_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -895,15 +855,11 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function process_payment_post()
+	public function process_payment_post()
 	{
 	}
 
-	public
-
-	function sms_enable_post()
+	public function sms_enable_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -924,9 +880,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function email_enable_post()
+	public function email_enable_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -940,9 +894,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function profile_update_post()
+	public function profile_update_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -978,9 +930,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function upload_profile_photo_post()
+	public	function upload_profile_photo_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1018,9 +968,7 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public
-
-	function payment_response_post()
+	public function payment_response_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -1054,9 +1002,7 @@ class App extends REST_Controller
 	// transactionid
 	//
 
-	public
-
-	function process_cart_payment_post()
+	public function process_cart_payment_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1099,9 +1045,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function comments_title_post()
+	public function comments_title_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1123,9 +1067,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function product_search_query_post()
+	public function product_search_query_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1138,9 +1080,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function feed_search_query_post()
+	public function feed_search_query_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1153,9 +1093,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function filter_audio_get()
+	public function filter_audio_get()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1172,9 +1110,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function filter_video_get()
+	public function filter_video_get()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1191,9 +1127,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function filter_book_get()
+	public function filter_book_get()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1212,9 +1146,7 @@ class App extends REST_Controller
 
 	/*
 	*/
-	public
-
-	function filter_audio_search_post()
+	public function filter_audio_search_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1232,9 +1164,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function filter_video_search_post()
+	public function filter_video_search_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1252,9 +1182,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function filter_book_search_post()
+	public function filter_book_search_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
@@ -1281,17 +1209,13 @@ class App extends REST_Controller
 	==================================================================================================================
 	*MERCHANT ENDPOINTS STARTS FROM HERE
 	*/
-	public
-
-	function web_products_get()
+	public function web_products_get()
 	{
 		$resp = $this->MyModel->audio_all_data(); //this is pulling all data not just audio
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_register_post()
+	public function merchant_register_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -1333,9 +1257,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function church_resident_post()
+	public function church_resident_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -1369,9 +1291,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function church_membership_register_post()
+	public function church_membership_register_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$response = $this->MyModel->merchant_auth();
@@ -1435,17 +1355,13 @@ class App extends REST_Controller
 
 	// fetch membership bio data
 
-	public
-
-	function get_church_membership_data_get()
+	public function get_church_membership_data_get()
 	{
 		$query = $this->MyModel->get_all_church_members();
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_login_post()
+	public function merchant_login_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$data = array(
@@ -1470,46 +1386,35 @@ class App extends REST_Controller
 
 	// so here i am beginning session to control my rest client session pages
 
-	public
-
-	function merchant_session_start_post()
+	public function merchant_session_start_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$resp = $this->MyModel->merchant_session($_POST['id'], $_POST['token']);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_activate_account_post()
+	public function merchant_activate_account_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$query = $this->MyModel->activate_merchant($_POST);
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_forgot_pass_email_post()
+	public function merchant_forgot_pass_email_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$resp = $this->MyModel->check_merchant_email($_POST);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_confirm_reset_code_post()
+	public function merchant_confirm_reset_code_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
 		$resp = $this->MyModel->check_reset_code($_POST['mobile'], $_POST['resetcode']);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public
-
-	function merchant_profile_get()
-	{
+	public function merchant_profile_get() {
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_merchant_profile($response['id']);
@@ -1524,12 +1429,26 @@ class App extends REST_Controller
 		}
 	}
 
+	//Get all Churches controller method
+	// public function all_churches_get() {
+	// 	$response = $this->MyModel->header_auth();
+	// 	if ($response['status'] == 200) {
+	// 		$query = $this->MyModel->get_all_churches($response['id']);
+	// 		$data = array(
+	// 			'res' => $query,
+	// 			'headerRes' => $response
+	// 		);
+	// 		$this->response($data, REST_Controller::HTTP_OK);
+	// 	}
+	// 	else {
+	// 		$this->response($response, REST_Controller::HTTP_OK);
+	// 	}
+	// }
+
 	// this has to be sequential now we need to return values here to proceed to the next endpoint
 	// this will be looped twice to the end point
 
-	public
-
-	function merchant_add_image_post()
+	public function merchant_add_image_post()
 	{
 		$id = $_POST['id'];
 		$config['upload_path'] = './public/images/products/';
@@ -1563,9 +1482,7 @@ class App extends REST_Controller
 
 	// we run this on the success response from the first push
 
-	public
-
-	function merchant_add_file_post()
+	public function merchant_add_file_post()
 	{
 		$id = $_POST['id'];
 		$query = $this->MyModel->upload_path($id);
@@ -1605,9 +1522,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_products_post()
+	public function merchant_products_post()
 	{
 
 		// $_POST = json_decode(file_get_contents('php://input'), TRUE);
@@ -1661,9 +1576,7 @@ class App extends REST_Controller
 	// and then we finally post the data needed as well
 	// Here we will go through our form validaitons to avoid same data being posted twice
 
-	public
-
-	function merchant_add_product_data_post()
+	public function merchant_add_product_data_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1747,9 +1660,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function product_preview_get()
+	public function product_preview_get()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1762,9 +1673,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function product_edit_get()
+	public function product_edit_get()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1777,9 +1686,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function delete_product_post()
+	public function delete_product_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1792,9 +1699,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function update_product_post()
+	public function update_product_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1845,9 +1750,7 @@ class App extends REST_Controller
 
 	// this is a call back
 
-	public
-
-	function _is_unique2($input)
+	public function _is_unique2($input)
 	{
 		$exclude_id = $_POST['prod_id'];
 		if ($this->db->where('prod_name', $input)->where('prod_id !=', $exclude_id)->limit(1)->get('ts_products')->num_rows()) {
@@ -1858,9 +1761,7 @@ class App extends REST_Controller
 		return true;
 	}
 
-	public
-
-	function dashboard_data_get()
+	public function dashboard_data_get()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1875,9 +1776,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_feed_post()
+	public function merchant_feed_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1939,9 +1838,7 @@ class App extends REST_Controller
 
 	// so basically this gets the row data to dsiplay in the
 
-	public
-
-	function merchant_feed_get()
+	public function merchant_feed_get()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1954,9 +1851,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_feed_update_post()
+	public function merchant_feed_update_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -2038,9 +1933,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_feed_delete()
+	public function merchant_feed_delete()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -2053,9 +1946,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function update_file_check($str)
+	public function update_file_check($str)
 	{
 		if ($_FILES['file']['name'] == "") { //so here we assume user decided to use the old file upload
 			return true;
@@ -2067,9 +1958,7 @@ class App extends REST_Controller
 
 	// call back for checking file directly into one
 
-	public
-
-	function file_check($str)
+	public function file_check($str)
 	{
 		$allowed_mime_type_arr = array(
 			'image/gif',
@@ -2094,9 +1983,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_news_feed_get()
+	public function merchant_news_feed_get()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -2120,9 +2007,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_search_feed_post()
+	public function merchant_search_feed_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -2135,9 +2020,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_update_profile_post()
+	public function merchant_update_profile_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -2152,14 +2035,11 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_rules('facebook', 'Facebook', 'trim|required');
-			$this->form_validation->set_rules('twitter', 'Twitter', 'trim|required');
-			$this->form_validation->set_rules('youtube', 'Youtube', 'trim|required');
 			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
 			$this->form_validation->set_rules('location', 'Location', 'trim|required');
-			$this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
+			// $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach($_POST as $key => $value) {
@@ -2215,9 +2095,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public
-
-	function merchant_profile_check($str)
+	public function merchant_profile_check($str)
 	{
 		$allowed_mime_type_arr = array(
 			'image/gif',
