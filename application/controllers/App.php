@@ -1266,7 +1266,7 @@ class App extends REST_Controller
 		);
 		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
 		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('rtitle', 'Title', 'trim|required');
+		$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
 		$this->form_validation->set_rules('org_id', 'ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
@@ -1278,7 +1278,7 @@ class App extends REST_Controller
 			$chuchresidentdata = array(
 				'first_name' => $_POST['rfirst_name'],
 				'last_name' => $_POST['rlast_name'],
-				'title' => $_POST['rtitle'],
+				'title' => $_POST['r_title'],
 				'orgid' => $_POST['org_id']
 			);
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
