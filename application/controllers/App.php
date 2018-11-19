@@ -1541,8 +1541,8 @@ class App extends REST_Controller
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
-				$row[] = $prod->prod_price;
-				$row[] = $prod->currency;
+				// $row[] = $prod->prod_price;
+				// $row[] = $prod->currency;
 				$row[] = $prod->prod_tags;
 				$row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
@@ -1715,8 +1715,8 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
 			$this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
 			$this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
-			$this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
-			$this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
+			// $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
+			// $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
 			$this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required|max_length[160]'); //this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Product Description', 'trim|required'); //and this is the essay
 
