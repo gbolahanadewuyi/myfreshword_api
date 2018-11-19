@@ -1279,7 +1279,7 @@ class App extends REST_Controller
 				'first_name' => $_POST['rfirst_name'],
 				'last_name' => $_POST['rlast_name'],
 				'title' => $_POST['r_title'],
-				'orgid' => $_POST['org_id']
+				'orgid' => $_POST['org_id'] 
 			);
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
 			$data = array(
