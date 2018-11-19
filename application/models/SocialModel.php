@@ -11,10 +11,13 @@ Class SocialModel extends CI_Model {
       parent:: __construct();
     }
 
-
+		
     //get all comments
     function comments_all_data($id){
-      return $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $id)->order_by('id','desc')->get()->result();
+			// select count(*) from merchant_comment_thread WHERE merchant_feed_id = "31"
+			// return $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $id)->order_by('id','desc')->get()->result();
+			return $this->db->query('select count(*) from merchant_comment_thread WHERE merchant_feed_id = "31"');
+      // return $this->db->select()->from($this->comment_table)->where('merchant_feed_id', $id)->order_by('id','desc')->get()->result();
     }
 
     //this will count comments on  a particular thread
