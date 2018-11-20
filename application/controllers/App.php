@@ -1987,7 +1987,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$email = $this->get['email'];
+			$email = $this->get('email');
 			$config = array();
 			$config["base_url"] = base_url() . "merchant/news_feed";
 			$config["total_rows"] = $this->MyModel->count_merchant_feed($email);
