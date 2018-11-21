@@ -1764,7 +1764,7 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './public/images/uploads/feed-imgs';
+				$config['upload_path'] = './uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 3024;
