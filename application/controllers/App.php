@@ -897,11 +897,11 @@ class App extends REST_Controller
 
 	public function upload_profile_photo_post()
 	{
-		$response = $this->MyModel->header_auth();
+		// $response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$config['upload_path'] = './public/images/uploads/sproducts/';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 1024;
+			$config['max_size'] = 2024;
 			$this->load->library('upload', $config);
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
@@ -1432,7 +1432,7 @@ class App extends REST_Controller
 		$id = $_POST['id'];
 		$config['upload_path'] = './public/images/uploads/products/';
 		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-		$config['max_size'] = 1024;
+		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
 		if (!$this->upload->do_upload('image_file')) {
 			$error = array(
@@ -1769,6 +1769,7 @@ class App extends REST_Controller
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('file')) {
 					$error = array(
 						'status' => false,
@@ -2011,7 +2012,7 @@ class App extends REST_Controller
 
 				$config['upload_path'] = './public/images/uploads/profile_photos/';
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-				$config['max_size'] = 1024;
+				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
 				if (!$this->upload->do_upload('merchant_display_picture')) {
 					$error = array(
