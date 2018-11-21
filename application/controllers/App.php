@@ -1754,7 +1754,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
+			$this->form_validation->set_rules('feed_img', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1764,12 +1764,12 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './public/images/uploads/feed-imgs';
+				$config['upload_path'] = './uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
-				if (!$this->upload->do_upload('file')) {
+				if (!$this->upload->do_upload('feed_img')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
