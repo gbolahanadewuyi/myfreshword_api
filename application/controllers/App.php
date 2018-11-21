@@ -1764,7 +1764,7 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './uploads/feed-imgs';
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 3024;
@@ -1786,7 +1786,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed-imgs/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1879,7 +1879,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed-imgs/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
