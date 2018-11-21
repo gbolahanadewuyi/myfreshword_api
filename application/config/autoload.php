@@ -105,8 +105,6 @@ $autoload['helper'] = array('url', 'form', 'file');
 */
 $autoload['config'] = array();
 
-// $config['upload_path'] = "./public/images/uploads/";
-$config['upload_path'] = './public/images/uploads/';
 
 /*
 | -------------------------------------------------------------------
