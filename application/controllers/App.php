@@ -899,7 +899,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/products/';
+			$config['upload_path'] = './public/images/uploads/sproducts/';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 			$config['max_size'] = 1024;
 			$this->load->library('upload', $config);
@@ -1277,7 +1277,7 @@ class App extends REST_Controller
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/church_members/';
+			$config['upload_path'] = './public/images/uploads/church_members/';
 			$config['allowed_types'] = 'jpeg|jpg|png';
 			$config['max_size'] = '2048';
 			$config['max_width'] = '300';
@@ -1430,7 +1430,7 @@ class App extends REST_Controller
 	public function merchant_add_image_post()
 	{
 		$id = $_POST['id'];
-		$config['upload_path'] = './public/images/products/';
+		$config['upload_path'] = './public/images/uploads/products/';
 		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 		$config['max_size'] = 1024;
 		$this->load->library('upload', $config);
@@ -1464,7 +1464,7 @@ class App extends REST_Controller
 	{
 		$id = $_POST['id'];
 		$query = $this->MyModel->upload_path($id);
-		$config['upload_path'] = './prod_link/' . $query . '/';
+		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
 		if ($query == "audio") {
 			$config['allowed_types'] = 'mp3';
 		}
@@ -1764,7 +1764,7 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './uploads/feed-imgs';
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 3024;
@@ -1785,7 +1785,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed_upload/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1858,7 +1858,7 @@ class App extends REST_Controller
 					return false; //script will end here
 				}
 
-				$config['upload_path'] = './uploads/feed-imgs';
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
@@ -1878,7 +1878,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed_upload/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -2009,7 +2009,7 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './profile_photos/';
+				$config['upload_path'] = './public/images/uploads/profile_photos/';
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 1024;
 				$this->load->library('upload', $config);
