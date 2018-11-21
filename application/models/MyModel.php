@@ -588,7 +588,7 @@ class MyModel extends CI_Model
 		function send_code($phone, $pin)
 	{
 
-		// $pin = $this->generate_short_code();
+		$pin = $this->generate_short_code();
 
 		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord" . "&To=$phone" . "&Content=" . urlencode("myFreshWord secret code $pin") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
 		$curl = curl_init();
@@ -2777,5 +2777,47 @@ class MyModel extends CI_Model
 		} else {
 			return json_decode($response);
 		}
+	}
+
+	//Bulk SMS Model
+	function sendbulksms_message_($phone_number, $message_content, $sender_id)
+	{
+		//Set Time Zone as this is very important to ensure your messages are delievered on time
+		date_default_timezone_set('Africa/Accra');
+
+		// Account details
+		$clientId = 'ENTER-YOUR-13-DIGITS-ALPHANUMERIC-CODE-HERE';
+		$applicationSecret = 'ENTER-YOUR-32-DIGITS-CODE-HERE';
+
+		// Prepare data for POST request
+		$url = 'https://app.helliomessaging.com/api/v2/sms';
+		$currentTime = date('YmdH');
+		$hashedAuthKey = sha1($clientId . $applicationSecret . $currentTime);
+		$senderId = $sender_id; //Change this to your sender ID e.g. HellioSMS
+		$msisdn = $phone_number; //Change this to the recipient you wish to send the message to
+		$message = $message_content; //The message to be send here
+		$params = [
+			'clientId' => $clientId,
+			'authKey' => $hashedAuthKey,
+			'senderId' => $senderId,
+			'msisdn' => $msisdn,
+			'message' => $message
+		];
+
+		// Send the POST request with cURL
+		$ch = curl_init($url);
+		$payload = json_encode($params);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json',
+			'Content-Length: ' . strlen($payload)
+		));
+
+		// Process your response here
+		$result = curl_exec($ch);
+		echo var_export($result, true);
+		curl_close($ch);
 	}
 } //end of class
