@@ -896,8 +896,8 @@ class App extends REST_Controller
 
 	public function profile_update_post()
 	{
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
+		// $response = $this->MyModel->header_auth();
+		// if ($response['status'] == 200) {
 			$_POST = json_decode(file_get_contents('php://input') , true);
 			$data = array(
 				'success' => false,
@@ -925,9 +925,9 @@ class App extends REST_Controller
 
 			$this->response($data, REST_Controller::HTTP_OK);
 		}
-		else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
+		// else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
 	}
 
 	public	function upload_profile_photo_post()
