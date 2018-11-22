@@ -865,7 +865,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input'), true);
+			$_POST = json_decode(file_get_contents('php://input') , true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -890,15 +890,16 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
+		else {
+		 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		 }
 	}
 
 	public function upload_profile_photo_post()
 	{
 		// $response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
+		// if ($response['status'] == 200) {
 			$config['upload_path'] = './public/images/uploads/sproducts/';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 			$config['max_size'] = 2024;
@@ -924,9 +925,9 @@ class App extends REST_Controller
 				$this->MyModel->update_profile_image($response['id'], $imgData);
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
+		// } else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
 	}
 
 	// this shooud be the response for the payment
@@ -1248,7 +1249,7 @@ class App extends REST_Controller
 		);
 		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
 		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('rtitle', 'Title', 'trim|required');
+		$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
 		$this->form_validation->set_rules('org_id', 'ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
@@ -1259,14 +1260,15 @@ class App extends REST_Controller
 			$chuchresidentdata = array(
 				'first_name' => $_POST['rfirst_name'],
 				'last_name' => $_POST['rlast_name'],
-				'title' => $_POST['rtitle'],
+				'title' => $_POST['r_title'],
 				'orgid' => $_POST['org_id']
 			);
+			$data['success'] = true;
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
-			$data = array(
-				'success' => true,
-				'message' => $data
-			);
+			// $data = array(
+			// 	'success' => true,
+			// 	'message' => $data
+			// );
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
@@ -1807,7 +1809,7 @@ class App extends REST_Controller
 				'messages' => array()
 			);
 			$this->form_validation->set_rules('pastors_title', 'Pastors Title', 'trim|required');
-			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required|is_unique[merchant_feed.title]');
+			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
 			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_file_check');
