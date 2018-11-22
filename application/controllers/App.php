@@ -863,8 +863,8 @@ class App extends REST_Controller
 
 	public function profile_update_post()
 	{
-		// $response = $this->MyModel->header_auth();
-		// if ($response['status'] == 200) {
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
 			$_POST = json_decode(file_get_contents('php://input') , true);
 			$data = array(
 				'success' => false,
@@ -891,14 +891,14 @@ class App extends REST_Controller
 
 			$this->response($data, REST_Controller::HTTP_OK);
 		}
-		// else {
-		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		// }
+		else {
+		 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		 }
 	}
 
 	public function upload_profile_photo_post()
 	{
-		// $response = $this->MyModel->header_auth();
+		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$config['upload_path'] = './public/images/uploads/sproducts/';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
@@ -1261,7 +1261,7 @@ class App extends REST_Controller
 				'first_name' => $_POST['rfirst_name'],
 				'last_name' => $_POST['rlast_name'],
 				'title' => $_POST['r_title'],
-				'orgid' => $_POST['org_id'] 
+				'orgid' => $_POST['org_id']
 			);
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
 			$data = array(
