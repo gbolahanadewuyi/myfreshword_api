@@ -2389,6 +2389,32 @@ class MyModel extends CI_Model
 		);
 	}
 
+	// Insertion of Pastors listing to DB
+	public function insert_pastors_bio_data($data, $img)
+	{
+		$Pastors_listing = array(
+			'pastors_title' => $data['pastors_title'],
+			'pastors_name' => $data['pastors_name'],
+			'pastors_bio' => $data['pastors_bio'],
+			'image' => $img,
+			'merchant_id' => $data['merchant_id']
+		);
+		$query = $query = $this->db->insert('pastors_listing', $Pastors_listing);
+		$insert_id = $this->db->insert_id();
+		if ($query != true) {
+			return array(
+				'status' => 404,
+				'message' => 'Error creating your merchant feed'
+			);
+		}
+
+		return array(
+			'status' => 200,
+			'message' => 'Pastor bio data added successfully',
+			'last_insert_id' => $insert_id
+		);
+	}
+
 	public
 
 		function insert_feed_image($data)
