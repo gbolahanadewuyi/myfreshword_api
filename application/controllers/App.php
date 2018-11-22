@@ -7,10 +7,11 @@ require_once APPPATH . '/libraries/JWT.php';
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
 use \Firebase\JWT\JWT;
+
 class App extends REST_Controller
 
 {
-	public	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('MyModel');
@@ -20,12 +21,11 @@ class App extends REST_Controller
 
 	public function isLoggedin_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->auth($_POST['id'], $_POST['token']);
 		if ($response['status'] == 200) {
 			$this->response($response, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -35,7 +35,7 @@ class App extends REST_Controller
 
 		// get from json body
 
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 		$response = array(
@@ -46,11 +46,10 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$response['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$response = $this->MyModel->login($username, $password);
 		}
 
@@ -67,7 +66,7 @@ class App extends REST_Controller
 
 	public function mobile_login_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$user_mobile = $_POST['mobile'];
 		$password = $_POST['password'];
 		$response = array(
@@ -78,14 +77,13 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$response['messages'][$key] = form_error($key);
 			}
 
 			$this->response($response, REST_Controller::HTTP_OK);
 			return false;
-		}
-		else {
+		} else {
 			$response = $this->MyModel->mobile_login($user_mobile, $password);
 			if ($response['status'] == 204) { //no content
 				$this->response($response, REST_Controller::HTTP_OK);
@@ -108,7 +106,7 @@ class App extends REST_Controller
 
 	public function forgot_password_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -116,16 +114,14 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('emailadd', 'Email', 'required');
 		$this->form_validation->set_error_delimiters('<span>', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$data = $this->MyModel->forgot_password_email($_POST['emailadd']);
 			if ($data['status'] == 204) {
 				$this->response($data, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$q = $this->MyModel->generate_short_code();
 				$updateData = array(
 					'user_key' => $data['key'],
@@ -133,7 +129,7 @@ class App extends REST_Controller
 				);
 				$id = $data['id'];
 				$data = array(
-					'success' => $this->MyModel->update_key($id, $updateData) ,
+					'success' => $this->MyModel->update_key($id, $updateData),
 					'number' => $data['link']
 				);
 				$this->MyModel->send_code($data['number'], $q);
@@ -150,7 +146,7 @@ class App extends REST_Controller
 
 	public function sign_up_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -162,18 +158,17 @@ class App extends REST_Controller
 		$this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$q = $this->MyModel->generate_short_code();
 			$data = array(
 				'user_uname' => $_POST['username'],
 				'user_email' => $_POST['email'],
 				'user_mobile' => $_POST['mobile'],
-				'user_pwd' => md5($_POST['password']) ,
-				'user_key' => $key = md5(date('his') . $_POST['email']) ,
+				'user_pwd' => md5($_POST['password']),
+				'user_key' => $key = md5(date('his') . $_POST['email']),
 				'user_accesslevel' => 2,
 				'user_status' => 2,
 				'user_activation_code' => $q
@@ -190,7 +185,7 @@ class App extends REST_Controller
 
 	public function activate_account_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -198,19 +193,17 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('code', 'code', 'trim|required|min_length[4]|max_length[4]|numeric');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$q = $this->MyModel->activate_account($_POST['code']);
 			if ($q['status'] == 200) {
 				$data = array(
 					'status' => 200,
 					'message' => 'Account activated successfully'
 				);
-			}
-			else {
+			} else {
 				$data = array(
 					'status' => 204,
 					'message' => 'Problem with activation code please resend'
@@ -223,7 +216,7 @@ class App extends REST_Controller
 
 	public function reset_password_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -231,11 +224,10 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('code', 'code', 'trim|required|min_length[4]|max_length[4]|numeric');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$q = $this->MyModel->reset_password_code($_POST['code']);
 			if ($q['status'] == 200) {
 				$data = array(
@@ -243,8 +235,7 @@ class App extends REST_Controller
 					'message' => 'passed',
 					'user_email' => $q['email']
 				);
-			}
-			else {
+			} else {
 				$data = array(
 					'status' => 204,
 					'message' => 'Wrong Pin..Type correct reset pin sent via sms'
@@ -257,7 +248,7 @@ class App extends REST_Controller
 
 	public function new_password_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -267,11 +258,10 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('passwordAgain', 'Password', 'trim|required|matches[password]');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$dataInsert = array(
 				'user_pwd' => md5($_POST['password'])
 			);
@@ -283,14 +273,13 @@ class App extends REST_Controller
 
 	public function resend_post()
 	{ //this will stored by default
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		if ($_POST['mobile'] == null) {
 			$data = array(
 				'status' => 401,
 				'message' => 'Unauthorized.'
 			);
-		}
-		else {
+		} else {
 			$pin = $this->MyModel->generate_short_code();
 			$q = $this->MyModel->send_code($_POST['mobile'], $pin);
 			$updateData = array(
@@ -330,7 +319,7 @@ class App extends REST_Controller
 
 	public function feed_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -343,16 +332,15 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('email', 'Email', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$dataInsert = array(
 				'user_email' => $_POST['email'],
 				'denomination' => $_POST['denomination'],
-				'fav_preachers' => implode(", ", $_POST['pastors']) ,
-				'sermon_topics' => implode(", ", $_POST['sermon']) ,
+				'fav_preachers' => implode(", ", $_POST['pastors']),
+				'sermon_topics' => implode(", ", $_POST['sermon']),
 			);
 			$data = $this->MyModel->feed_data($dataInsert);
 		}
@@ -364,14 +352,14 @@ class App extends REST_Controller
 
 	// THIS PART CALLS API FOR DATA AFTER USER HAS LOGGED IN SUCCESSFULLY
 
-	*/
+	 */
 	public function change_password_post()
 	{
 	}
 
 	public function facebook_login_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'fb_id' => $_POST['id'],
 			'fb_email' => $_POST['email'],
@@ -385,7 +373,7 @@ class App extends REST_Controller
 
 	public function google_login_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'g_user_id' => $_POST['id'],
 			'g_email' => $_POST['email'],
@@ -400,12 +388,11 @@ class App extends REST_Controller
 
 	public function user_profile_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
+		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		if ($response['status'] == 200) { //if header is passed
 			$resp = $this->MyModel->user_profile_data($response['id']);
 			$this->response($resp, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -417,24 +404,22 @@ class App extends REST_Controller
 
 	public function all_product_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
+		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->audio_all_data(); //this is pulling all data not just audio
 			$this->response($resp, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	public function product_by_id_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid') , $this->get('token'));
+		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->product_id($this->get('p_id'));
 			$this->response($resp, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -443,7 +428,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -453,20 +438,18 @@ class App extends REST_Controller
 			$this->form_validation->set_message('is_unique', 'The %s is already taken');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else { //if this return correct results then we need to show success message and store  data locally on phone
+			} else { //if this return correct results then we need to show success message and store  data locally on phone
 				$query = $this->MyModel->new_momo($_POST['number']);
 				if ($query['valid'] === false) {
 					$data['error'] = array(
 						'status' => false,
 						'message' => 'Invalid Mobile Money Number'
 					);
-				}
-				else
-				if ($query['valid'] === true) {
+				} else
+					if ($query['valid'] === true) {
 					$data = array(
 						'success' => true,
 						'message' => 'Valid Mobile Money Number',
@@ -488,8 +471,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -513,7 +495,7 @@ class App extends REST_Controller
 	{
 		$responseHead = $this->MyModel->header_auth();
 		if ($responseHead['status'] == 200) {
-			$data = json_decode(file_get_contents('php://input') , true);
+			$data = json_decode(file_get_contents('php://input'), true);
 			$query = $this->MyModel->momo_by_id($data['email']);
 			if ($query == false) {
 
@@ -521,16 +503,14 @@ class App extends REST_Controller
 
 				$response['success'] = false;
 				$response['message'] = 'User has not set up mobile money';
-			}
-			else {
+			} else {
 				$response['success'] = true;
 				$response['message'] = 'User has set up mobile money';
 				$response['results'] = $query;
 			}
 
 			$this->response($response, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($responseHead, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -539,11 +519,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->set_momo_default($_POST);
 			$this->response($q, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -554,21 +533,20 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'email' => $_POST['email']
 			);
 			$q = $this->MyModel->user_momo_numbers($data);
 			$this->response($q, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	public function credit_card_post()
 	{
-		$data = json_decode(file_get_contents('php://input') , true);
+		$data = json_decode(file_get_contents('php://input'), true);
 		$query = $this->MyModel->bin_checker($data['bin']);
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
@@ -583,7 +561,7 @@ class App extends REST_Controller
 	{ //this to add products to carts
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$dataPost = json_decode(file_get_contents('php://input') , true);
+			$dataPost = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'prod_uniqid' => $dataPost['prod_uniqid'],
 				'prod_description' => $dataPost['prod_description'],
@@ -601,8 +579,7 @@ class App extends REST_Controller
 			$query['item_in_cart'] = $this->MyModel->cartRowCount($data);
 			$query['total_price'] = $this->MyModel->TotalCartSales($data);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -613,7 +590,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$dataPost = json_decode(file_get_contents('php://input') , true);
+			$dataPost = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'prod_purchase_by' => $dataPost['prod_purchase_by'],
 			);
@@ -621,8 +598,7 @@ class App extends REST_Controller
 			$query['item_in_cart'] = $this->MyModel->cartRowCount($data);
 			$query['total_price'] = $this->MyModel->TotalCartSales($data);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -631,15 +607,14 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$param = json_decode(file_get_contents('php://input') , true);
+			$param = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'id' => $param['id'],
 				'prod_purchase_by' => $param['email']
 			);
 			$query = $this->MyModel->delete_cart_data($data);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -648,14 +623,13 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$param = json_decode(file_get_contents('php://input') , true);
+			$param = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'userid' => $response['id']
 			);
 			$query = $this->MyModel->library_data($data['userid']);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -664,12 +638,12 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 
 			// so here when you make payment
 			// $this->db->insert_batch('ts_paid_prod', $_POST['cart_data']);
 
-			foreach($_POST['cart_data'] as $db_data) {
+			foreach ($_POST['cart_data'] as $db_data) {
 				$data = array(
 					'prod_name' => $db_data['prod_name'],
 					'prod_uniqid' => $db_data['prod_uniqid'],
@@ -684,8 +658,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($_POST['cart_data'], REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -694,8 +667,8 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
-			foreach($_POST['cart_data'] as $db_data) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			foreach ($_POST['cart_data'] as $db_data) {
 				$data = array(
 					'prod_name' => $db_data['prod_name'],
 					'prod_uniqid' => $db_data['prod_uniqid'],
@@ -737,37 +710,37 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 	}
 
-  public function subscribe_post(){
-    $response = $this->MyModel->header_auth();
-    if($response['status']==200){
-      $_POST = json_decode(file_get_contents('php://input'), TRUE);
-      $userid = $response['id'];
-      $subscriptionPackage = $_POST['subscriptionType'];
+	public function subscribe_post()
+	{
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			$userid = $response['id'];
+			$subscriptionPackage = $_POST['subscriptionType'];
 
 
-      $query = $this->MyModel->subscribe($userid,$subscriptionPackage);
-      $this->response($query,REST_Controller::HTTP_OK);
+			$query = $this->MyModel->subscribe($userid, $subscriptionPackage);
+			$this->response($query, REST_Controller::HTTP_OK);
 
-    }
-    else{
-      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-    }
-  }
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 
 
-  public function isSubscribed_post(){
-    $response = $this->MyModel->header_auth();
-    if($response['status']==200){
-      $userid = $response['id'];
+	public function isSubscribed_post()
+	{
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$userid = $response['id'];
 
-      $query = $this->MyModel->isSubscribed($userid);
-      $this->response($query,REST_Controller::HTTP_OK);
+			$query = $this->MyModel->isSubscribed($userid);
+			$this->response($query, REST_Controller::HTTP_OK);
 
-    }
-    else{
-      $this->response($response,REST_Controller::HTTP_NOT_FOUND);
-    }
-  }
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Controller method for Adding An Item To Library
@@ -776,12 +749,12 @@ class App extends REST_Controller
 	| Here is where you add a product to the users library once they tab add
 	| Now create something great!
 	|
-	*/
+	 */
 	public function addto_library_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$dataPost = json_decode(file_get_contents('php://input') , true);
+			$dataPost = json_decode(file_get_contents('php://input'), true);
 
 			// foreach($_POST['cart_data'] as $db_data){
 
@@ -812,16 +785,14 @@ class App extends REST_Controller
 			$query = $this->MyModel->delete_library_data($response['id']);
 			if ($query['status'] == 204) {
 				$this->response($query, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$message = array(
 					'status' => 400,
 					'message' => 'error deleting product'
 				);
 				$this->response($message, REST_Controller::HTTP_OK);
 			}
-		}
-		else {
+		} else {
 			$this->response($data, REST_Controller::HTTP_OK);
 		}
 	}
@@ -833,15 +804,14 @@ class App extends REST_Controller
 
 			// run this endpoint after user checked out and paid all
 
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->delete_library_data($_POST['email']);
 			if ($q == true) {
 				$data = array(
 					'status' => 200,
 					'message' => 'Cart data cleared'
 				);
-			}
-			else {
+			} else {
 				$data = array(
 					'status' => 400,
 					'message' => 'Error with cart data processing'
@@ -849,8 +819,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -863,7 +832,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$param = json_decode(file_get_contents('php://input') , true);
+			$param = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'sms_notify' => $param['notify']
 
@@ -874,8 +843,7 @@ class App extends REST_Controller
 			);
 			$query = $this->MyModel->sms_enable($data);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -884,12 +852,11 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$param = json_decode(file_get_contents('php://input') , true);
+			$param = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'email_notify' => $param['notify']
 			);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -909,11 +876,10 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$data = array(
 					'user_uname' => $_POST['username'],
 					'user_mobile' => $_POST['mobile'],
@@ -926,17 +892,17 @@ class App extends REST_Controller
 			$this->response($data, REST_Controller::HTTP_OK);
 		}
 		else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
+		 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		 }
 	}
 
-	public	function upload_profile_photo_post()
+	public function upload_profile_photo_post()
 	{
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/products/';
+		// $response = $this->MyModel->header_auth();
+		// if ($response['status'] == 200) {
+			$config['upload_path'] = './public/images/uploads/sproducts/';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 1024;
+			$config['max_size'] = 2024;
 			$this->load->library('upload', $config);
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
@@ -947,8 +913,7 @@ class App extends REST_Controller
 				// echo json_encode($error);
 
 				$this->response($error, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$data = $this->upload->data();
 				$success = ['status' => true, 'success' => $data['file_name']];
 
@@ -960,17 +925,16 @@ class App extends REST_Controller
 				$this->MyModel->update_profile_image($response['id'], $imgData);
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
-		}
-		else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
+		// } else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
 	}
 
 	// this shooud be the response for the payment
 
 	public function payment_response_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -987,11 +951,10 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('payin_transaction_id', 'Payin Transaction ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$data = $this->MyModel->callback_response($_POST);
 		}
 
@@ -1006,7 +969,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1020,11 +983,10 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('freshword_transaction_id', 'Freshword Transaction Id', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$payData = array(
 					'success' => $_POST['success'],
 					'status' => $_POST['status'],
@@ -1039,8 +1001,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1049,7 +1010,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'prod_id' => $_POST['id'],
 				'comment_title' => $_POST['title']
@@ -1057,12 +1018,10 @@ class App extends REST_Controller
 			$q = $this->MyModel->get_comment_title_data($data);
 			if ($q['status'] == 204) {
 				$this->response($q, REST_Controller::HTTP_NOT_FOUND);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_OK);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1071,11 +1030,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->search_product($_POST['prod_search']);
 			$this->response($q, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1084,11 +1042,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->search_all_feed($_POST['feed_search']);
 			$this->response($q, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1100,12 +1057,10 @@ class App extends REST_Controller
 			$q = $this->MyModel->audio_fetch();
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1117,12 +1072,10 @@ class App extends REST_Controller
 			$q = $this->MyModel->video_fetch();
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1134,32 +1087,28 @@ class App extends REST_Controller
 			$q = $this->MyModel->book_fetch();
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	/*
-	*/
+	 */
 	public function filter_audio_search_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->audio_by_title($_POST['feed_search']);
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1168,16 +1117,14 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->video_by_title($_POST['feed_search']);
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1186,16 +1133,14 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$q = $this->MyModel->book_by_title($_POST['feed_search']);
 			if (count($q) > 0) {
 				$this->response($q, REST_Controller::HTTP_OK);
-			}
-			else {
+			} else {
 				$this->response($q, REST_Controller::HTTP_NO_CONTENT);
 			}
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -1207,8 +1152,8 @@ class App extends REST_Controller
 	/*================================================================================================================
 	==================================================================================================================
 	==================================================================================================================
-	*MERCHANT ENDPOINTS STARTS FROM HERE
-	*/
+	 *MERCHANT ENDPOINTS STARTS FROM HERE
+	 */
 	public function web_products_get()
 	{
 		$resp = $this->MyModel->audio_all_data(); //this is pulling all data not just audio
@@ -1217,7 +1162,7 @@ class App extends REST_Controller
 
 	public function merchant_register_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -1233,17 +1178,16 @@ class App extends REST_Controller
 		$this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$regData = array(
 				'first_name' => $_POST['firstname'],
 				'last_name' => $_POST['lastname'],
 				'email' => $_POST['email'],
 				'mobile' => $_POST['mobile'],
-				'password' => hash('sha256', $_POST['password']) ,
+				'password' => hash('sha256', $_POST['password']),
 				'organisation' => $_POST['organisation'],
 				'location' => $_POST['location'],
 				'merchant_name' => $_POST['merchantname'],
@@ -1257,9 +1201,48 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
+		/*
+		|--------------------------------------------------------------------------
+		| Send Bulk SMS Controller Method
+		|--------------------------------------------------------------------------
+		|
+		| Here is where you can register web routes for your application. These
+		|
+		*/
+		public function merchant_sendbulksms_post()
+		{
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = array(
+			'success' => false,
+			'messages' => array()
+		);
+		$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+		$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
+		$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		if ($this->form_validation->run() === false) {
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		} else {
+			$regData = array(
+				'mobile_number' => $_POST['mobile_number'],
+				'sender_id' => $_POST['sender_id'],
+				'message_content' => $_POST['message_content']
+			);
+			$data['Bulksms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
+			$data['Success'] = true;
+			$data['Messages'] = $this->MyModel->create_merchant($regData);
+		}
+
+		$this->response($data, REST_Controller::HTTP_OK);
+	}
+
+	//End Send Bulk SMS Block
+
 	public function church_resident_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -1270,16 +1253,15 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('org_id', 'ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
-			$churchresidentdata = array(
+		} else {
+			$chuchresidentdata = array(
 				'first_name' => $_POST['rfirst_name'],
 				'last_name' => $_POST['rlast_name'],
 				'title' => $_POST['r_title'],
-				'orgid' => $_POST['org_id'] 
+				'orgid' => $_POST['org_id']
 			);
 			$data['success'] = true;
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
@@ -1294,10 +1276,10 @@ class App extends REST_Controller
 
 	public function church_membership_register_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/church_members/';
+			$config['upload_path'] = './public/images/uploads/church_members/';
 			$config['allowed_types'] = 'jpeg|jpg|png';
 			$config['max_size'] = '2048';
 			$config['max_width'] = '300';
@@ -1326,11 +1308,10 @@ class App extends REST_Controller
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$churchMemberData = array(
 					'first_name' => $_POST['first_name'],
 					'last_name' => $_POST['last_name'],
@@ -1364,7 +1345,7 @@ class App extends REST_Controller
 
 	public function merchant_login_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -1373,11 +1354,10 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
+			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
-		}
-		else {
+		} else {
 			$data['success'] = true;
 			$data['messages'] = $this->MyModel->merchant_login($_POST['email'], $_POST['password']);
 		}
@@ -1389,33 +1369,34 @@ class App extends REST_Controller
 
 	public function merchant_session_start_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$resp = $this->MyModel->merchant_session($_POST['id'], $_POST['token']);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
 	public function merchant_activate_account_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$query = $this->MyModel->activate_merchant($_POST);
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
 	public function merchant_forgot_pass_email_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$resp = $this->MyModel->check_merchant_email($_POST);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
 	public function merchant_confirm_reset_code_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$resp = $this->MyModel->check_reset_code($_POST['mobile'], $_POST['resetcode']);
 		$this->response($resp, REST_Controller::HTTP_OK);
 	}
 
-	public function merchant_profile_get() {
+	public function merchant_profile_get()
+	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_merchant_profile($response['id']);
@@ -1424,8 +1405,7 @@ class App extends REST_Controller
 				'headerRes' => $response
 			);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
 	}
@@ -1452,9 +1432,9 @@ class App extends REST_Controller
 	public function merchant_add_image_post()
 	{
 		$id = $_POST['id'];
-		$config['upload_path'] = './public/images/products/';
+		$config['upload_path'] = './public/images/uploads/products/';
 		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-		$config['max_size'] = 1024;
+		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
 		if (!$this->upload->do_upload('image_file')) {
 			$error = array(
@@ -1465,8 +1445,7 @@ class App extends REST_Controller
 			// echo json_encode($error);
 
 			$this->response($error, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$data = $this->upload->data();
 			$success = ['status' => true, 'success' => $data['file_name']];
 
@@ -1487,7 +1466,7 @@ class App extends REST_Controller
 	{
 		$id = $_POST['id'];
 		$query = $this->MyModel->upload_path($id);
-		$config['upload_path'] = './prod_link/' . $query . '/';
+		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
 		if ($query == "audio") {
 			$config['allowed_types'] = 'mp3';
 		}
@@ -1511,8 +1490,7 @@ class App extends REST_Controller
 			// echo json_encode($error);
 
 			$this->response($error, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$data = $this->upload->data();
 			$success = ['status' => true, 'success' => $data['file_name']];
 			$imgData = array(
@@ -1535,17 +1513,15 @@ class App extends REST_Controller
 			$list = $this->MerchantProductModel->get_datatables($query->email);
 			$data = array();
 			$no = $_POST['start'];
-			foreach($list as $prod) {
+			foreach ($list as $prod) {
 				$no++;
 				$row = array();
 				$row[] = '<img src="' . $prod->img_link . '" height="75px">';
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
-				$row[] = $prod->prod_price;
-				$row[] = $prod->currency;
 				$row[] = $prod->prod_tags;
-				$row[] = $prod->prod_uniqid;
+				// $row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
 				$row[] = $prod->prod_date;
 
@@ -1560,16 +1536,15 @@ class App extends REST_Controller
 
 			$output = array(
 				"draw" => $_POST['draw'],
-				"recordsTotal" => $this->MerchantProductModel->count_all($query->email) ,
-				"recordsFiltered" => $this->MerchantProductModel->count_filtered($query->email) ,
+				"recordsTotal" => $this->MerchantProductModel->count_all($query->email),
+				"recordsFiltered" => $this->MerchantProductModel->count_filtered($query->email),
 				"data" => $data,
 			);
 
 			// output to json format
 
 			$this->response($output, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
 	}
@@ -1581,7 +1556,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1590,10 +1565,6 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
 			$this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
 			$this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-
-			// $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-			// $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
-
 			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]'); //this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required'); //and this is the essay
 			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required'); //should be an hidden input
@@ -1602,14 +1573,13 @@ class App extends REST_Controller
 			$this->form_validation->set_message('max_length[160]', '%s: the maximum of 160 Characters allowed');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$prodData = array(
 					'prod_name' => $_POST['prod_name'],
-					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']) ,
+					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
 					'prod_preacher_id' => $_POST['prod_preacher_id'],
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
@@ -1632,11 +1602,11 @@ class App extends REST_Controller
 					'prod_free' => 1,
 					'prod_featured' => 0,
 					'prod_status' => 1,
-					'prod_uniqid' => $this->MyModel->generate_product_unique_code() ,
+					'prod_uniqid' => $this->MyModel->generate_product_unique_code(),
 					'prod_download_count' => 0,
 					'prod_gallery' => 1,
 					'prod_uid' => 1,
-					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']) ,
+					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
 
 					// 'file_link'             =>      $_POST['file_link'],
@@ -1655,8 +1625,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1668,8 +1637,7 @@ class App extends REST_Controller
 			$id = (int)$this->get('id');
 			$query = $this->MyModel->product_preview($id);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1681,8 +1649,7 @@ class App extends REST_Controller
 			$id = (int)$this->get('id');
 			$query = $this->MyModel->edit_product($id);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1691,11 +1658,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$query = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
 			$this->response($query, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1707,7 +1673,7 @@ class App extends REST_Controller
 
 			// code beginss here
 
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1716,8 +1682,8 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_name', 'Product Name', 'trim|required|callback__is_unique2');
 			$this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
 			$this->form_validation->set_rules('prod_preacher', 'Product Preacher', 'trim|required');
-			$this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
-			$this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
+			// $this->form_validation->set_rules('prod_price', 'Product Price', 'trim|required');
+			// $this->form_validation->set_rules('prod_currency', 'Product Currency', 'trim|required');
 			$this->form_validation->set_rules('prod_description', 'Product Theme', 'trim|required|max_length[160]'); //this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Product Description', 'trim|required'); //and this is the essay
 
@@ -1730,11 +1696,10 @@ class App extends REST_Controller
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$data['success'] = true;
 				$data['message'] = $this->MyModel->update_ts_products($_POST);
 			}
@@ -1743,8 +1708,7 @@ class App extends REST_Controller
 
 			// code ends here
 
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1771,8 +1735,7 @@ class App extends REST_Controller
 			$data['premium_products'] = $this->MyModel->count_premium_products($email);
 			$data['total_product_views'] = $this->MyModel->count_product_views($email);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1792,19 +1755,19 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './images/uploads';
-				$config['allowed_types'] = 'gif|jpg|png';
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
-				$config['max_size'] = 1024;
+				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('file')) {
 					$error = array(
 						'status' => false,
@@ -1815,14 +1778,13 @@ class App extends REST_Controller
 
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-				}
-				else {
+				} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed_upload/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1831,8 +1793,67 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
-		else {
+	}
+
+
+	//Pastors Listings
+	public function pastors_listing_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('pastors_title', 'Pastors Title', 'trim|required');
+			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required|is_unique[merchant_feed.title]');
+			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
+			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
+			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_file_check');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			} else {
+
+				// this is where i upload the image for the merchant feed
+
+				$config['upload_path'] = './public/images/uploads/pastors-imgs';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['encrypt_name'] = true;
+				$config['max_size'] = 3024;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('pastors_avatar_img')) {
+					$error = array(
+						'status' => false,
+						'error' => $this->upload->display_errors()
+					);
+
+					// echo json_encode($error);
+
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+				} else {
+					$data = $this->upload->data();
+					$success = ['status' => true, 'success' => $data['file_name']];
+
+					// echo json_encode($success);
+
+					$img = 'http://api.myfreshword.com/public/images/uploads/pastors-imgs/' . $data['file_name'];
+
+					// so run insertion since the validation for the form has been passed correctly
+
+					$data = $this->MyModel->insert_pastors_bio_data($_POST, $img);
+				}
+			}
+
+			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1846,8 +1867,7 @@ class App extends REST_Controller
 			$id = (int)$this->get('id');
 			$data = $this->MyModel->get_merchant_feed_id($id);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1886,11 +1906,10 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				if ($_FILES['file']['name'] == "") {
 					$img = '';
 					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
@@ -1898,9 +1917,9 @@ class App extends REST_Controller
 					return false; //script will end here
 				}
 
-				$config['upload_path'] = './feed_upload/';
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-				$config['max_size'] = 1024;
+				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				if (!$this->upload->do_upload('file')) {
 					$error = array(
@@ -1912,14 +1931,13 @@ class App extends REST_Controller
 
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-				}
-				else {
+				} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/feed_upload/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1928,8 +1946,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1941,8 +1958,7 @@ class App extends REST_Controller
 			$id = (int)$this->get('id');
 			$data = $this->MyModel->delete_merchant_feed($id);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -1951,8 +1967,7 @@ class App extends REST_Controller
 	{
 		if ($_FILES['file']['name'] == "") { //so here we assume user decided to use the old file upload
 			return true;
-		}
-		else {
+		} else {
 			return $this->file_check($str);
 		}
 	}
@@ -1972,13 +1987,11 @@ class App extends REST_Controller
 		if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
 			if (in_array($mime, $allowed_mime_type_arr)) {
 				return true;
-			}
-			else {
+			} else {
 				$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
 				return false;
 			}
-		}
-		else {
+		} else {
 			$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
 			return false;
 		}
@@ -1988,7 +2001,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$email = $this->get['email'];
+			$email = $this->get('email');
 			$config = array();
 			$config["base_url"] = base_url() . "merchant/news_feed";
 			$config["total_rows"] = $this->MyModel->count_merchant_feed($email);
@@ -2002,8 +2015,7 @@ class App extends REST_Controller
 			$data['likes'] = $this->MyModel->count_merchant_likes($response['id']);
 			$data['comments'] = $this->MyModel->count_merchant_comments($response['id']);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -2012,11 +2024,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data['results'] = $this->MyModel->search_merchant_feed($_POST['search'], $_POST['email']);
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
@@ -2043,11 +2054,10 @@ class App extends REST_Controller
 			// $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				if ($_FILES['merchant_display_picture']['name'] == "") {
 					$q = $this->MyModel->photo_check($_POST['id']);
 					$img = $q;
@@ -2058,9 +2068,9 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './profile_photos/';
+				$config['upload_path'] = './public/images/uploads/profile_photos/';
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-				$config['max_size'] = 1024;
+				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
 				if (!$this->upload->do_upload('merchant_display_picture')) {
 					$error = array(
@@ -2072,8 +2082,7 @@ class App extends REST_Controller
 
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-				}
-				else {
+				} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 
@@ -2090,8 +2099,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
@@ -2109,13 +2117,11 @@ class App extends REST_Controller
 		if (isset($_FILES['merchant_display_picture']['name']) && $_FILES['merchant_display_picture']['name'] != "") {
 			if (in_array($mime, $allowed_mime_type_arr)) {
 				return true;
-			}
-			else {
+			} else {
 				$this->form_validation->set_message('merchant_profile_check', 'Please select only jpeg/jpg/png file.');
 				return false;
 			}
-		}
-		else {
+		} else {
 
 			// $this->form_validation->set_message('merchant_profile_check', 'Please choose a file to upload.');
 
@@ -2127,7 +2133,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -2136,11 +2142,10 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('mobile', 'Mobile Money Number', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
+				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
-			}
-			else {
+			} else {
 				$momoData = array(
 					'merchant_id' => $response['id'],
 					'network' => $_POST['network'],
@@ -2159,8 +2164,7 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
-		else {
+		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
