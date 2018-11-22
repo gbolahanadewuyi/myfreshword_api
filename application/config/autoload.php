@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'email', 'form_validation', 'pagination');
+$autoload['libraries'] = array('database', 'email', 'form_validation', 'pagination', 'upload');
 
 /*
 | -------------------------------------------------------------------
@@ -104,6 +104,9 @@ $autoload['helper'] = array('url', 'form', 'file');
 |
 */
 $autoload['config'] = array();
+
+// $config['upload_path'] = "./public/images/uploads/";
+$config['upload_path'] = './public/images/uploads/';
 
 /*
 | -------------------------------------------------------------------
