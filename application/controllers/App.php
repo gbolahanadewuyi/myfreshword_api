@@ -1809,7 +1809,7 @@ class App extends REST_Controller
 				'messages' => array()
 			);
 			$this->form_validation->set_rules('pastors_title', 'Pastors Title', 'trim|required');
-			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required|is_unique[merchant_feed.title]');
+			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
 			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_file_check');
