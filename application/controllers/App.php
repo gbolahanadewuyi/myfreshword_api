@@ -1208,8 +1208,8 @@ class App extends REST_Controller
 		| Here is where you can register web routes for your application. These
 		|
 		*/
-	public function merchant_sendbulksms_post()
-	{
+		public function merchant_sendbulksms_post()
+		{
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
@@ -1563,10 +1563,6 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
 			$this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
 			$this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-
-			// $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-			// $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
-
 			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]'); //this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required'); //and this is the essay
 			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required'); //should be an hidden input
@@ -1791,6 +1787,66 @@ class App extends REST_Controller
 					// so run insertion since the validation for the form has been passed correctly
 
 					$data = $this->MyModel->insert_feed_data($_POST, $img);
+				}
+			}
+
+			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
+
+	//Pastors Listings
+	public function pastors_listing_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('pastors_title', 'Pastors Title', 'trim|required');
+			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required|is_unique[merchant_feed.title]');
+			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
+			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
+			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_file_check');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			} else {
+
+				// this is where i upload the image for the merchant feed
+
+				$config['upload_path'] = './public/images/uploads/pastors-imgs';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['encrypt_name'] = true;
+				$config['max_size'] = 3024;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('pastors_avatar_img')) {
+					$error = array(
+						'status' => false,
+						'error' => $this->upload->display_errors()
+					);
+
+					// echo json_encode($error);
+
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+				} else {
+					$data = $this->upload->data();
+					$success = ['status' => true, 'success' => $data['file_name']];
+
+					// echo json_encode($success);
+
+					$img = 'http://api.myfreshword.com/public/images/uploads/pastors-imgs/' . $data['file_name'];
+
+					// so run insertion since the validation for the form has been passed correctly
+
+					$data = $this->MyModel->insert_pastors_bio_data($_POST, $img);
 				}
 			}
 
