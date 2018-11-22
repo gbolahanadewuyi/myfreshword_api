@@ -1281,11 +1281,12 @@ class App extends REST_Controller
 				'title' => $_POST['r_title'],
 				'orgid' => $_POST['org_id'] 
 			);
+			$data['success'] = true;
 			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
-			$data = array(
-				'success' => true,
-				'message' => $data
-			);
+			// $data = array(
+			// 	'success' => true,
+			// 	'message' => $data
+			// );
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
