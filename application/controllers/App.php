@@ -904,10 +904,10 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 			$config['max_size'] = 2024;
 			$this->load->library('upload', $config);
-			if (!$this->upload->do_upload('photo')) {
+			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
 					'status' => false,
-					'uploadpath'=> $config['upload_path'],
+					'uploadpath' => $config['upload_path'] ,
 					'error' => $this->upload->display_errors()
 				);
 
@@ -923,7 +923,7 @@ class App extends REST_Controller
 				$imgData = array(
 					'user_photo' => 'http://api.myfreshword.com/public/images/profile_photos/' . $data['file_name']
 				);
-				$this->MyModel->update_profile_image($response['id'], $imgData);
+				//$this->MyModel->update_profile_image($response['id'], $imgData);
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
 		} else {
