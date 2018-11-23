@@ -1583,10 +1583,8 @@ class App extends REST_Controller
 					'prod_preacher_id' => $_POST['prod_preacher_id'],
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
-
-					// 'prod_image'            =>      $_POST['prod_image'],
-					// 'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
-
+					'prod_image'    =>      $_POST['prod_image'],
+					'img_link'      =>      $this->MyModel->imgPlus($_POST['prod_image']),
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
 					'prod_description' => $_POST['prod_description'],
 					'prod_essay' => $_POST['prod_essay'],
@@ -1595,9 +1593,8 @@ class App extends REST_Controller
 					'prod_cateid' => 1,
 					'prod_subcateid' => 0,
 					'prod_filename' => 0,
-
 					// 'prod_price'            =>      $_POST['prod_price'],
-
+					// 'currency'              =>      $_POST['prod_currency'],
 					'prod_plan' => 0,
 					'prod_free' => 1,
 					'prod_featured' => 0,
@@ -1608,13 +1605,8 @@ class App extends REST_Controller
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
-
-					// 'file_link'             =>      $_POST['file_link'],
-
+					'file_link'             =>      $_POST['file_link'],
 					'merchant_email' => $_POST['merchant_email'],
-
-					// 'currency'              =>      $_POST['prod_currency'],
-
 					'prod_date' => date('Y-m-d H:i:s')
 				);
 				$query = $this->MyModel->merchant_insert_product($prodData);
