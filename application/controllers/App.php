@@ -907,6 +907,7 @@ class App extends REST_Controller
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
 					'status' => false,
+					'uploadpath'=> $config['upload_path'],
 					'error' => $this->upload->display_errors()
 				);
 
