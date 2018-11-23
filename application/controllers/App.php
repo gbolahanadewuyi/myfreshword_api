@@ -1479,8 +1479,9 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'pdf|doc';
 		}
 
-		$config['max_size'] = 2024;
+		$config['max_size'] = 10024;
 		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('image')) {
 			$error = array(
 				'status' => false,
@@ -1583,8 +1584,8 @@ class App extends REST_Controller
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
-			  //'prod_image'            =>      $_POST['prod_image'],
-			  //'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
+						//'prod_image'            =>      $_POST['prod_image'],
+					//'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
 					'prod_description' => $_POST['prod_description'],
 					'prod_essay' => $_POST['prod_essay'],
@@ -1593,7 +1594,7 @@ class App extends REST_Controller
 					'prod_cateid' => 1,
 					'prod_subcateid' => 0,
 					'prod_filename' => 0,
-			//   'prod_price'            =>      $_POST['prod_price'],
+							//   'prod_price'            =>      $_POST['prod_price'],
 					'prod_plan' => 0,
 					'prod_free' => 0,
 					'prod_featured' => 0,
