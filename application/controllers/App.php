@@ -1432,9 +1432,10 @@ class App extends REST_Controller
 	{
 		$id = $_POST['id'];
 		$config['upload_path'] = './public/images/uploads/products/';
-		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('image_file')) {
 			$error = array(
 				'status' => false,
