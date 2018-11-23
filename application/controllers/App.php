@@ -902,12 +902,12 @@ class App extends REST_Controller
 			$config['upload_path'] = './public/images/profile_photos';
 			$config['overwrite'] = TRUE;
 			$config['file_ext_tolower'] = TRUE;
-			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 			$config['max_size'] = 2048000;
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
-			
+
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
 					'status' => false,
