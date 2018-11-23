@@ -900,9 +900,10 @@ class App extends REST_Controller
 		// $response = $this->MyModel->header_auth();
 		// if ($response['status'] == 200) {
 		$config['upload_path'] = './public/images/uploads/sproducts/';
-		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('image_file')) {
 			$error = array(
 				'status' => false,
@@ -1910,6 +1911,7 @@ class App extends REST_Controller
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('file')) {
 					$error = array(
 						'status' => false,
@@ -2058,9 +2060,10 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$config['upload_path'] = './public/images/uploads/profile_photos/';
-				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('merchant_display_picture')) {
 					$error = array(
 						'status' => false,
