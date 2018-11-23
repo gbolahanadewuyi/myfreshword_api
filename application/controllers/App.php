@@ -900,9 +900,10 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/profile_photos';
+			$config['upload_path'] = 'public/images/profile_photos';
+			$config['overwrite'] => TRUE,
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 2024;
+			$config['max_size'] = 2048000;
 			$this->load->library('upload', $config);
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
