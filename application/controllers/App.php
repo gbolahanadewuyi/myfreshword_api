@@ -1504,7 +1504,7 @@ class App extends REST_Controller
 	public function merchant_products_post()
 	{
 
-		// $_POST = json_decode(file_get_contents('php://input'), TRUE);
+		$_POST = json_decode(file_get_contents('php://input'), TRUE);
 
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1521,7 +1521,7 @@ class App extends REST_Controller
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
 				$row[] = $prod->prod_tags;
-				// $row[] = $prod->prod_uniqid;
+				$row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
 				$row[] = $prod->prod_date;
 
