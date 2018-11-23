@@ -896,7 +896,7 @@ class App extends REST_Controller
 		 }
 	}
 
-	public function upload_profile_photos_post()
+	public function upload_profile_post()
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
