@@ -908,7 +908,7 @@ class App extends REST_Controller
 
 			$this->upload->initialize($config);
 
-			if (!$this->upload->do_upload('image_file')) {
+			if (!$this->upload->do_upload('photo')) {
 				$error = array(
 					'status' => false,
 					'uploadpath' => $config['upload_path'] ,
