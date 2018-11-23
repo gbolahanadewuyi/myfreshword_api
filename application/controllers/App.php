@@ -1465,32 +1465,25 @@ class App extends REST_Controller
 
 	public function merchant_add_file_post()
 	{
+
 		$id = $_POST['id'];
 		$query = $this->MyModel->upload_path($id);
 		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
 		if ($query == "audio") {
 			$config['allowed_types'] = 'mp3';
 		}
-
 		if ($query == "video") {
 			$config['allowed_types'] = 'mp4|avi';
 		}
-
 		if ($query == "book") {
 			$config['allowed_types'] = 'pdf|doc';
 		}
-
-		$config['max_size'] = 10024;
+		$config['max_size'] = 0;
 		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('image')) {
-			$error = array(
-				'status' => false,
-				'error' => $this->upload->display_errors()
-			);
 
-			// echo json_encode($error);
-
+		if (!$this->upload->do_upload('product_file')) {
+			$error = array('status' => false, 'error' => $this->upload->display_errors());
+				//echo json_encode($error);
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
 			$data = $this->upload->data();
@@ -1501,6 +1494,7 @@ class App extends REST_Controller
 			$this->MyModel->update_file($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
 		}
+
 	}
 
 	public function merchant_products_post()
