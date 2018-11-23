@@ -902,9 +902,9 @@ class App extends REST_Controller
 		if ($response['status'] == 200) {
 			$config['upload_path'] = './public/images/products';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 3072;
+			$config['max_size'] = 2024;
 			$this->load->library('upload', $config);
-			if (!$this->upload->do_upload('image_file')) {
+			if (!$this->upload->do_upload('photo')) {
 				$error = array(
 					'status' => false,
 					'uploadpath'=> $config['upload_path'],
