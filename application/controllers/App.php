@@ -900,9 +900,9 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/profile_photos/';
+			$config['upload_path'] = './public/images/products';
 			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 2024;
+			$config['max_size'] = 3072;
 			$this->load->library('upload', $config);
 			if (!$this->upload->do_upload('image_file')) {
 				$error = array(
@@ -915,7 +915,7 @@ class App extends REST_Controller
 				$this->response($error, REST_Controller::HTTP_OK);
 			} else {
 				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['file_name']];
+				$success = ['status' => true, 'success' => $data['full_path']];
 
 				// echo json_encode($success);
 
