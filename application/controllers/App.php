@@ -1484,7 +1484,7 @@ class App extends REST_Controller
 		}
 		$config['max_size'] = 0;
 		$this->load->library('upload', $config);
-
+		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('product_file')) {
 			$error = array('status' => false, 'error' => $this->upload->display_errors());
 				//echo json_encode($error);
