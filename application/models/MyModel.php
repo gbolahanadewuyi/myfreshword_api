@@ -2812,8 +2812,8 @@ class MyModel extends CI_Model
 		date_default_timezone_set('Africa/Accra');
 
 		// Account details
-		$clientId = 'ENTER-YOUR-13-DIGITS-ALPHANUMERIC-CODE-HERE';
-		$applicationSecret = 'ENTER-YOUR-32-DIGITS-CODE-HERE';
+		$clientId = '5ac33950c8e46';
+		$applicationSecret = '5bcf90580c9db6811e8d3d1e49b9dd6d';
 
 		// Prepare data for POST request
 		$url = 'https://app.helliomessaging.com/api/v2/sms';

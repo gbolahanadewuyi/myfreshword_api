@@ -1232,14 +1232,14 @@ class App extends REST_Controller
 				$data['messages'][$key] = form_error($key);
 			}
 		} else {
-			$regData = array(
+			$smsData = array(
 				'mobile_number' => $_POST['mobile_number'],
 				'sender_id' => $_POST['sender_id'],
 				'message_content' => $_POST['message_content']
 			);
-			// $data['Bulksms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
+			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
 			$data['Success'] = true;
-			$data['Messages'] = $this->MyModel->sendbulksms_message($regData);
+			$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
