@@ -1235,9 +1235,9 @@ class App extends REST_Controller
 				'sender_id' => $_POST['sender_id'],
 				'message_content' => $_POST['message_content']
 			);
-			$data['Bulksms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
+			// $data['Bulksms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
 			$data['Success'] = true;
-			$data['Messages'] = $this->MyModel->create_merchant($regData);
+			$data['Messages'] = $this->MyModel->sendbulksms_message($regData);
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
