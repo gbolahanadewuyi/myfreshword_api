@@ -903,7 +903,7 @@ class App extends REST_Controller
 			$config['overwrite'] = TRUE;
 			$config['file_ext_tolower'] = TRUE;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			$config['max_size'] = 2048000;
+			$config['max_size'] = 0;
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -1216,6 +1216,8 @@ class App extends REST_Controller
 	 */
 	public function merchant_sendbulksms_post()
 	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
@@ -1241,6 +1243,7 @@ class App extends REST_Controller
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
+	}
 	}
 
 	//End Send Bulk SMS Block
