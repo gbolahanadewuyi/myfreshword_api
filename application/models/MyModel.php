@@ -2806,7 +2806,7 @@ class MyModel extends CI_Model
 	}
 
 	//Bulk SMS Model
-	function sendbulksms_message_($phone_number, $message_content, $sender_id)
+	function sendbulksms_message_($smsData)
 	{
 		//Set Time Zone as this is very important to ensure your messages are delievered on time
 		date_default_timezone_set('Africa/Accra');
