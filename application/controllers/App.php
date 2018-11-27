@@ -1223,15 +1223,15 @@ class App extends REST_Controller
 			'success' => false,
 			'messages' => array()
 		);
-		// $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
-		// $this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
-		// $this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
-		// $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		// if ($this->form_validation->run() === false) {
-		// 	foreach ($_POST as $key => $value) {
-		// 		$data['messages'][$key] = form_error($key);
-		// 	}
-		} 
+		$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+		$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
+		$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		if ($this->form_validation->run() === false) {
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		} else {
 			$smsData = array(
 				'mobile_number' => $_POST['mobile_number'],
 				'sender_id' => $_POST['sender_id'],
@@ -1240,11 +1240,11 @@ class App extends REST_Controller
 			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
 			$data['Success'] = true;
 			$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
-		
+		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	
+	}
 
 	//End Send Bulk SMS Block
 
