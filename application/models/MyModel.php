@@ -2801,14 +2801,14 @@ class MyModel extends CI_Model
 	}
 
 	//Bulk SMS Model
-	function sendbulksms_message_($phone_number, $message_content, $sender_id)
+	function sendbulksms_message_($smsData)
 	{
 		//Set Time Zone as this is very important to ensure your messages are delievered on time
 		date_default_timezone_set('Africa/Accra');
 
 		// Account details
-		$clientId = 'ENTER-YOUR-13-DIGITS-ALPHANUMERIC-CODE-HERE';
-		$applicationSecret = 'ENTER-YOUR-32-DIGITS-CODE-HERE';
+		$clientId = '5ac33950c8e46';
+		$applicationSecret = '5bcf90580c9db6811e8d3d1e49b9dd6d';
 
 		// Prepare data for POST request
 		$url = 'https://app.helliomessaging.com/api/v2/sms';

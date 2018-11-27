@@ -865,7 +865,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input') , true);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -890,23 +890,28 @@ class App extends REST_Controller
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
-		else {
-		 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		 }
 	}
 
 	public function upload_profile_photo_post()
 	{
-		// $response = $this->MyModel->header_auth();
-		// if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/uploads/sproducts/';
-			$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
-			$config['max_size'] = 2024;
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$config['upload_path'] = './public/images/profile_photos';
+			$config['overwrite'] = TRUE;
+			$config['file_ext_tolower'] = TRUE;
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+			$config['max_size'] = 0;
 			$this->load->library('upload', $config);
-			if (!$this->upload->do_upload('image_file')) {
+
+			$this->upload->initialize($config);
+
+			if (!$this->upload->do_upload('photo')) {
 				$error = array(
 					'status' => false,
+					'uploadpath' => $config['upload_path'] ,
 					'error' => $this->upload->display_errors()
 				);
 
@@ -915,19 +920,19 @@ class App extends REST_Controller
 				$this->response($error, REST_Controller::HTTP_OK);
 			} else {
 				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['file_name']];
+				$success = ['status' => true, 'success' => $data['full_path']];
 
 				// echo json_encode($success);
 
 				$imgData = array(
 					'user_photo' => 'http://api.myfreshword.com/public/images/profile_photos/' . $data['file_name']
 				);
-				$this->MyModel->update_profile_image($response['id'], $imgData);
+				//$this->MyModel->update_profile_image($response['id'], $imgData);
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
-		// } else {
-		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		// }
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		}
 	}
 
 	// this shooud be the response for the payment
@@ -1208,35 +1213,38 @@ class App extends REST_Controller
 		|
 		| Here is where you can register web routes for your application. These
 		|
-		*/
-		public function merchant_sendbulksms_post()
-		{
+	 */
+	public function merchant_sendbulksms_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
 		);
-		$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
-		$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
-		$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
-		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		if ($this->form_validation->run() === false) {
-			foreach ($_POST as $key => $value) {
-				$data['messages'][$key] = form_error($key);
-			}
-		} else {
-			$regData = array(
+		// $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+		// $this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
+		// $this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+		// $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		// if ($this->form_validation->run() === false) {
+		// 	foreach ($_POST as $key => $value) {
+		// 		$data['messages'][$key] = form_error($key);
+		// 	}
+		} 
+			$smsData = array(
 				'mobile_number' => $_POST['mobile_number'],
 				'sender_id' => $_POST['sender_id'],
 				'message_content' => $_POST['message_content']
 			);
-			$data['Bulksms'] = $this->MyModel->send_code($regData['mobile'], $regData['approval_code']);
+			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
 			$data['Success'] = true;
-			$data['Messages'] = $this->MyModel->create_merchant($regData);
-		}
+			$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
+		
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
+	
 
 	//End Send Bulk SMS Block
 
@@ -1311,8 +1319,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
 			$this->form_validation->set_rules('address', 'Address', 'trim|required');
-
-			// $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
+			$this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -1441,9 +1448,10 @@ class App extends REST_Controller
 	{
 		$id = $_POST['id'];
 		$config['upload_path'] = './public/images/uploads/products/';
-		$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('image_file')) {
 			$error = array(
 				'status' => false,
@@ -1461,7 +1469,7 @@ class App extends REST_Controller
 
 			$imgData = array(
 				'prod_image' => $data['file_name'],
-				'img_link' => 'http://api.myfreshword.com/public/images/products/' . $data['file_name']
+				'img_link' => 'http://api.myfreshword.com/public/images/uploads/products/' . $data['file_name']
 			);
 			$this->MyModel->update_image($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
@@ -1472,31 +1480,25 @@ class App extends REST_Controller
 
 	public function merchant_add_file_post()
 	{
+
 		$id = $_POST['id'];
 		$query = $this->MyModel->upload_path($id);
 		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
 		if ($query == "audio") {
 			$config['allowed_types'] = 'mp3';
 		}
-
 		if ($query == "video") {
 			$config['allowed_types'] = 'mp4|avi';
 		}
-
 		if ($query == "book") {
 			$config['allowed_types'] = 'pdf|doc';
 		}
-
-		$config['max_size'] = 2024;
+		$config['max_size'] = 0;
 		$this->load->library('upload', $config);
-		if (!$this->upload->do_upload('image')) {
-			$error = array(
-				'status' => false,
-				'error' => $this->upload->display_errors()
-			);
-
-			// echo json_encode($error);
-
+		$this->upload->initialize($config);
+		if (!$this->upload->do_upload('product_file')) {
+			$error = array('status' => false, 'error' => $this->upload->display_errors());
+				//echo json_encode($error);
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
 			$data = $this->upload->data();
@@ -1507,12 +1509,13 @@ class App extends REST_Controller
 			$this->MyModel->update_file($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
 		}
+
 	}
 
 	public function merchant_products_post()
 	{
 
-		// $_POST = json_decode(file_get_contents('php://input'), TRUE);
+		$_POST = json_decode(file_get_contents('php://input'), true);
 
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
@@ -1529,7 +1532,7 @@ class App extends REST_Controller
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
 				$row[] = $prod->prod_tags;
-				// $row[] = $prod->prod_uniqid;
+				$row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
 				$row[] = $prod->prod_date;
 
@@ -1562,24 +1565,25 @@ class App extends REST_Controller
 
 	public function merchant_add_product_data_post()
 	{
+
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
+
 			$_POST = json_decode(file_get_contents('php://input'), true);
-			$data = array(
-				'success' => false,
-				'messages' => array()
-			);
-			$this->form_validation->set_rules('prod_tags', 'Category', 'trim|required'); //type
+			$data = array('success' => false, 'messages' => array());
+			$this->form_validation->set_rules('prod_tags', 'Category', 'trim|required');//type
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
-			$this->form_validation->set_rules('prod_preacher_id', 'Preacher / Speaker / Author', 'trim|required');
 			$this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]'); //this is the theme
-			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required'); //and this is the essay
-			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required'); //should be an hidden input
+		//   $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
+		//   $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
+			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]');//this is the theme
+			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required');//and this is the essay
+			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
 			$this->form_validation->set_rules('merchant_email', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_message('is_unique', 'The %s is already taken');
 			$this->form_validation->set_message('max_length[160]', '%s: the maximum of 160 Characters allowed');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
@@ -1588,13 +1592,10 @@ class App extends REST_Controller
 				$prodData = array(
 					'prod_name' => $_POST['prod_name'],
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
-					'prod_preacher_id' => $_POST['prod_preacher_id'],
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
-
-					// 'prod_image'            =>      $_POST['prod_image'],
-					// 'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
-
+						//'prod_image'            =>      $_POST['prod_image'],
+					//'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
 					'prod_description' => $_POST['prod_description'],
 					'prod_essay' => $_POST['prod_essay'],
@@ -1603,11 +1604,9 @@ class App extends REST_Controller
 					'prod_cateid' => 1,
 					'prod_subcateid' => 0,
 					'prod_filename' => 0,
-
-					// 'prod_price'            =>      $_POST['prod_price'],
-
+							//   'prod_price'            =>      $_POST['prod_price'],
 					'prod_plan' => 0,
-					'prod_free' => 1,
+					'prod_free' => 0,
 					'prod_featured' => 0,
 					'prod_status' => 1,
 					'prod_uniqid' => $this->MyModel->generate_product_unique_code(),
@@ -1616,22 +1615,14 @@ class App extends REST_Controller
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
-
-					// 'file_link'             =>      $_POST['file_link'],
-
+					//'file_link'             =>      $_POST['file_link'],
 					'merchant_email' => $_POST['merchant_email'],
-
-					// 'currency'              =>      $_POST['prod_currency'],
-
+			//   'currency'              =>      $_POST['prod_currency'],
 					'prod_date' => date('Y-m-d H:i:s')
 				);
 				$query = $this->MyModel->merchant_insert_product($prodData);
-				$data = array(
-					'success' => true,
-					'message' => $query
-				);
+				$data = array('success' => true, 'message' => $query);
 			}
-
 			$this->response($data, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
@@ -1817,7 +1808,7 @@ class App extends REST_Controller
 				'messages' => array()
 			);
 			$this->form_validation->set_rules('pastors_title', 'Pastors Title', 'trim|required');
-			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required|is_unique[merchant_feed.title]');
+			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
 			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_file_check');
@@ -1929,6 +1920,7 @@ class App extends REST_Controller
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('file')) {
 					$error = array(
 						'status' => false,
@@ -2077,9 +2069,10 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$config['upload_path'] = './public/images/uploads/profile_photos/';
-				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('merchant_display_picture')) {
 					$error = array(
 						'status' => false,
@@ -2096,7 +2089,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/profile_photos/' . $data['file_name'];
+					$img = 'http://api.myfreshword.com/public/images/uploads/profile_photos/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -2176,4 +2169,4 @@ class App extends REST_Controller
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
-}
+} //end of class
