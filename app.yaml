@@ -1,5 +1,6 @@
-runtime: php
-env: flex
+service: myfreshword
+version: v1
+runtime: php55
 
 runtime_config:
   document_root: public
@@ -13,3 +14,7 @@ env_variables:
   APP_LOG: errorlog
   APP_KEY: YOUR_APP_KEY
   STORAGE_DIR: /tmp
+
+handlers:
+- url: /
+  script: index.php
