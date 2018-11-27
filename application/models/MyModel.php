@@ -1782,6 +1782,7 @@ class MyModel extends CI_Model
 
 		function create_resident($data)
 	{
+		
 		$query = $this->db->insert('ts_residentpastor', $data);
 		if ($query == true) {
 			return array(
