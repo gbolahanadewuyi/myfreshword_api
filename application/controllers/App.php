@@ -1260,36 +1260,43 @@ class App extends REST_Controller
 	public function church_resident_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
-		$data = array(
-			'success' => false,
-			'messages' => array()
-		);
-		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
-		$this->form_validation->set_rules('org_id', 'ID', 'trim|required');
-		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		if ($this->form_validation->run() === false) {
-			foreach($_POST as $key => $value) {
-				$data['messages'][$key] = form_error($key);
-			}
-		}
-		else {
-			$churchresidentdata = array(
-				'first_name' => $_POST['rfirst_name'],
-				'last_name' => $_POST['rlast_name'],
-				'title' => $_POST['r_title'],
-				'orgid' => $_POST['org_id'] 
+		$response = $this->MyModel->merchant_auth();
+		if($response['status'] == 200) {
+			$this->load->helper(array(
+				'form',
+				'url'
+			));
+			$data = array(
+				'success' => false,
+				'messages' => array()
 			);
-			$data['success'] = true;
-			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
-			// $data = array(
-			// 	'success' => true,
-			// 	'message' => $data
-			// );
+			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required|');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			}
+			else {
+				$churchResident = array(
+					'FirstName' => $_POST['rfirst_name'],
+					'LastName' => $_POST['rlast_name'],
+					'Title' => $_POST['r_title'],
+					'ID' => $_POST['org_id']
+				);
+				$data['messages'] = $this->MyModel->create_resident($churchResident);
+				$data = array(
+					'success' => true,
+					'message' => $data
+				);
+			}
+	
+			$this->response($data, REST_Controller::HTTP_OK);
 		}
-
-		$this->response($data, REST_Controller::HTTP_OK);
+		
 	}
 
 	public function church_membership_register_post()

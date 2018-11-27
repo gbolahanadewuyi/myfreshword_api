@@ -1199,13 +1199,13 @@ class MyModel extends CI_Model
 
 	public function create_resident($data)
 	{
+		
 		$query = $this->db->insert('ts_residentpastor', $data);
 		if ($query == true) {
-			return array('status' => 200, 'message' => 'Resident Created successfully');
+			return array('status' => 200, 'message' => 'Merchant account created successfully');
 		} else {
-			return array('status' => 400, 'message' => 'Error adding residents');
+			return array('status' => 400, 'message' => 'Error creating merchant account');
 		}
-
 	}
 
 			//Create Church Mmembership
