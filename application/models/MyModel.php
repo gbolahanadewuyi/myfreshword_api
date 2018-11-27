@@ -1785,15 +1785,9 @@ class MyModel extends CI_Model
 		
 		$query = $this->db->insert('ts_residentpastor', $data);
 		if ($query == true) {
-			return array(
-				'status' => 200,
-				'message' => 'Resident Created successfully'
-			);
+			return array('status' => 200, 'message' => 'Resident created successfully');
 		} else {
-			return array(
-				'status' => 400,
-				'message' => 'Error adding residents'
-			);
+			return array('status' => 400, 'message' => 'Error adding Residents');
 		}
 	}
 
