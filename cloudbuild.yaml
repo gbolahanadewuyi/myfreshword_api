@@ -9,5 +9,5 @@ steps:
     gcloud source repos clone myfreshword_api --project=techloft-173609
     cd myfreshword_api
     ls -a
-    git checkout master
+    git checkout dev
     gcloud app deploy app.yaml
