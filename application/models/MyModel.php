@@ -1202,9 +1202,9 @@ class MyModel extends CI_Model
 		
 		$query = $this->db->insert('ts_residentpastor', $data);
 		if ($query == true) {
-			return array('status' => 200, 'message' => 'Merchant account created successfully');
+			return array('status' => 200, 'message' => 'Resident created successfully');
 		} else {
-			return array('status' => 400, 'message' => 'Error creating merchant account');
+			return array('status' => 400, 'message' => 'Error adding Residents');
 		}
 	}
 
