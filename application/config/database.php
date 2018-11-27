@@ -78,25 +78,25 @@ $query_builder = TRUE;
 $live = ENVIRONMENT == 'production';
 
 $db['default'] = array(
-	    'dsn' => getenv('MYSQL_DSN'),
-	    'username' => getenv('MYSQL_USER'),
-	    'password' => getenv('MYSQL_PASSWORD'),
-	    'database' => getenv('MYSQL_DB'),
-	    'dbdriver' => 'pdo',
-	    'dbprefix' => '',
-	    'pconnect' => FALSE,
-	    'db_debug' => (ENVIRONMENT !== 'production'),
-	    'cache_on' => FALSE,
-	    'cachedir' => '',
-	    'char_set' => 'utf8',
-	    'dbcollat' => 'utf8_general_ci',
-	    'swap_pre' => '',
-	    'encrypt' => FALSE,
-	    'compress' => FALSE,
-	    'stricton' => FALSE,
-	    'failover' => array(),
-	    'save_queries' => TRUE
-	);
+	'dsn' => getenv('MYSQL_DSN'),
+	'username' => getenv('MYSQL_USER'),
+	'password' => getenv('MYSQL_PASSWORD'),
+    'database' => getenv('MYSQL_DB'),
+    'dbdriver' => 'pdo',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
 
 if(!$live){
 	$db['default'] = array(
