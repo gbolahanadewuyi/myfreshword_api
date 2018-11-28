@@ -1257,10 +1257,10 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
-			$this->form_validation->set_rules('rfirst_name', 'First Name', 'required');
-			$this->form_validation->set_rules('rlast_name', 'Last Name', 'required');
-			$this->form_validation->set_rules('r_title', 'Title', 'required');
-			$this->form_validation->set_rules('org_id', 'Organization ID', 'required');
+			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach($_POST as $key => $value) {
@@ -1269,10 +1269,10 @@ class App extends REST_Controller
 			}
 			else {
 				$churchResidentData= array(
-					'FirstName' => $_POST['rfirst_name'],
-					'LastName' => $_POST['rlast_name'],
+					'lastname' => $_POST['rfirst_name'],
+					'Firstname' => $_POST['rlast_name'],
 					'Title' => $_POST['r_title'],
-					'ID' => $_POST['org_id']
+					'organization_ID' => $_POST['org_id']
 				);
 		
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
