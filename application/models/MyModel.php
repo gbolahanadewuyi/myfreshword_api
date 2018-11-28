@@ -79,7 +79,7 @@ class MyModel extends CI_Model
 						'message' => 'Successfully login.',
 						'id' => $id,
 						'token' => $token,
-						'token' => $churchId
+						'churchId' => $churchId
 					);
 				}
 			} else {
