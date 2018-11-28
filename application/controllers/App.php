@@ -57,6 +57,7 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_OK);
 	}
 
+
 	public function logout_post()
 	{
 		$response = $this->MyModel->logout();
@@ -320,6 +321,8 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
+
+
 	public function feed_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -421,6 +424,18 @@ class App extends REST_Controller
 		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->product_id($this->get('p_id'));
+			$this->response($resp, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
+	public function church_details_get(){
+		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		if ($response['status'] == 200) {
+			$id = (int) $this->get('id');
+			$resp = $this->MyModel->church_details($id);
+
 			$this->response($resp, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
@@ -1005,7 +1020,7 @@ class App extends REST_Controller
 					'freshword_transaction_id' => $_POST['freshword_transaction_id']
 				);
 				$data['success'] = true;
-				$data['messages'] = $this->MyModel->payment_to_db($payData);
+				$data['messages'] = $this->MyModel->pfayment_to_db($payData);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);

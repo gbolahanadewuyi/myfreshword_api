@@ -792,6 +792,15 @@ class MyModel extends CI_Model
 		return $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
+	
+	public
+
+	function church_details($id)
+{
+	return $this->db->select()->from('ts_church')->where('id', $id)->get()->row();
+}
+	
+
 	public
 
 		function phone_momo($mobile)
