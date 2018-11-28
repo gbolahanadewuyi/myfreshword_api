@@ -35,7 +35,7 @@ class MyModel extends CI_Model
 
 		function login($username, $password)
 	{
-		$q = $this->db->select('user_pwd,user_id,user_status,user_mobile')->from('ts_user')->where('user_uname', $username)->get()->row();
+		$q = $this->db->select('user_pwd,user_id,user_status,user_mobile,user_church_id')->from('ts_user')->where('user_uname', $username)->get()->row();
 		if ($q == "") {
 			return array(
 				'status' => 204,
@@ -51,6 +51,7 @@ class MyModel extends CI_Model
 		} else {
 			$hashed_password = $q->user_pwd;
 			$id = $q->user_id;
+			$churchId = $q->user_church_id;
 			if ($hashed_password == md5($password)) {
 				$last_login = date('Y-m-d H:i:s');
 				$token_set = substr(md5(rand()), 0, 7);
@@ -77,7 +78,8 @@ class MyModel extends CI_Model
 						'status' => 200,
 						'message' => 'Successfully login.',
 						'id' => $id,
-						'token' => $token
+						'token' => $token,
+						'token' => $churchId
 					);
 				}
 			} else {
@@ -95,7 +97,7 @@ class MyModel extends CI_Model
 
 		function mobile_login($user_mobile, $password)
 	{
-		$q = $this->db->select('user_pwd,user_id,user_status,user_uname, user_mobile')->from('ts_user')->where('user_mobile', $user_mobile)->get()->row();
+		$q = $this->db->select('user_pwd,user_id,user_status,user_uname,user_mobile,user_church_id')->from('ts_user')->where('user_mobile', $user_mobile)->get()->row();
 		if ($q == "") {
 			return array(
 				'status' => 204,
@@ -111,6 +113,7 @@ class MyModel extends CI_Model
 		} else {
 			$hashed_password = $q->user_pwd;
 			$id = $q->user_id;
+			$
 			if ($hashed_password == md5($password)) {
 				$last_login = date('Y-m-d H:i:s');
 				$token_set = substr(md5(rand()), 0, 7);
@@ -1782,7 +1785,7 @@ class MyModel extends CI_Model
 
 		function create_resident($data)
 	{
-		
+
 		$query = $this->db->insert('ts_residentpastor', $data);
 		if ($query == true) {
 			return array('status' => 200, 'message' => 'Resident created successfully');
