@@ -926,7 +926,7 @@ class App extends REST_Controller
 				// echo json_encode($success);
 
 				$imgData = array(
-					'user_photo' => 'http://api.myfreshword.com/public/images/profile_photos/' . $data['file_name']
+					'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
 				);
 				//$this->MyModel->update_profile_image($response['id'], $imgData);
 				$this->response($success, REST_Controller::HTTP_OK);
@@ -1462,7 +1462,7 @@ class App extends REST_Controller
 
 			$imgData = array(
 				'prod_image' => $data['file_name'],
-				'img_link' => 'http://api.myfreshword.com/public/images/uploads/products/' . $data['file_name']
+				'img_link' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/products/' . $data['file_name']
 			);
 			$this->MyModel->update_image($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
@@ -1777,7 +1777,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1837,7 +1837,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/public/images/uploads/pastors-imgs/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/pastors-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -1931,7 +1931,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -2083,7 +2083,7 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'http://api.myfreshword.com/public/images/uploads/profile_photos/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/profile_photos/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
 
