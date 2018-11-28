@@ -6,6 +6,7 @@ require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
+use Cloudinary;
 use \Firebase\JWT\JWT;
 
 class App extends REST_Controller
@@ -1225,15 +1226,15 @@ class App extends REST_Controller
 			'success' => false,
 			'messages' => array()
 		);
-		// $this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
-		// $this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
-		// $this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
-		// $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		// if ($this->form_validation->run() === false) {
-		// 	foreach ($_POST as $key => $value) {
-		// 		$data['messages'][$key] = form_error($key);
-		// 	}
-		} 
+		$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+		$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
+		$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		if ($this->form_validation->run() === false) {
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		} else {
 			$smsData = array(
 				'mobile_number' => $_POST['mobile_number'],
 				'sender_id' => $_POST['sender_id'],
@@ -1242,11 +1243,11 @@ class App extends REST_Controller
 			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
 			$data['Success'] = true;
 			$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
-		
+		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	
+	}
 
 	//End Send Bulk SMS Block
 
@@ -1474,39 +1475,40 @@ class App extends REST_Controller
 
 	// we run this on the success response from the first push
 
-	public function merchant_add_file_post()
-	{
+	// public function merchant_add_file_post()
+	// {
 
-		$id = $_POST['id'];
-		$query = $this->MyModel->upload_path($id);
-		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
-		if ($query == "audio") {
-			$config['allowed_types'] = 'mp3';
-		}
-		if ($query == "video") {
-			$config['allowed_types'] = 'mp4|avi';
-		}
-		if ($query == "book") {
-			$config['allowed_types'] = 'pdf|doc';
-		}
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
-		$this->upload->initialize($config);
-		if (!$this->upload->do_upload('product_file')) {
-			$error = array('status' => false, 'error' => $this->upload->display_errors());
-				//echo json_encode($error);
-			$this->response($error, REST_Controller::HTTP_OK);
-		} else {
-			$data = $this->upload->data();
-			$success = ['status' => true, 'success' => $data['file_name']];
-			$imgData = array(
-				'file_link' => $data['file_name']
-			);
-			$this->MyModel->update_file($id, $imgData);
-			$this->response($success, REST_Controller::HTTP_OK);
-		}
+	// 	$id = $_POST['id'];
+	// 	$query = $this->MyModel->upload_path($id);
+	// 	$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
+	// 	if ($query == "audio") {
+	// 		$config['allowed_types'] = 'mp3';
+	// 	}
+	// 	if ($query == "video") {
+	// 		$config['allowed_types'] = 'mp4|avi';
+	// 	}
+	// 	if ($query == "book") {
+	// 		$config['allowed_types'] = 'pdf|doc';
+	// 	}
+	// 	$config['max_size'] = 0;
+		
+	// 	$this->load->library('upload', $config);
+	// 	$this->upload->initialize($config);
+	// 	if (!$this->upload->do_upload('product_file')) {
+	// 		$error = array('status' => false, 'error' => $this->upload->display_errors());
+	// 			//echo json_encode($error);
+	// 		$this->response($error, REST_Controller::HTTP_OK);
+	// 	} else {
+	// 		$data = $this->upload->data();
+	// 		$success = ['status' => true, 'success' => $data['file_name']];
+	// 		$imgData = array(
+	// 			'file_link' => $data['file_name']
+	// 		);
+	// 		$this->MyModel->update_file($id, $imgData);
+	// 		$this->response($success, REST_Controller::HTTP_OK);
+	// 	}
 
-	}
+	// }
 
 	public function merchant_products_post()
 	{
