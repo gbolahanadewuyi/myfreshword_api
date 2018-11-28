@@ -745,6 +745,20 @@ class App extends REST_Controller
 		}
 	}
 
+	public function subscription_callback_post(){
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			echo $_POST;
+			// $userid = $response['id'];
+			// $subscriptionPackage = $_POST['subscriptionType'];
+
+
+			// $query = $this->MyModel->subscribe($userid, $subscriptionPackage);
+			// $this->response($query, REST_Controller::HTTP_OK);
+
+		// } else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
+	}
 
 	public function isSubscribed_post()
 	{
