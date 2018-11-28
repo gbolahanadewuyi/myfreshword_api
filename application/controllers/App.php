@@ -1257,11 +1257,11 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
-			// $this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
-			// $this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-			// $this->form_validation->set_rules('r_title', 'Title', 'trim|required');
-			// $this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required|');
-			// $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
