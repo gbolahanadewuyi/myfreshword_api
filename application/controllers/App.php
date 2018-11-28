@@ -970,7 +970,8 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		$filename = json_decode(file_get_contents('php://input'), true);
+		// $_POST = json_decode(file_get_contents('php://input'), true);
+		$filename = (string)$this->get('filepath');
 		// $filenamein = (string)$this->get('upload_path');
 	 
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
