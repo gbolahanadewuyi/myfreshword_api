@@ -155,6 +155,7 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|min_length[10]|is_unique[ts_user.user_mobile]');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_user.user_email]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
+		$this->form_validation->set_rules('user_church_id', 'church ID', 'trim|required');
 		$this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
@@ -167,8 +168,9 @@ class App extends REST_Controller
 				'user_uname' => $_POST['username'],
 				'user_email' => $_POST['email'],
 				'user_mobile' => $_POST['mobile'],
-				'user_pwd' => md5($_POST['password']),
-				'user_key' => $key = md5(date('his') . $_POST['email']),
+				'user_pwd' => md5($_POST['password']) ,
+				'user_churchid' => $_POST['user_church_id'],
+				'user_key' => $key = md5(date('his') . $_POST['email']) ,
 				'user_accesslevel' => 2,
 				'user_status' => 2,
 				'user_activation_code' => $q
@@ -1251,12 +1253,6 @@ class App extends REST_Controller
 	public function church_resident_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
-		$response = $this->MyModel->merchant_auth();
-		if($response['status'] == 200) {
-			$this->load->helper(array(
-				'form',
-				'url'
-			));
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1272,13 +1268,14 @@ class App extends REST_Controller
 				}
 			}
 			else {
-				$churchResident = array(
+				$churchResidentData= array(
 					'FirstName' => $_POST['rfirst_name'],
 					'LastName' => $_POST['rlast_name'],
 					'Title' => $_POST['r_title'],
 					'ID' => $_POST['org_id']
 				);
-				$data['messages'] = $this->MyModel->create_resident($churchResident);
+		
+				$data['messages'] = $this->MyModel->create_church_member($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
@@ -1286,7 +1283,6 @@ class App extends REST_Controller
 			}
 	
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
 		
 	}
 
