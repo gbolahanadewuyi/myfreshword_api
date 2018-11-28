@@ -1,5 +1,5 @@
-runtime: php
-env: flex
+service: myfreshword
+runtime: php55
 
 runtime_config:
   document_root: public
@@ -10,6 +10,18 @@ skip_files:
 
 env_variables:
   # Put production environment variables here.
-  APP_LOG: errorlog
-  APP_KEY: YOUR_APP_KEY
-  STORAGE_DIR: /tmp
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/techloft-173609:europe-west1:techloft-db1;dbname=myfreshword
+  MYSQL_USER: mac
+  MYSQL_PASSWORD: Some1ilove
+  MYSQL_DB: myfreshword
+
+beta_settings:
+    cloud_sql_instances: "techloft-173609:europe-west1:techloft-db1"
+
+handlers:
+- url: /
+  script: index.php
+
+- url: /(.+)
+  script: index.php
+

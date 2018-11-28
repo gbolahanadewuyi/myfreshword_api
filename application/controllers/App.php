@@ -156,6 +156,7 @@ class App extends REST_Controller
 		$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|min_length[10]|is_unique[ts_user.user_mobile]');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[ts_user.user_email]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
+		$this->form_validation->set_rules('church_id', 'church ID', 'trim|required');
 		$this->form_validation->set_message('is_unique', 'The %s is already taken');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
@@ -168,8 +169,9 @@ class App extends REST_Controller
 				'user_uname' => $_POST['username'],
 				'user_email' => $_POST['email'],
 				'user_mobile' => $_POST['mobile'],
-				'user_pwd' => md5($_POST['password']),
-				'user_key' => $key = md5(date('his') . $_POST['email']),
+				'user_pwd' => md5($_POST['password']) ,
+				'user_church_id' => $_POST['church_id'],
+				'user_key' => $key = md5(date('his') . $_POST['email']) ,
 				'user_accesslevel' => 2,
 				'user_status' => 2,
 				'user_activation_code' => $q
@@ -1251,36 +1253,38 @@ class App extends REST_Controller
 
 	public function church_resident_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input'), true);
-		$data = array(
-			'success' => false,
-			'messages' => array()
-		);
-		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
-		$this->form_validation->set_rules('org_id', 'ID', 'trim|required');
-		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-		if ($this->form_validation->run() === false) {
-			foreach ($_POST as $key => $value) {
-				$data['messages'][$key] = form_error($key);
-			}
-		} else {
-			$chuchresidentdata = array(
-				'first_name' => $_POST['rfirst_name'],
-				'last_name' => $_POST['rlast_name'],
-				'title' => $_POST['r_title'],
-				'orgid' => $_POST['org_id']
+		$_POST = json_decode(file_get_contents('php://input') , true);
+			$data = array(
+				'success' => false,
+				'messages' => array()
 			);
-			$data['success'] = true;
-			$data['messages'] = $this->MyModel->create_resident($churchresidentdata);
-			// $data = array(
-			// 	'success' => true,
-			// 	'message' => $data
-			// );
-		}
-
-		$this->response($data, REST_Controller::HTTP_OK);
+			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			}
+			else {
+				$churchResidentData= array(
+					'lastname' => $_POST['rlast_name'],
+					'Firstname' => $_POST['rfirst_name'],
+					'Title' => $_POST['r_title'],
+					'organization_ID' => $_POST['org_id']
+				);
+		
+				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
+				$data = array(
+					'success' => true,
+					'message' => $data
+				);
+			}
+	
+			$this->response($data, REST_Controller::HTTP_OK);
+		
 	}
 
 	public function church_membership_register_post()
