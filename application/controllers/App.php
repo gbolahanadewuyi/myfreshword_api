@@ -383,7 +383,7 @@ class App extends REST_Controller
 		$data = array(
 			'g_user_id' => $_POST['id'],
 			'g_email' => $_POST['email'],
-			'user_email' => $_POST['email'],
+			'user_email' => $_POST['email'],	
 			'g_display_name' => $_POST['name']
 		);
 		$query = $this->MyModel->google_data($data);
@@ -431,15 +431,15 @@ class App extends REST_Controller
 	}
 
 	public function church_details_get(){
-		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
-		if ($response['status'] == 200) {
+		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		// if ($response['status'] == 200) {
 			$churchid = (int) $this->get('id');
 			$resp = $this->MyModel->church_details($churchid);
 
 			$this->response($resp, REST_Controller::HTTP_OK);
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
+		// } else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
 	}
 
 	public function mobile_money_post()
