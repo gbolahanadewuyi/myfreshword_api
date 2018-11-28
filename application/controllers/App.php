@@ -1269,8 +1269,8 @@ class App extends REST_Controller
 			}
 			else {
 				$churchResidentData= array(
-					'lastname' => $_POST['rfirst_name'],
-					'Firstname' => $_POST['rlast_name'],
+					'lastname' => $_POST['rlast_name'],
+					'Firstname' => $_POST['rfirst_name'],
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
