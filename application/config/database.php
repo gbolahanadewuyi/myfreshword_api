@@ -77,33 +77,33 @@ $query_builder = TRUE;
 
 $live = ENVIRONMENT == 'production';
 
-// $db['default'] = array(
-// 	    'dsn' => getenv('MYSQL_DSN'),
-// 	    'username' => getenv('MYSQL_USER'),
-// 	    'password' => getenv('MYSQL_PASSWORD'),
-// 	    'database' => getenv('MYSQL_DB'),
-// 	    'dbdriver' => 'pdo',
-// 	    'dbprefix' => '',
-// 	    'pconnect' => FALSE,
-// 	    'db_debug' => (ENVIRONMENT !== 'production'),
-// 	    'cache_on' => FALSE,
-// 	    'cachedir' => '',
-// 	    'char_set' => 'utf8',
-// 	    'dbcollat' => 'utf8_general_ci',
-// 	    'swap_pre' => '',
-// 	    'encrypt' => FALSE,
-// 	    'compress' => FALSE,
-// 	    'stricton' => FALSE,
-// 	    'failover' => array(),
-// 	    'save_queries' => TRUE
-// 	);
+$db['default'] = array(
+		    'dsn' => 'mysql:unix_socket=/cloudsql/techloft-173609:europe-west1:techloft-db1;dbname=myfreshword',
+		    'username' => 'mac',
+		    'password' => 'Some1ilove',
+		    'database' => 'myfreshword',
+		    'dbdriver' => 'pdo',
+		    'dbprefix' => '',
+		    'pconnect' => FALSE,
+		    'db_debug' => (ENVIRONMENT !== 'production'),
+		    'cache_on' => FALSE,
+		    'cachedir' => '',
+		    'char_set' => 'utf8',
+		    'dbcollat' => 'utf8_general_ci',
+		    'swap_pre' => '',
+		    'encrypt' => FALSE,
+		    'compress' => FALSE,
+		    'stricton' => FALSE,
+		    'failover' => array(),
+		    'save_queries' => TRUE
+		);
 
 if(true){
 	$db['default'] = array(
-		    'dsn' => getenv('MYSQL_DSN'),
-		    'username' => getenv('MYSQL_USER'),
-		    'password' => getenv('MYSQL_PASSWORD'),
-		    'database' => getenv('MYSQL_DB'),
+		    'dsn' => 'mysql:unix_socket=/cloudsql/techloft-173609:europe-west1:techloft-db1;dbname=myfreshword',
+		    'username' => 'mac',
+		    'password' => 'Some1ilove',
+		    'database' => 'myfreshword',
 		    'dbdriver' => 'pdo',
 		    'dbprefix' => '',
 		    'pconnect' => FALSE,
