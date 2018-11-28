@@ -974,7 +974,7 @@ class App extends REST_Controller
 		// $filenamein = (string)$this->get('upload_path');
 	 
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-        use google\appengine\api\cloud_storage\CloudStorageTools;
+        // use  'google\appengine\api\cloud_storage\CloudStorageTools';
 
 	    //  $options = ['gs_bucket_name' => $my_bucket];
 		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler', $options);
