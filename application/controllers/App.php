@@ -747,7 +747,7 @@ class App extends REST_Controller
 
 	public function subscription_callback_post(){
 			$_POST = json_decode(file_get_contents('php://input'), true);
-			echo $_POST;
+			print_r($_POST);
 			// $userid = $response['id'];
 			// $subscriptionPackage = $_POST['subscriptionType'];
 
