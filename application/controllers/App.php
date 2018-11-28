@@ -1251,12 +1251,12 @@ class App extends REST_Controller
 	public function church_resident_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input') , true);
-		$response = $this->MyModel->merchant_auth();
-		if($response['status'] == 200) {
-			$this->load->helper(array(
-				'form',
-				'url'
-			));
+		// $response = $this->MyModel->merchant_auth();
+		// if($response['status'] == 200) {
+		// 	$this->load->helper(array(
+		// 		'form',
+		// 		'url'
+		// 	));
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1286,7 +1286,7 @@ class App extends REST_Controller
 			}
 	
 			$this->response($data, REST_Controller::HTTP_OK);
-		}
+		// }
 		
 	}
 
