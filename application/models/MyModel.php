@@ -113,7 +113,7 @@ class MyModel extends CI_Model
 		} else {
 			$hashed_password = $q->user_pwd;
 			$id = $q->user_id;
-			$
+			$churchId = $q->user_church_id;
 			if ($hashed_password == md5($password)) {
 				$last_login = date('Y-m-d H:i:s');
 				$token_set = substr(md5(rand()), 0, 7);
@@ -140,7 +140,8 @@ class MyModel extends CI_Model
 						'status' => 200,
 						'message' => 'Successfully login.',
 						'id' => $id,
-						'token' => $token
+						'token' => $token,
+						'churchId' => $churchId
 					);
 				}
 			} else {
