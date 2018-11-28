@@ -37,7 +37,7 @@ class MyModel extends CI_Model
 	{
 		$q = $this->db->select('user_pwd,user_id,user_status,user_mobile,user_church_id')->from('ts_user')->where('user_uname', $username)->get()->row();
 		if ($q == "") {
-			return array(
+			return array( 
 				'status' => 204,
 				'message' => 'Username not found.'
 			);

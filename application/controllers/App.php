@@ -969,6 +969,26 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
+	public function upload_profile_picture_post(){
+		$filename = json_decode(file_get_contents('php://input'), true);
+		// $filenamein = (string)$this->get('upload_path');
+	 
+		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+        use google\appengine\api\cloud_storage\CloudStorageTools;
+
+	    //  $options = ['gs_bucket_name' => $my_bucket];
+		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler', $options);
+		//  file_put_contents("$upload_u ");
+
+		$options = ['gs_bucket_name'=> $my_bucket ,'gs' => ['Content-Type' => 'img/jpeg']];
+		// $context = stream_context_create($options);
+		file_put_contents("gs://${my_bucket}", $filename);
+
+
+
+	  
+	}
+
 	public function payment_response_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
