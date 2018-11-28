@@ -9,5 +9,7 @@ steps:
     gcloud source repos clone myfreshword_api --project=techloft-173609
     cd myfreshword_api
     ls -a
-    git checkout master
-    gcloud app deploy app.yaml
+    git checkout dev
+    rm -rf .git/
+    echo Y|gcloud app deploy app.yaml
+    curl -X POST --data-urlencode "payload={\"channel\": \"#deploybot\", \"username\": \"deploybot\", \"text\": \"Myfreshword API has been deployed with branch dev.\", \"icon_emoji\": \":package:\"}" https://hooks.slack.com/services/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

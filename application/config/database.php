@@ -77,48 +77,42 @@ $query_builder = TRUE;
 
 $live = ENVIRONMENT == 'production';
 
-$db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => '35.190.219.223',
-	'username' => 'mac',
-	'password' => 'Some1ilove',
-	'database' => 'myfreshword',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
+$db['default']['dsn'] = getenv('MYSQL_DSN');
+$db['default']['username'] = getenv('MYSQL_USER');
+$db['default']['password'] = getenv('MYSQL_PASSWORD');
+$db['default']['database'] = getenv('MYSQL_DB');
+$db['default']['dbdriver'] = 'pdo';
+$db['default']['dbprefix'] = '';
+$db['default']['pconnect'] = FALSE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
+$db['default']['cachedir'] = '';
+$db['default']['char_set'] = 'utf8';
+$db['default']['dbcollat'] = 'utf8_general_ci';
+$db['default']['swap_pre'] = '';
+$db['default']['autoinit'] = TRUE;
+$db['default']['stricton'] = FALSE;
 
-if(!$live){
-	$db['default'] = array(
-		'dsn'	=> '',
-		'hostname' => '35.190.219.223',
-		'username' => 'mac',
-		'password' => 'Some1ilove',
-		'database' => 'myfreshword',
-		'dbdriver' => 'mysqli',
-		'dbprefix' => '',
-		'pconnect' => FALSE,
-		'db_debug' => (ENVIRONMENT !== 'production'),
-		'cache_on' => FALSE,
-		'cachedir' => '',
-		'char_set' => 'utf8',
-		'dbcollat' => 'utf8_general_ci',
-		'swap_pre' => '',
-		'encrypt' => FALSE,
-		'compress' => FALSE,
-		'stricton' => FALSE,
-		'failover' => array(),
-		'save_queries' => TRUE
-	);
-}
+
+// if(true){
+// 	$db['default'] = array(
+// 		    'dsn' => 'mysql:unix_socket=/cloudsql/techloft-173609:europe-west1:techloft-db1;dbname=myfreshword',
+// 		    'username' => 'mac',
+// 		    'password' => 'Some1ilove',
+// 		    'database' => 'myfreshword',
+// 		    'dbdriver' => 'pdo',
+// 		    'dbprefix' => '',
+// 		    'pconnect' => FALSE,
+// 		    'db_debug' => (ENVIRONMENT !== 'production'),
+// 		    'cache_on' => FALSE,
+// 		    'cachedir' => '',
+// 		    'char_set' => 'utf8',
+// 		    'dbcollat' => 'utf8_general_ci',
+// 		    'swap_pre' => '',
+// 		    'encrypt' => FALSE,
+// 		    'compress' => FALSE,
+// 		    'stricton' => FALSE,
+// 		    'failover' => array(),
+// 		    'save_queries' => TRUE
+// 		);
+// }
