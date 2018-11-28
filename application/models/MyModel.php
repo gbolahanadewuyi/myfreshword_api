@@ -1841,7 +1841,7 @@ class MyModel extends CI_Model
 
 		function imgPlus($data)
 	{
-		return "http://api.myfreshword.com/public/images/products/" . $data;
+		return "https://myfreshword-dot-techloft-173609.appspot.com/public/images/products/" . $data;
 	}
 
 	public
