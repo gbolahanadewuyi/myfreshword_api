@@ -430,7 +430,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public function church_details_get(){
+	function church_details_get(){
 		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		// if ($response['status'] == 200) {
 			$churchid = (int) $this->get('id');
