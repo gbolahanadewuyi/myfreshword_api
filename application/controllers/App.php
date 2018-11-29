@@ -947,15 +947,15 @@ class App extends REST_Controller
         // use  'google/appengine/api/cloud_storage/CloudStorageTools.php';
 
 		  $my_bucket = "freshword-ci";
-		//   $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $my_bucket);
+		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
 		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
 		 $context = stream_context_create($option);
-	   	file_put_contents("gs://${my_bucket}/profile_pictures", $filename, 0, $context);
+	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
 
-         $filepath = file_put_contents("gs://${my_bucket}/profile_pictures", $filename, 0,  $context);
+        //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/$filename", $filename, 0,  $context);
 	
-		$filecontents = file_get_contents($filepath);
-		return $filecontents;
+		// $filecontents = file_get_contents($filepath);
+		// return $filecontents;
 		
 
         
