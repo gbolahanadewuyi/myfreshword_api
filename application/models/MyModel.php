@@ -715,12 +715,17 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function product_id($id)
+	public	function product_id($id)
 	{
 		return $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
+
+
+	public function church_details($id)
+{
+	return $this->db->select()->from('ts_church')->where('id', $id)->get()->row();
+}
+
 
 	public
 
