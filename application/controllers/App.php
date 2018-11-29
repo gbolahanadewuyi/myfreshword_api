@@ -57,7 +57,6 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_OK);
 	}
 
-
 	public function logout_post()
 	{
 		$response = $this->MyModel->logout();
@@ -321,8 +320,6 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-
-
 	public function feed_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -391,18 +388,6 @@ class App extends REST_Controller
 	}
 
 	// get user profile data by id and apikey
-
-	public function church_details_get()
-	{
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
-			$id = (int)$this->get('id');
-			$query = $this->MyModel->church_details($id);
-			$this->response($query, REST_Controller::HTTP_OK);
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
-		}
-	}
 
 	public function user_profile_get()
 	{
@@ -745,20 +730,6 @@ class App extends REST_Controller
 		}
 	}
 
-	public function subscription_callback_post(){
-			$_POST = json_decode(file_get_contents('php://input'), true);
-			print_r($_POST);
-			// $userid = $response['id'];
-			// $subscriptionPackage = $_POST['subscriptionType'];
-
-
-			// $query = $this->MyModel->subscribe($userid, $subscriptionPackage);
-			// $this->response($query, REST_Controller::HTTP_OK);
-
-		// } else {
-		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		// }
-	}
 
 	public function isSubscribed_post()
 	{
@@ -1052,7 +1023,7 @@ class App extends REST_Controller
 					'freshword_transaction_id' => $_POST['freshword_transaction_id']
 				);
 				$data['success'] = true;
-				$data['messages'] = $this->MyModel->pfayment_to_db($payData);
+				$data['messages'] = $this->MyModel->payment_to_db($payData);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
@@ -1322,16 +1293,16 @@ class App extends REST_Controller
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
-
+		
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
 				);
 			}
-
+	
 			$this->response($data, REST_Controller::HTTP_OK);
-
+		
 	}
 
 	public function church_membership_register_post()
@@ -1522,40 +1493,40 @@ class App extends REST_Controller
 
 	// we run this on the success response from the first push
 
-	// public function merchant_add_file_post()
-	// {
+	public function merchant_add_file_post()
+	{
 
-	// 	$id = $_POST['id'];
-	// 	$query = $this->MyModel->upload_path($id);
-	// 	$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
-	// 	if ($query == "audio") {
-	// 		$config['allowed_types'] = 'mp3';
-	// 	}
-	// 	if ($query == "video") {
-	// 		$config['allowed_types'] = 'mp4|avi';
-	// 	}
-	// 	if ($query == "book") {
-	// 		$config['allowed_types'] = 'pdf|doc';
-	// 	}
-	// 	$config['max_size'] = 0;
+		$id = $_POST['id'];
+		$query = $this->MyModel->upload_path($id);
+		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
+		if ($query == "audio") {
+			$config['allowed_types'] = 'mp3';
+		}
+		if ($query == "video") {
+			$config['allowed_types'] = 'mp4|avi';
+		}
+		if ($query == "book") {
+			$config['allowed_types'] = 'pdf|doc';
+		}
+		$config['max_size'] = 0;
+		
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if (!$this->upload->do_upload('product_file')) {
+			$error = array('status' => false, 'error' => $this->upload->display_errors());
+				//echo json_encode($error);
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data();
+			$success = ['status' => true, 'success' => $data['file_name']];
+			$imgData = array(
+				'file_link' => $data['file_name']
+			);
+			$this->MyModel->update_file($id, $imgData);
+			$this->response($success, REST_Controller::HTTP_OK);
+		}
 
-	// 	$this->load->library('upload', $config);
-	// 	$this->upload->initialize($config);
-	// 	if (!$this->upload->do_upload('product_file')) {
-	// 		$error = array('status' => false, 'error' => $this->upload->display_errors());
-	// 			//echo json_encode($error);
-	// 		$this->response($error, REST_Controller::HTTP_OK);
-	// 	} else {
-	// 		$data = $this->upload->data();
-	// 		$success = ['status' => true, 'success' => $data['file_name']];
-	// 		$imgData = array(
-	// 			'file_link' => $data['file_name']
-	// 		);
-	// 		$this->MyModel->update_file($id, $imgData);
-	// 		$this->response($success, REST_Controller::HTTP_OK);
-	// 	}
-
-	// }
+	}
 
 	public function merchant_products_post()
 	{
@@ -1869,7 +1840,7 @@ class App extends REST_Controller
 				$config['upload_path'] = './public/images/uploads/pastors-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
-				$config['max_size'] = 3024;
+				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('pastors_avatar_img')) {
@@ -1947,7 +1918,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_update_file_check');
+			$this->form_validation->set_rules('newsfeed_img', 'Merchant Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1966,7 +1937,7 @@ class App extends REST_Controller
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('file')) {
+				if (!$this->upload->do_upload('newsfeed_img')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
@@ -2019,24 +1990,17 @@ class App extends REST_Controller
 
 	// call back for checking file directly into one
 
-	public function file_check($str)
-	{
-		$allowed_mime_type_arr = array(
-			'image/gif',
-			'image/jpeg',
-			'image/pjpeg',
-			'image/png',
-			'image/x-png'
-		);
+	public function file_check($str){
+		$allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
 		$mime = get_mime_by_extension($_FILES['file']['name']);
-		if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
-			if (in_array($mime, $allowed_mime_type_arr)) {
+		if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
+			if(in_array($mime, $allowed_mime_type_arr)){
 				return true;
-			} else {
+			}else{
 				$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
 				return false;
 			}
-		} else {
+		}else{
 			$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
 			return false;
 		}
