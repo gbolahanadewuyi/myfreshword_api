@@ -31,7 +31,7 @@ class MyModel extends CI_Model
 	{
 		$q = $this->db->select('user_pwd,user_id,user_status,user_mobile,user_church_id')->from('ts_user')->where('user_uname', $username)->get()->row();
 		if ($q == "") {
-			return array(
+			return array( 
 				'status' => 204,
 				'message' => 'Username not found.'
 			);
@@ -105,8 +105,8 @@ class MyModel extends CI_Model
 		} else {
 			$hashed_password = $q->user_pwd;
 			$id = $q->user_id;
-			$if ($hashed_password == md5($password)) ;
-			{ 
+			$churchId = $q->user_church_id;
+			if ($hashed_password == md5($password)) {
 				$last_login = date('Y-m-d H:i:s');
 				$token_set = substr(md5(rand()), 0, 7);
 				$token = hash('sha256', $token_set);
@@ -132,7 +132,8 @@ class MyModel extends CI_Model
 						'status' => 200,
 						'message' => 'Successfully login.',
 						'id' => $id,
-						'token' => $token
+						'token' => $token,
+						'churchId' => $churchId
 					);
 				}
 			} else {
@@ -714,12 +715,16 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public function product_id($id)
+	public
+
+		function product_id($id)
 	{
 		return $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
-	public function phone_momo($mobile)
+	public
+
+		function phone_momo($mobile)
 	{
 
 		// set API Access Key

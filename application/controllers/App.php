@@ -57,6 +57,7 @@ class App extends REST_Controller
 		$this->response($response, REST_Controller::HTTP_OK);
 	}
 
+
 	public function logout_post()
 	{
 		$response = $this->MyModel->logout();
@@ -320,6 +321,8 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
+
+
 	public function feed_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -388,6 +391,18 @@ class App extends REST_Controller
 	}
 
 	// get user profile data by id and apikey
+
+	public function church_details_get()
+	{
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$id = (int)$this->get('id');
+			$query = $this->MyModel->church_details($id);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
 
 	public function user_profile_get()
 	{
@@ -730,6 +745,20 @@ class App extends REST_Controller
 		}
 	}
 
+	public function subscription_callback_post(){
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			print_r($_POST);
+			// $userid = $response['id'];
+			// $subscriptionPackage = $_POST['subscriptionType'];
+
+
+			// $query = $this->MyModel->subscribe($userid, $subscriptionPackage);
+			// $this->response($query, REST_Controller::HTTP_OK);
+
+		// } else {
+		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		// }
+	}
 
 	public function isSubscribed_post()
 	{
@@ -940,6 +969,25 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
+	public function upload_profile_picture_get(){
+		$filename = (string)$this->get('filepath');
+	 
+		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+        // use  'google/appengine/api/cloud_storage/CloudStorageTools.php';
+
+		  $my_bucket = 'techloft-173609.appspot.com';
+		  $option = $my_bucket;
+		// $my_bucket = 'techloft-173609.appspot.com';
+		 $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
+		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $options);
+		 $context = stream_context_create($options);
+		file_put_contents("gs://${my_bucket}/hello_stream.jpeg", $filename, 0, $context);
+
+
+
+	  
+	}
+
 	public function payment_response_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -1005,7 +1053,7 @@ class App extends REST_Controller
 					'freshword_transaction_id' => $_POST['freshword_transaction_id']
 				);
 				$data['success'] = true;
-				$data['messages'] = $this->MyModel->payment_to_db($payData);
+				$data['messages'] = $this->MyModel->pfayment_to_db($payData);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
@@ -1275,16 +1323,16 @@ class App extends REST_Controller
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
-		
+
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
 				);
 			}
-	
+
 			$this->response($data, REST_Controller::HTTP_OK);
-		
+
 	}
 
 	public function church_membership_register_post()
