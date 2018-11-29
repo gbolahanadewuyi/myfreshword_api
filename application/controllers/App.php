@@ -1972,21 +1972,21 @@ class App extends REST_Controller
 
 	// call back for checking file directly into one
 
-	public function file_check($str){
-		$allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
-		$mime = get_mime_by_extension($_FILES['file']['name']);
-		if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
-			if(in_array($mime, $allowed_mime_type_arr)){
-				return true;
-			}else{
-				$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
-				return false;
-			}
-		}else{
-			$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
-			return false;
-		}
-	}
+	// public function file_check($str){
+	// 	$allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
+	// 	$mime = get_mime_by_extension($_FILES['file']['name']);
+	// 	if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
+	// 		if(in_array($mime, $allowed_mime_type_arr)){
+	// 			return true;
+	// 		}else{
+	// 			$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
+	// 			return false;
+	// 		}
+	// 	}else{
+	// 		$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+	// 		return false;
+	// 	}
+	// }
 
 	public function merchant_news_feed_get()
 	{
