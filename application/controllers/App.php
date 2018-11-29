@@ -950,11 +950,11 @@ class App extends REST_Controller
 		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
 		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
 		 $context = stream_context_create($option);
-	   	file_put_contents("gs://${my_bucket}/profile_pictures/$filename.jpg", $filename, 0, $context);
+	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
 
         //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
 	
-		// $filecontents = file_get_contents($filepath);
+		//  $filecontents = file_get_contents($filepath);
 		// return $filecontents;
 		
 
