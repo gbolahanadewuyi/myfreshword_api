@@ -387,6 +387,18 @@ class App extends REST_Controller
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
+	public function church_details_get()
+	{
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$id = (int)$this->get('id');
+			$query = $this->MyModel->church_details($id);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
 	// get user profile data by id and apikey
 
 	public function user_profile_get()
@@ -753,6 +765,22 @@ class App extends REST_Controller
 	| Now create something great!
 	|
 	 */
+	 
+	 public function subscription_callback_post(){
+	 			$_POST = json_decode(file_get_contents('php://input'), true);
+	 			print_r($_POST);
+	 			// $userid = $response['id'];
+	 			// $subscriptionPackage = $_POST['subscriptionType'];
+
+
+	 			// $query = $this->MyModel->subscribe($userid, $subscriptionPackage);
+	 			// $this->response($query, REST_Controller::HTTP_OK);
+
+	 		// } else {
+	 		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+	 		// }
+	 	}
+
 	public function addto_library_post()
 	{
 		$response = $this->MyModel->header_auth();
@@ -958,9 +986,10 @@ class App extends REST_Controller
 		// return $filecontents;
 		
 
-        
 
-	  
+
+
+
 	}
 
 	public function payment_response_post()
@@ -1298,16 +1327,16 @@ class App extends REST_Controller
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
-		
+
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
 				);
 			}
-	
+
 			$this->response($data, REST_Controller::HTTP_OK);
-		
+
 	}
 
 	public function church_membership_register_post()
@@ -1514,7 +1543,7 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'pdf|doc';
 		}
 		$config['max_size'] = 0;
-		
+
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('product_file')) {
