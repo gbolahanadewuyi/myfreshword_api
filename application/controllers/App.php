@@ -978,10 +978,10 @@ class App extends REST_Controller
 		  $my_bucket = 'techloft-173609.appspot.com';
 		  $options = $my_bucket;
 		// $my_bucket = 'techloft-173609.appspot.com';
-		// $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
+		 $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
 		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $options);
-		// $context = stream_context_create($options);
-		file_put_contents("gs://${my_bucket}/hello_stream.jpg", $filename);
+		 $context = stream_context_create($options);
+		file_put_contents("gs://${my_bucket}/hello_stream.jpg", $filename, $options);
 
 
 
