@@ -976,12 +976,12 @@ class App extends REST_Controller
         // use  'google/appengine/api/cloud_storage/CloudStorageTools.php';
 
 		  $my_bucket = 'techloft-173609.appspot.com';
-		  $options = $my_bucket;
+		  $option = $my_bucket;
 		// $my_bucket = 'techloft-173609.appspot.com';
 		 $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
 		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $options);
-		 $context = stream_context_create($options);
-		file_put_contents("gs://${my_bucket}/hello_stream.jpg", $filename, $options);
+		 $context = stream_context_create($option);
+		file_put_contents("gs://${my_bucket}/hello_stream.jpeg", $filename, 0, $context);
 
 
 
