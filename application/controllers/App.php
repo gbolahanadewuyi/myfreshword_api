@@ -975,7 +975,8 @@ class App extends REST_Controller
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
         // use  'google\appengine\api\cloud_storage\CloudStorageTools';
 
-		  $options = ['techloft-173609.appspot.com' => $my_bucket];
+		  $my_bucket = 'techloft-173609.appspot.com';
+		  $options = $my_bucket;
 		// $my_bucket = 'techloft-173609.appspot.com';
 		// $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
 		 $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $options);
