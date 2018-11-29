@@ -969,21 +969,18 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function upload_profile_picture_post(){
-		// $_POST = json_decode(file_get_contents('php://input'), true);
+	public function upload_profile_picture_get(){
 		$filename = (string)$this->get('filepath');
-		// $filenamein = (string)$this->get('upload_path');
 	 
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
         // use  'google\appengine\api\cloud_storage\CloudStorageTools';
 
-	    //  $options = ['gs_bucket_name' => $my_bucket];
-		//  $upload_url = CloudStorageTools::createUploadUrl('/upload/handler', $options);
-		//  file_put_contents("$upload_u ");
-
-		$options = ['gs_bucket_name'=> $my_bucket ,'gs' => ['Content-Type' => 'img/jpeg']];
+		  $options = ['techloft-173609.appspot.com' => $my_bucket];
+		// $my_bucket = 'techloft-173609.appspot.com';
+		// $options = [ 'gs' => ['Content-Type' => 'img/jpeg']];
+		 $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $options);
 		// $context = stream_context_create($options);
-		file_put_contents("gs://${my_bucket}", $filename);
+		file_put_contents("gs://${my_bucket}/hello_stream.jpg", $filename);
 
 
 
