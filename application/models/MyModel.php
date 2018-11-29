@@ -9,16 +9,12 @@ class MyModel extends CI_Model
 
 	var $client_id = 'ihounyms';
 	var $client_secret = 'icbvukgq';
-	public
-
-		function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 	}
 
-	public
-
-		function check_auth_client()
+	public function check_auth_client()
 	{
 
 		// this is where i am returning the header  user id and authentication id as well
@@ -31,9 +27,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function login($username, $password)
+	public function login($username, $password)
 	{
 		$q = $this->db->select('user_pwd,user_id,user_status,user_mobile,user_church_id')->from('ts_user')->where('user_uname', $username)->get()->row();
 		if ($q == "") {
@@ -93,9 +87,7 @@ class MyModel extends CI_Model
 
 	// this authentication is for mobile phone login request
 
-	public
-
-		function mobile_login($user_mobile, $password)
+	public function mobile_login($user_mobile, $password)
 	{
 		$q = $this->db->select('user_pwd,user_id,user_status,user_uname,user_mobile,user_church_id')->from('ts_user')->where('user_mobile', $user_mobile)->get()->row();
 		if ($q == "") {
@@ -113,8 +105,8 @@ class MyModel extends CI_Model
 		} else {
 			$hashed_password = $q->user_pwd;
 			$id = $q->user_id;
-			$
-			if ($hashed_password == md5($password)) {
+			$if ($hashed_password == md5($password)) ;
+			{ 
 				$last_login = date('Y-m-d H:i:s');
 				$token_set = substr(md5(rand()), 0, 7);
 				$token = hash('sha256', $token_set);
@@ -152,9 +144,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function merchant_login($email, $password)
+	public function merchant_login($email, $password)
 	{
 		$q = $this->db->select('id, email, password, approved')->from('ts_merchant')->where('email', $email)->get()->row();
 		if ($q == "") {
@@ -209,9 +199,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function merchant_logout()
+	public function merchant_logout()
 	{
 		$users_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
@@ -222,9 +210,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function merchant_auth()
+	public function merchant_auth()
 	{
 		$merchant_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
@@ -256,9 +242,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function merchant_session($id, $token_auth)
+	public function merchant_session($id, $token_auth)
 	{
 		$merchant_id = $id;
 		$token = $token_auth;
@@ -290,16 +274,12 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function merchant_email($id)
+	public function merchant_email($id)
 	{
 		return $this->db->select('email')->from('ts_merchant')->where('id', $id)->get()->row();
 	}
 
-	public
-
-		function logout()
+	public function logout()
 	{
 		$users_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
@@ -312,9 +292,7 @@ class MyModel extends CI_Model
 
 	// this is to check the connection with the api key once the user  has successfully logged in
 
-	public
-
-		function auth($users_id, $token)
+	public function auth($users_id, $token)
 	{
 
 		// $users_id  = $this->input->get_request_header('User-ID', TRUE);
@@ -350,9 +328,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function header_auth()
+	public function header_auth()
 	{
 		$users_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
@@ -384,9 +360,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function get_all_preachers()
+	public function get_all_preachers()
 	{
 		$q = $this->db->select('id,name')->from('speakers')->order_by('id', 'desc')->get()->result();
 		return array(
@@ -397,9 +371,7 @@ class MyModel extends CI_Model
 
 	// fetch membership bio data from db
 
-	public
-
-		function get_all_church_members()
+	public function get_all_church_members()
 	{
 		$query = $this->db->select('
 			first_name,last_name,
@@ -418,30 +390,22 @@ class MyModel extends CI_Model
 
 	// End fetch membership bio data from db
 
-	public
-
-		function audio_all_data()
+	public function audio_all_data()
 	{
 		return $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link !=', " ")->where('prod_image !=', " ")->where('file_link !=', " ")->get()->result();
 	}
 
-	public
-
-		function book_all_data()
+	public function book_all_data()
 	{
 		return $this->db->select('id,title,author')->from('books')->order_by('id', 'desc')->get()->result();
 	}
 
-	public
-
-		function book_detail_data($id)
+	public function book_detail_data($id)
 	{
 		return $this->db->select('id,title,author')->from('books')->where('id', $id)->order_by('id', 'desc')->get()->row();
 	}
 
-	public
-
-		function create_user($data)
+	public function create_user($data)
 	{
 		$q = $this->db->insert('ts_user', $data);
 		if ($q == true) {
@@ -457,9 +421,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function book_create_data($data)
+	public function book_create_data($data)
 	{
 		$q = $this->db->insert('books', $data);
 		return array(
@@ -468,9 +430,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function book_update_data($id, $data)
+	public function book_update_data($id, $data)
 	{
 		$this->db->where('id', $id)->update('books', $data);
 		return array(
@@ -479,9 +439,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function book_delete_data($id)
+	public function book_delete_data($id)
 	{
 		$this->db->where('id', $id)->delete('books');
 		return array(
@@ -490,9 +448,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function send_data_mail($data = array())
+	public function send_data_mail($data = array())
 	{
 		$this->load->library('email');
 		$this->email->initialize(array(
@@ -516,9 +472,7 @@ class MyModel extends CI_Model
 		$this->email->print_debugger();
 	}
 
-	public
-
-		function forgot_password_email($data)
+	public function forgot_password_email($data)
 	{
 		$q = $this->db->select()->from('ts_user')->where('user_email', $data)->get()->row();
 		if ($q == "") {
@@ -540,9 +494,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function update_key($id, $data)
+	public function update_key($id, $data)
 	{
 		$this->db->where('user_id', $id)->update('ts_user', $data);
 		return array(
@@ -551,9 +503,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function update_key_mobile($mobile, $data)
+	public function update_key_mobile($mobile, $data)
 	{
 		$this->db->where('user_mobile', $mobile)->update('ts_user', $data);
 		return array(
@@ -562,16 +512,12 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function church_all_data()
+	public function church_all_data()
 	{
 		return $this->db->select('id, church_name')->from('ts_church')->order_by('id', 'desc')->get()->result();
 	}
 
-	public
-
-		function generate_short_code($digits = 4)
+	public function generate_short_code($digits = 4)
 	{
 		$i = 0; //counter
 		$pin = ""; //our default pin is blank.
@@ -586,9 +532,7 @@ class MyModel extends CI_Model
 		return $pin;
 	}
 
-	public
-
-		function send_code($phone, $pin)
+	public function send_code($phone, $pin)
 	{
 
 		$pin = $this->generate_short_code();
@@ -610,9 +554,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function activate_account($auth_code)
+	public function activate_account($auth_code)
 	{
 		$q = $this->db->select('user_id,user_status')->from('ts_user')->where('user_activation_code', $auth_code)->get()->row();
 		if ($q == "") {
@@ -638,9 +580,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function reset_password_code($auth_code)
+	public function reset_password_code($auth_code)
 	{
 		$q = $this->db->select()->from('ts_user')->where('user_reset_code', $auth_code)->get()->row();
 		if ($q == "") {
@@ -658,9 +598,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function update_password($email, $data)
+	public function update_password($email, $data)
 	{
 		$q = $this->db->where('user_email', $email)->update('ts_user', $data);
 		return array(
@@ -672,9 +610,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function feed_data($data)
+	public function feed_data($data)
 	{
 		$q = $this->db->insert('ts_feed', $data);
 		if ($q === true) {
@@ -728,9 +664,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function facebook_data($data = array())
+	public function facebook_data($data = array())
 	{
 		$q = $this->db->select()->from('ts_user')->where('fb_id', $data['fb_id'])->get()->row();
 		if ($q == "") { //user is new member
@@ -746,9 +680,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function google_data($data = array())
+	public function google_data($data = array())
 	{
 		$q = $this->db->select()->from('ts_user')->where('g_user_id', $data['g_user_id'])->get()->row();
 		if ($q == "") { //user is new member
@@ -764,9 +696,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function user_profile_data($id)
+	public function user_profile_data($id)
 	{
 		$q = $this->db->select()->from('ts_user')->where('user_id', $id)->get()->row();
 		if ($q == "") {
@@ -784,16 +714,12 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function product_id($id)
+	public function product_id($id)
 	{
 		return $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
-	public
-
-		function phone_momo($mobile)
+	public function phone_momo($mobile)
 	{
 
 		// set API Access Key
@@ -825,9 +751,7 @@ class MyModel extends CI_Model
 
 	}
 
-	public
-
-		function new_momo($mobile)
+	public function new_momo($mobile)
 	{
 
 		// set API Access Key
@@ -859,9 +783,7 @@ class MyModel extends CI_Model
 
 	}
 
-	public
-
-		function insert_momo($data)
+	public function insert_momo($data)
 	{
 		$query = $this->db->insert('momo', $data);
 		if ($query === true) {
@@ -879,9 +801,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function check_momo_exist($data = array())
+	public function check_momo_exist($data = array())
 	{
 		$mobile = $data['number'];
 		$q = $this->db->select()->from('momo')->where('number', $mobile)->get()->row();
@@ -895,9 +815,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function momo_by_id($email)
+	public function momo_by_id($email)
 	{
 		$q = $this->db->select()->from('momo')->where('unique_acc', $email)->get()->row();
 		if ($q->unique_acc == " ") { //if email doesnt exist
@@ -907,9 +825,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function bin_checker($bin)
+	public function bin_checker($bin)
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -939,9 +855,7 @@ class MyModel extends CI_Model
 
 	// when a user is adding new data that hasnt been bought
 
-	public
-
-		function addToCart($data = array())
+	public function addToCart($data = array())
 	{
 		$checkLib = $this->check_if_item_is_purchased($data);
 		if ($checkLib['success'] == true) {
@@ -981,9 +895,7 @@ class MyModel extends CI_Model
 	| Now create something great!
 	|
 	 */
-	public
-
-		function addto_library($data = array())
+	public function addto_library($data = array())
 	{
 		$checkLib = $this->confirm_item_library($data);
 		if ($checkLib['success'] == true) {
@@ -1010,9 +922,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function confirm_item_library($data = array())
+	public function confirm_item_library($data = array())
 	{
 		$query = $this->db->select()->from('ts_Library')->where('prod_uniqid', $data['prod_uniqid'])->where('userid', $data['userid'])->get()->row();
 		if ($query == "") {
@@ -1031,9 +941,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function check_if_item_is_purchased($data = array())
+	public function check_if_item_is_purchased($data = array())
 	{
 		$query = $this->db->select()->from('ts_paid_prod')->where('prod_uniqid', $data['prod_uniqid'])->where('user_acc', $data['prod_purchase_by'])->get()->row();
 		if ($query == "") {
@@ -1052,18 +960,14 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function cartRowCount($data = array())
+	public function cartRowCount($data = array())
 	{ //counting for cart items that havent been paid
 		$this->db->select('*')->from('ts_cart')->where('prod_purchase_by', $data['prod_purchase_by'])->where('paid', 0);
 		$q = $this->db->get();
 		return $q->num_rows();
 	}
 
-	public
-
-		function TotalCartSales($data)
+	public function TotalCartSales($data)
 	{ //total price of items in the cart not paid for yet
 		$this->db->select_sum('prod_price');
 		$this->db->from('ts_cart');
@@ -1077,17 +981,13 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function fetch_cart_data($data)
+	public function fetch_cart_data($data)
 	{
 		$query = $this->db->select()->from('ts_cart')->where('prod_purchase_by', $data['prod_purchase_by'])->where('paid', 0)->order_by('id', 'desc')->get()->result();
 		return $query;
 	}
 
-	public
-
-		function delete_cart_data($data)
+	public function delete_cart_data($data)
 	{
 		$query = $this->db->where('prod_purchase_by', $data['prod_purchase_by'])->where('paid', 0)->where('id', $data['id'])->delete('ts_cart');
 		if ($query == true) {
@@ -1105,9 +1005,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function delete_all_cart($data)
+	public function delete_all_cart($data)
 	{
 		$query = $this->db->where('prod_purchase_by', $data['prod_purchase_by'])->delete('ts_cart'); //this will take the email of the user and empty the cart
 		return array(
@@ -1118,9 +1016,7 @@ class MyModel extends CI_Model
 
 	// trying to merge arrays here
 
-	public
-
-		function library_data($userid)
+	public function library_data($userid)
 	{
 		$query = $this->db->select('prod_uniqid')->from('ts_Library')->where('userid', $userid)->order_by('id', 'desc')->get()->result();
 		return array(
@@ -1128,25 +1024,19 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function free_library_data()
+	public function free_library_data()
 	{
 		return $this->db->select('*')->from('ts_paid_prod')->where('user_acc', 'admin@techloftgh.com')->where('free', 1)->order_by('id', 'desc')->get()->result();
 	}
 
-	public
-
-		function checkout_data($data)
+	public function checkout_data($data)
 	{
 		return $query = $this->db->insert('ts_paid_prod', $data);
 	}
 
 	// should contain email and id param of the product to be deleted
 
-	public
-
-		function delete_library_data($data)
+	public function delete_library_data($data)
 	{
 		$query = $this->db->select('user_email')->from('ts_user')->where('user_id', $data['id'])->get()->row();
 		$this->db->where('user_acc', $query['email'])->where('id', $data['id'])->delete('ts_paid_prod');
@@ -1156,9 +1046,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function payIN_endpoint($phoneNumber, $payAmount, $churchAccount)
+	public function payIN_endpoint($phoneNumber, $payAmount, $churchAccount)
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
@@ -1188,9 +1076,7 @@ class MyModel extends CI_Model
 
 	// user subscriptions management
 
-	public
-
-		function subscribe($userid, $subscriptionPackage)
+	public function subscribe($userid, $subscriptionPackage)
 	{
 
 		// check if user has no valid subscription
@@ -1277,9 +1163,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function isSubscribed($userid)
+	public function isSubscribed($userid)
 	{
 
 		// Using MySQL NOW() in Codeigniter
@@ -1302,9 +1186,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function email_enable($data, $param)
+	public function email_enable($data, $param)
 	{
 
 		// enable email alerts  ===  Id from user profile details
@@ -1316,9 +1198,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function sms_enable($data, $param)
+	public function sms_enable($data, $param)
 	{
 
 		// this is saying send alerts if == Id from user profile details
@@ -1353,9 +1233,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function update_user_profile($id, $data)
+	public function update_user_profile($id, $data)
 	{
 		$query = $this->db->where('id', $id)->update('ts_user', $data);
 		if ($query == true) {
@@ -1371,9 +1249,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function check_db_with_rest_client($data)
+	public function check_db_with_rest_client($data)
 	{
 		$query = $this->db->select('*')->from('ts_user')->where('user_id', $data['id'])->get()->row();
 
@@ -1392,9 +1268,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function callback_response($data)
+	public function callback_response($data)
 	{
 		return $q = $this->check_if_freshword_transaction_id_exist($data);
 
@@ -1433,9 +1307,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function user_momo_numbers($data)
+	public function user_momo_numbers($data)
 	{ //here we check the unique account using the email address of the user
 		$query = $this->db->select('*')->from('momo')->where('unique_acc', $data['email'])->order_by('id', 'desc')->get()->result();
 		if ($query == "") {
@@ -1451,9 +1323,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function delete_momo_number($data)
+	public function delete_momo_number($data)
 	{
 		$query = $this->db->where('id', $data['id'])->where('unique_acc', $data['email'])->delete('momo');
 		if ($query == true) {
@@ -1469,9 +1339,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function set_momo_default($data)
+	public function set_momo_default($data)
 	{ //turn all off and set one as set_momo_default
 		$q = $this->user_momo_active($data);
 		if ($q['status'] == 200) {
@@ -1527,9 +1395,7 @@ class MyModel extends CI_Model
 
 	// this should generate the transaction id stored inside the database
 
-	public
-
-		function RandomString($length = 39)
+	public function RandomString($length = 39)
 	{
 		$randstr = "";
 		srand((double)microtime(true) * 1000000);
@@ -1609,9 +1475,7 @@ class MyModel extends CI_Model
 		return wordwrap($randstr, 10, '-', true);
 	}
 
-	public
-
-		function trans_rotate($email)
+	public function trans_rotate($email)
 	{
 		$q = $this->db->select('transactionid')->from('ts_cart')->where('prod_purchase_by', $email)->get()->row();
 		if ($q == "") {
@@ -1623,9 +1487,7 @@ class MyModel extends CI_Model
 
 	// this model is to get just the product comment title of the product
 
-	public
-
-		function get_comment_title_data($data)
+	public function get_comment_title_data($data)
 	{ //now this should be associated with the comment title
 		if ($data['prod_id'] == "" && $data['comment_title'] == "") {
 			return array(
@@ -1646,9 +1508,7 @@ class MyModel extends CI_Model
 	// process payment
 	// dont allow users to enter when
 
-	public
-
-		function payment_to_db($data)
+	public function payment_to_db($data)
 	{
 		$q = $this->db->select('*')->from('payment_response')->where('freshword_transaction_id', $data['freshword_transaction_id'])->get()->row();
 		if ($q == "") { //here if it shows nothing
@@ -1670,9 +1530,7 @@ class MyModel extends CI_Model
 	// }
 	// need to check this data
 
-	public
-
-		function search_product($search_term)
+	public function search_product($search_term)
 	{
 
 		// $search_term=$this->input->post('textboxName');
@@ -1695,38 +1553,28 @@ class MyModel extends CI_Model
 
 	// this will arrange products on the home page based the type of data to be fetched
 
-	public
-
-		function arrange_by_category()
+	public function arrange_by_category()
 	{
 	}
 
-	public
-
-		function audio_fetch()
+	public function audio_fetch()
 	{
 		return $this->db->select('*')->from('ts_products')->where('type_list', 'Audio')->order_by('prod_id', 'desc')->get()->result();
 	}
 
-	public
-
-		function video_fetch()
+	public function video_fetch()
 	{
 		return $this->db->select('*')->from('ts_products')->where('type_list', 'Video')->order_by('prod_id', 'desc')->get()->result();
 	}
 
-	public
-
-		function book_fetch()
+	public function book_fetch()
 	{
 		return $this->db->select('*')->from('ts_products')->where('type_list', 'Book')->order_by('prod_id', 'desc')->get()->result();
 	}
 
 	// where like statement for the queries below search filter
 
-	public
-
-		function audio_by_title($search_term)
+	public function audio_by_title($search_term)
 	{
 		$this->db->select('*');
 		$this->db->from('ts_products');
@@ -1737,9 +1585,7 @@ class MyModel extends CI_Model
 		return $res = $query->result();
 	}
 
-	public
-
-		function video_by_title($search_term)
+	public function video_by_title($search_term)
 	{
 		$this->db->select('*');
 		$this->db->from('ts_products');
@@ -1750,9 +1596,7 @@ class MyModel extends CI_Model
 		return $res = $query->result();
 	}
 
-	public
-
-		function book_by_title($title_data)
+	public function book_by_title($title_data)
 	{
 		$this->db->select('*');
 		$this->db->from('ts_products');
@@ -1763,9 +1607,7 @@ class MyModel extends CI_Model
 		return $res = $query->result();
 	}
 
-	public
-
-		function create_merchant($data)
+	public function create_merchant($data)
 	{
 		$query = $this->db->insert('ts_merchant', $data);
 		if ($query == true) {
@@ -1781,9 +1623,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function create_resident($data)
+	public function create_resident($data)
 	{
 
 		$query = $this->db->insert('ts_residentpastor', $data);
@@ -1796,9 +1636,7 @@ class MyModel extends CI_Model
 
 	// Create Church Mmembership
 
-	public
-
-		function create_church_member($data)
+	public function create_church_member($data)
 	{
 		$query = $this->db->insert('mfw_church_membership', $data);
 		if ($query == true) {
@@ -1814,9 +1652,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function merchant_insert_product($data)
+	public function merchant_insert_product($data)
 	{
 		$query = $query = $this->db->insert('ts_products', $data);
 		$insert_id = $this->db->insert_id();
@@ -1836,23 +1672,17 @@ class MyModel extends CI_Model
 
 	// add this is to file name and insert data
 
-	public
-
-		function imgPlus($data)
+	public function imgPlus($data)
 	{
 		return "https://myfreshword-dot-techloft-173609.appspot.com/public/images/products/" . $data;
 	}
 
-	public
-
-		function replace_hyphens($string)
+	public function replace_hyphens($string)
 	{
 		return str_replace(' ', '-', $string);
 	}
 
-	public
-
-		function prod_type($data)
+	public function prod_type($data)
 	{
 		if ($data == 'Audio') {
 			return 'microphone';
@@ -1865,9 +1695,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function generate_product_unique_code($length = 12)
+	public function generate_product_unique_code($length = 12)
 	{
 		$randstr = "";
 		srand((double)microtime(true) * 1000000);
@@ -1948,9 +1776,7 @@ class MyModel extends CI_Model
 
 	}
 
-	public
-
-		function generate_merchant_activation_code($length = 6)
+	public function generate_merchant_activation_code($length = 6)
 	{
 		$randstr = "";
 		srand((double)microtime(true) * 1000000);
@@ -2027,9 +1853,7 @@ class MyModel extends CI_Model
 		return $randstr;
 	}
 
-	public
-
-		function activate_merchant($data)
+	public function activate_merchant($data)
 	{
 		$query = $this->db->select('mobile,approval_code')->from('ts_merchant')->where('mobile', $data['mobile'])->where('approval_code', $data['approval_code'])->get()->row();
 		if ($query == "") {
@@ -2050,9 +1874,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function check_merchant_email($data)
+	public function check_merchant_email($data)
 	{
 		$query = $this->db->select('email,mobile')->from('ts_merchant')->where('email', $data['email'])->get()->row();
 		if ($query == "") {
@@ -2071,9 +1893,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function create_reset_code($mobile)
+	public function create_reset_code($mobile)
 	{
 		$resetcode = $this->generate_merchant_activation_code($length = 6);
 		$reset_code = array(
@@ -2087,9 +1907,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function check_reset_code($mobile, $resetcode)
+	public function check_reset_code($mobile, $resetcode)
 	{
 		$query = $this->db->select('mobile, reset_code')->from('ts_merchant')->where('reset_code', $resetcode)->get()->row();
 		if ($query == "") {
@@ -2111,9 +1929,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function temp_merchant_password($newpassword, $mobile)
+	public function temp_merchant_password($newpassword, $mobile)
 	{
 		$updatepass = array(
 			'password' => hash('sha256', $newpassword)
@@ -2127,9 +1943,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function send_new_pass($phone, $newpass)
+	public function send_new_pass($phone, $newpass)
 	{
 
 		// $pin = $this->generate_short_code();
@@ -2151,9 +1965,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function send_reset_code($phone, $resetcode)
+	public function send_reset_code($phone, $resetcode)
 	{
 		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord" . "&To=$phone" . "&Content=" . urlencode("Your account reset code : $resetcode") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
 		$curl = curl_init();
@@ -2174,9 +1986,7 @@ class MyModel extends CI_Model
 
 	// search data by email
 
-	public
-
-		function get_merchant_profile($id)
+	public function get_merchant_profile($id)
 	{
 		$query = $this->db->select('id,first_name,last_name,email,mobile,organisation,location,merchant_name, address, country, org_info, facebook, twitter, youtube, display_image')->from('ts_merchant')->where('id', $id)->get()->row();
 		if ($query == "") {
@@ -2203,32 +2013,24 @@ class MyModel extends CI_Model
 	// 	}
 	// }
 
-	public
-
-		function update_image($id, $data)
+	public function update_image($id, $data)
 	{
 		return $this->db->where('prod_id', $id)->update('ts_products', $data);
 	}
 
 	// upload and update photo for mobile endpoint
 
-	public
-
-		function upload_profile_image($id, $data)
+	public function upload_profile_image($id, $data)
 	{
 		$query = $this->db->where('user_id', $id)->update('ts_users', $data);
 	}
 
-	public
-
-		function update_file($id, $data)
+	public function update_file($id, $data)
 	{
 		return $this->db->where('prod_id', $id)->update('ts_products', $data);
 	}
 
-	public
-
-		function upload_path($id)
+	public function upload_path($id)
 	{
 		$query = $this->db->select('*')->from('ts_products')->where('prod_id', $id)->get()->row();
 		if ($query->type_list == "Audio") {
@@ -2242,9 +2044,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function favicon_show($data)
+	public function favicon_show($data)
 	{
 		if ($data == "Book") {
 			return "fa fa-book";
@@ -2259,23 +2059,17 @@ class MyModel extends CI_Model
 
 	// play a particular product / audio / book / video
 
-	public
-
-		function product_preview($id)
+	public function product_preview($id)
 	{
 		return $query = $this->db->select('prod_tags, file_link')->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
-	public
-
-		function edit_product($id)
+	public function edit_product($id)
 	{
 		return $query = $this->db->select('*')->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
-	public
-
-		function update_ts_products($data)
+	public function update_ts_products($data)
 	{
 		$update = array(
 			'prod_name' => $data['prod_name'],
@@ -2304,9 +2098,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	public
-
-		function delete_product($id, $email)
+	public function delete_product($id, $email)
 	{
 		$query = $this->db->where('prod_id', $id)->where('merchant_email', $email)->delete('ts_products');
 		if ($query == true) {
@@ -2324,9 +2116,7 @@ class MyModel extends CI_Model
 
 	// we will be using email to search
 
-	public
-
-		function count_free_products($email)
+	public function count_free_products($email)
 	{
 		$this->db->select('*')->from('ts_products')->where('merchant_email', $email)->where('prod_price', 0);
 		$q = $this->db->get();
@@ -2335,9 +2125,7 @@ class MyModel extends CI_Model
 
 	// using email to count qyert
 
-	public
-
-		function count_premium_products($email)
+	public function count_premium_products($email)
 	{
 		$this->db->select('*')->from('ts_products')->where('merchant_email', $email)->where('prod_price !=', 0);
 		$q = $this->db->get();
@@ -2346,9 +2134,7 @@ class MyModel extends CI_Model
 
 	// so this counts a total number of product views
 
-	public
-
-		function count_product_views($query)
+	public function count_product_views($query)
 	{ //this is by email
 		$this->db->select('*')->from('product_view')->where('merchantemail', $query);
 		$q = $this->db->get();
@@ -2357,9 +2143,7 @@ class MyModel extends CI_Model
 
 	// merchant feed
 
-	public
-
-		function insert_feed_data($data, $img)
+	public function insert_feed_data($data, $img)
 	{
 		$newFeed = array(
 			'category' => $data['news_cat'],
@@ -2388,13 +2172,13 @@ class MyModel extends CI_Model
 	}
 
 	// Insertion of Pastors listing to DB
-	public function insert_pastors_bio_data($data, $img)
+	public function insert_pastors_bio_data($data)
 	{
 		$Pastors_listing = array(
 			'pastors_title' => $data['pastors_title'],
 			'pastors_name' => $data['pastors_name'],
 			'pastors_bio' => $data['pastors_bio'],
-			'image' => $img,
+			'pastors_avatar_img' => $data['pastors_avatar_img'],
 			'merchant_id' => $data['merchant_id']
 		);
 		$query = $query = $this->db->insert('pastors_listing', $Pastors_listing);
@@ -2413,9 +2197,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function insert_feed_image($data)
+	public function insert_feed_image($data)
 	{
 		$image = array(
 			'image' => $data['file_name']
@@ -2423,9 +2205,7 @@ class MyModel extends CI_Model
 		return $this->db->where('id', $id)->update('merchant_feed', $image);
 	}
 
-	public
-
-		function count_merchant_feed($email)
+	public function count_merchant_feed($email)
 	{
 
 		// return $this->db->where('merchantemail', $email)->count_all("merchant_feed");
@@ -2435,9 +2215,7 @@ class MyModel extends CI_Model
 		return $q->num_rows();
 	}
 
-	public
-
-		function get_merchant_feed_data($email)
+	public function get_merchant_feed_data($email)
 	{
 
 		// $this->db->limit($limit, $start);
@@ -2454,9 +2232,7 @@ class MyModel extends CI_Model
 		return false;
 	}
 
-	public
-
-		function get_merchant_feed_no_pagination($email, $id)
+	public function get_merchant_feed_no_pagination($email, $id)
 	{
 		$query['results'] = $this->db->select('*')->from('merchant_feed')->where('merchantemail', $email)->order_by('id', 'desc')->get()->result();
 		$query['assoc_likes'] = $this->count_merchant_likes($id);
@@ -2466,9 +2242,7 @@ class MyModel extends CI_Model
 
 	// count the number of likes in the comment thread
 
-	public
-
-		function count_merchant_likes($id)
+	public function count_merchant_likes($id)
 	{
 
 		// return $this->db->where('merchant_feed_id', $id)->where('likes', 1)->count_all('merchant_comment_thread');
@@ -2480,9 +2254,7 @@ class MyModel extends CI_Model
 
 	// count the number of comments in the comment thread
 
-	public
-
-		function count_merchant_comments($id)
+	public function count_merchant_comments($id)
 	{
 
 		// return $this->db->where('merchant_feed_id', $id)->count_all('merchant_comment_thread');
@@ -2494,16 +2266,12 @@ class MyModel extends CI_Model
 
 	// fetch all merchant comments data associated to merchant feed-->git
 
-	public
-
-		function fetch_merchant_comments($id)
+	public function fetch_merchant_comments($id)
 	{
 		return $query = $this->db->select('*')->from('merchant_comment_thread')->where('merchant_feed_id', $id)->get()->result();
 	}
 
-	public
-
-		function get_merchant_feed_id($id)
+	public function get_merchant_feed_id($id)
 	{
 		$q = $this->db->select()->from('merchant_feed')->where('id', $id)->limit(1)->get()->row();
 		if ($q == "") {
@@ -2519,9 +2287,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function update_merchant_feed($id, $data, $email, $img)
+	public function update_merchant_feed($id, $data, $email, $img)
 	{
 		if ($img == "") {
 			$updateData = array(
@@ -2559,9 +2325,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function delete_merchant_feed($id)
+	public function delete_merchant_feed($id)
 	{
 		$query = $this->db->where('id', $id)->delete('merchant_feed');
 		if ($query == false) {
@@ -2577,9 +2341,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function search_merchant_feed($search_term, $email)
+	public function search_merchant_feed($search_term, $email)
 	{
 		$this->db->select('*');
 		$this->db->from('merchant_feed');
@@ -2600,9 +2362,7 @@ class MyModel extends CI_Model
 
 	// public function search feed data from user
 
-	public
-
-		function search_all_feed($search_term)
+	public function search_all_feed($search_term)
 	{
 		$this->db->select('*');
 		$this->db->from('merchant_feed');
@@ -2624,9 +2384,7 @@ class MyModel extends CI_Model
 	//
 	// }
 
-	public
-
-		function update_merchant_profile($updateData, $img)
+	public function update_merchant_profile($updateData, $img)
 	{
 		$result = $this->check_password($updateData['password']);
 		if ($result == false) {
@@ -2681,9 +2439,7 @@ class MyModel extends CI_Model
 		);
 	}
 
-	public
-
-		function check_password($str)
+	public function check_password($str)
 	{
 		if ($str != "********") { //chars 8
 			return hash('sha256', $str);

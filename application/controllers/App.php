@@ -1475,40 +1475,40 @@ class App extends REST_Controller
 
 	// we run this on the success response from the first push
 
-	// public function merchant_add_file_post()
-	// {
+	public function merchant_add_file_post()
+	{
 
-	// 	$id = $_POST['id'];
-	// 	$query = $this->MyModel->upload_path($id);
-	// 	$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
-	// 	if ($query == "audio") {
-	// 		$config['allowed_types'] = 'mp3';
-	// 	}
-	// 	if ($query == "video") {
-	// 		$config['allowed_types'] = 'mp4|avi';
-	// 	}
-	// 	if ($query == "book") {
-	// 		$config['allowed_types'] = 'pdf|doc';
-	// 	}
-	// 	$config['max_size'] = 0;
+		$id = $_POST['id'];
+		$query = $this->MyModel->upload_path($id);
+		$config['upload_path'] = './public/images/uploads/prod_link' . $query . '/';
+		if ($query == "audio") {
+			$config['allowed_types'] = 'mp3';
+		}
+		if ($query == "video") {
+			$config['allowed_types'] = 'mp4|avi';
+		}
+		if ($query == "book") {
+			$config['allowed_types'] = 'pdf|doc';
+		}
+		$config['max_size'] = 0;
 		
-	// 	$this->load->library('upload', $config);
-	// 	$this->upload->initialize($config);
-	// 	if (!$this->upload->do_upload('product_file')) {
-	// 		$error = array('status' => false, 'error' => $this->upload->display_errors());
-	// 			//echo json_encode($error);
-	// 		$this->response($error, REST_Controller::HTTP_OK);
-	// 	} else {
-	// 		$data = $this->upload->data();
-	// 		$success = ['status' => true, 'success' => $data['file_name']];
-	// 		$imgData = array(
-	// 			'file_link' => $data['file_name']
-	// 		);
-	// 		$this->MyModel->update_file($id, $imgData);
-	// 		$this->response($success, REST_Controller::HTTP_OK);
-	// 	}
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+		if (!$this->upload->do_upload('product_file')) {
+			$error = array('status' => false, 'error' => $this->upload->display_errors());
+				//echo json_encode($error);
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data();
+			$success = ['status' => true, 'success' => $data['file_name']];
+			$imgData = array(
+				'file_link' => $data['file_name']
+			);
+			$this->MyModel->update_file($id, $imgData);
+			$this->response($success, REST_Controller::HTTP_OK);
+		}
 
-	// }
+	}
 
 	public function merchant_products_post()
 	{
@@ -1822,7 +1822,7 @@ class App extends REST_Controller
 				$config['upload_path'] = './public/images/uploads/pastors-imgs';
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
-				$config['max_size'] = 3024;
+				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('pastors_avatar_img')) {
@@ -1900,14 +1900,14 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_update_file_check');
+			$this->form_validation->set_rules('newsfeed_img', 'Merchant Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['file']['name'] == "") {
+				if ($_FILES['newsfeed_img']['name'] == "") {
 					$img = '';
 					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
@@ -1919,7 +1919,7 @@ class App extends REST_Controller
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('file')) {
+				if (!$this->upload->do_upload('newsfeed_img')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
@@ -1963,7 +1963,7 @@ class App extends REST_Controller
 
 	public function update_file_check($str)
 	{
-		if ($_FILES['file']['name'] == "") { //so here we assume user decided to use the old file upload
+		if ($_FILES['newsfeed_img']['name'] == "") { //so here we assume user decided to use the old file upload
 			return true;
 		} else {
 			return $this->file_check($str);
@@ -1981,8 +1981,8 @@ class App extends REST_Controller
 			'image/png',
 			'image/x-png'
 		);
-		$mime = get_mime_by_extension($_FILES['file']['name']);
-		if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
+		$mime = get_mime_by_extension($_FILES['newsfeed_img']['name']);
+		if (isset($_FILES['newsfeed_img']['name']) && $_FILES['newsfeed_img']['name'] != "") {
 			if (in_array($mime, $allowed_mime_type_arr)) {
 				return true;
 			} else {
