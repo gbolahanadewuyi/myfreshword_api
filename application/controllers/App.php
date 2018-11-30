@@ -1725,7 +1725,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'trim');
+			$this->form_validation->set_rules('file', 'Merchant Image', '');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -1762,24 +1762,25 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$newFeed = array(
-						'category' => $_POST['news_cat'],
-						'title' => $_POST['feed_title'],
-						'message' => $_POST['feed_message'],
-						'image' => $img,
-						'merchantemail' => $_POST['merchantemail'],
-						'timestamp' => date('Y-m-d H:i:s'),
-						'likes_count' => 0,
-						'comments_counts' => 0,
-						'churchid' => $_POST['church_id']
-					);
-	
-					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
-					$data = array(
-						'success' => true,
-						'message' => $data
-					);
+					
 				}
+				$newFeed = array(
+					'category' => $_POST['news_cat'],
+					'title' => $_POST['feed_title'],
+					'message' => $_POST['feed_message'],
+					'image' => $_POST['file'],
+					'merchantemail' => $_POST['merchantemail'],
+					'timestamp' => date('Y-m-d H:i:s'),
+					'likes_count' => 0,
+					'comments_counts' => 0,
+					'churchid' => $_POST['church_id']
+				);
+
+				$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
+				$data = array(
+					'success' => true,
+					'message' => $data
+				);
 				
 			}
 
