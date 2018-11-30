@@ -941,23 +941,24 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function upload_profile_picture_post()
-	{
-		$filename = (string)$this->get('photo');
-
+	public function upload_profile_picture_post(){
+		  $this->input->post('photo');
+		  $filename =  $this->input->post('photo');
+		 echo "image url is  : $filename";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-        // use  'google/appengine/api/cloud_storage/CloudStorageTools.php';
+		// use google\appengine\api\cloud_storage\CloudStorageTools;
 
-		$my_bucket = "freshword-ci";
-		//   $upload_url = CloudStorageTools::createUploadUrl('/upload/handler',  $my_bucket);
-		$option = ['gs' => ['Content-Type' => 'image/jpeg']];
-		$context = stream_context_create($option);
-		file_put_contents("gs://${my_bucket}/profile_pictures", $filename, 0, $context);
+		  $my_bucket = "freshword-ci";
+		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
+		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+		 $context = stream_context_create($option);
+	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
 
-		$filepath = file_put_contents("gs://${my_bucket}/profile_pictures", $filename, 0, $context);
-
-		$filecontents = file_get_contents($filepath);
-		return $filecontents;
+        //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
+	
+		//  $filecontents = file_get_contents($filepath);
+		// return $filecontents;
+		
 
 
 
@@ -1308,7 +1309,45 @@ class App extends REST_Controller
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
+	}
+	
+	}
+	//End Send Bulk SMS Block
 
+	public function church_resident_post()
+	{
+		$_POST = json_decode(file_get_contents('php://input') , true);
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			}
+			else {
+				$churchResidentData= array(
+					'lastname' => $_POST['rlast_name'],
+					'Firstname' => $_POST['rfirst_name'],
+					'Title' => $_POST['r_title'],
+					'organization_ID' => $_POST['org_id']
+				);
+		
+				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
+				$data = array(
+					'success' => true,
+					'message' => $data
+				);
+			}
+	
+			$this->response($data, REST_Controller::HTTP_OK);
+		
 	}
 
 	public function church_membership_register_post()
