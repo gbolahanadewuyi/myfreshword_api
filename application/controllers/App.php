@@ -1270,8 +1270,8 @@ class App extends REST_Controller
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	b
-
+	
+	}
 	//End Send Bulk SMS Block
 
 	public function church_resident_post()
