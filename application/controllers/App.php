@@ -954,7 +954,7 @@ class App extends REST_Controller
 			 $this->response($success, REST_Controller::HTTP_OK);
 		}else {
 			
-			$this->response($false, REST_Controller::HTTP_OK);
+			$this->response($response, REST_Controller::HTTP_OK);
 		}
 
 		//   $this->input->post('photo');
