@@ -1841,7 +1841,7 @@ class App extends REST_Controller
 						'churchid' => $_POST['church_id']
 					);
 
-					$data['messages'] = $this->MyModel->insert_feed_data($data);
+					$data['messages'] = $this->MyModel->insert_feed_data($newfeed);
 			
 			}
 
