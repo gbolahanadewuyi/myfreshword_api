@@ -1838,7 +1838,7 @@ class App extends REST_Controller
 						'timestamp' => date('Y-m-d H:i:s'),
 						'likes_count' => 0,
 						'comments_counts' => 0,
-						'churchid' => $data['church_id']
+						'churchid' => $_POST['church_id']
 					);
 
 					$data['messages'] = $this->MyModel->insert_feed_data($data);
