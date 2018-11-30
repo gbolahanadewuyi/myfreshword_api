@@ -1,14 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once APPPATH . '/libraries/REST_Controller.php';
-
 require_once APPPATH . '/libraries/JWT.php';
-
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-use Cloudinary;
 use Stripe\Stripe;
+use Cloudinary;
 use \Firebase\JWT\JWT;
+use libraries\google\appengine\api\cloud_storage\CloudStorageTools;
 
 class App extends REST_Controller
 
@@ -899,87 +898,23 @@ class App extends REST_Controller
 		}
 	}
 
-	public function upload_profile_photo_post()
+	public function profile_photo_link_get()  //this returns url for user to use to upload their profile pictures
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/profile_photos';
-			$config['overwrite'] = true;
-			$config['file_ext_tolower'] = true;
-			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			$config['max_size'] = 0;
-			$this->load->library('upload', $config);
 
-			$this->upload->initialize($config);
+			$my_bucket = "freshword-ci";
+			$upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
 
-			if (!$this->upload->do_upload('photo')) {
-				$error = array(
-					'status' => false,
-					'uploadpath' => $config['upload_path'],
-					'error' => $this->upload->display_errors()
-				);
+			$success = ['status' => true, 'uploadUrl' => $upload_url];
+			$this->response($success, REST_Controller::HTTP_OK);
 
-				// echo json_encode($error);
-
-				$this->response($error, REST_Controller::HTTP_OK);
-			} else {
-				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['full_path']];
-
-				// echo json_encode($success);
-
-				$imgData = array(
-					'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
-				);
-				//$this->MyModel->update_profile_image($response['id'], $imgData);
-				$this->response($success, REST_Controller::HTTP_OK);
-			}
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	// this shooud be the response for the payment
-
-	public function upload_profile_picture_post(){
-		$config['upload_path'] = './profile_photos/';
-		$config['overwrite'] = TRUE;
-		$config['file_ext_tolower'] = TRUE;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
-		if($this->upload->do_upload('photo')){
-            $data = array('upload_data' => $this->upload->data());
-
-			 $this->response($success, REST_Controller::HTTP_OK);
-		}else {
-			
-			$this->response($false, REST_Controller::HTTP_OK);
-		}
-
-		//   $this->input->post('photo');
-		//   $filename =  $this->input->post('photo');
-		//  echo "image url is  : $filename";
-		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// // use google\appengine\api\cloud_storage\CloudStorageTools;
-
-		//   $my_bucket = "freshword-ci";
-		// //    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		//   $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		//  $context = stream_context_create($option);
-	   	// file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
-
-        // //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
-	
-		// //  $filecontents = file_get_contents($filepath);
-		// // return $filecontents;
-		
-
-
-
-
-
-	}
 
 	public function payment_response_post()
 	{
@@ -2206,7 +2141,7 @@ class App extends REST_Controller
 
 
 	//Stripe Processing For Billing
-	public function stripe_billing_processing() 
+	public function stripe_billing_processing()
 	{
 		//check whether stripe token is not empty
 		if (!empty($_POST['stripeToken'])) {
@@ -2218,10 +2153,10 @@ class App extends REST_Controller
 			$card_cvc = $_POST['cvc'];
 			$card_exp_month = $_POST['exp_month'];
 			$card_exp_year = $_POST['exp_year'];
-			
+
 			//include Stripe PHP library
 			require_once APPPATH . "third_party/stripe/init.php";
-			
+
 			//set api key
 			$stripe = array(
 				"secret_key" => "YOUR_SECRET_KEY",
@@ -2229,20 +2164,20 @@ class App extends REST_Controller
 			);
 
 			\Stripe\Stripe::setApiKey($stripe['secret_key']);
-			
+
 			//add customer to stripe
 			$customer = \Stripe\Customer::create(array(
 				'email' => $email,
 				'source' => $token
 			));
-			
+
 			//item information
 			$itemName = "Stripe Donation";
 			$itemNumber = "PS123456";
 			$itemPrice = 50;
 			$currency = "usd";
 			$orderID = "SKA92712382139";
-			
+
 			//charge a credit or a debit card
 			$charge = \Stripe\Charge::create(array(
 				'customer' => $customer->id,
@@ -2253,19 +2188,19 @@ class App extends REST_Controller
 					'item_id' => $itemNumber
 				)
 			));
-			
+
 			//retrieve charge details
 			$chargeJson = $charge->jsonSerialize();
 			//check whether the charge is successful
 			if ($chargeJson['amount_refunded'] == 0 && empty($chargeJson['failure_code']) && $chargeJson['paid'] == 1 && $chargeJson['captured'] == 1) {
-				//order details 
+				//order details
 				$amount = $chargeJson['amount'];
 				$balance_transaction = $chargeJson['balance_transaction'];
 				$currency = $chargeJson['currency'];
 				$status = $chargeJson['status'];
 				$date = date("Y-m-d H:i:s");
-			
-				
+
+
 				//insert tansaction data into the database
 				$dataDB = array(
 					'name' => $name,
