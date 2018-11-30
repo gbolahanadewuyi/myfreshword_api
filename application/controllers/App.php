@@ -1726,7 +1726,6 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
