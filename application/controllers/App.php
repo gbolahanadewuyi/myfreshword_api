@@ -387,18 +387,6 @@ class App extends REST_Controller
 		$this->response($query, REST_Controller::HTTP_OK);
 	}
 
-	public function church_details_get()
-	{
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
-			$id = (int)$this->get('id');
-			$query = $this->MyModel->church_details($id);
-			$this->response($query, REST_Controller::HTTP_OK);
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
-		}
-	}
-
 	// get user profile data by id and apikey
 
 	public function user_profile_get()
@@ -765,22 +753,6 @@ class App extends REST_Controller
 	| Now create something great!
 	|
 	 */
-	 
-	 public function subscription_callback_post(){
-	 			$_POST = json_decode(file_get_contents('php://input'), true);
-	 			print_r($_POST);
-	 			// $userid = $response['id'];
-	 			// $subscriptionPackage = $_POST['subscriptionType'];
-
-
-	 			// $query = $this->MyModel->subscribe($userid, $subscriptionPackage);
-	 			// $this->response($query, REST_Controller::HTTP_OK);
-
-	 		// } else {
-	 		// 	$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-	 		// }
-	 	}
-
 	public function addto_library_post()
 	{
 		$response = $this->MyModel->header_auth();
@@ -969,16 +941,16 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		 $filename = (string)$this->get('photo');   
-		 return $filename;  
+		 $filename = $_POST['photo'];
+		 echo "image is : $filename";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// use google\appengine\api\cloud_storage\CloudStorageTools;
+		use google\appengine\api\cloud_storage\CloudStorageTools;
 
 		  $my_bucket = "freshword-ci";
 		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
 		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
 		 $context = stream_context_create($option);
-	   	file_put_contents("gs://${my_bucket}/4.jpg", $filename, 0, $context);
+	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
 
         //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
 	
@@ -986,10 +958,9 @@ class App extends REST_Controller
 		// return $filecontents;
 		
 
+        
 
-
-
-
+	  
 	}
 
 	public function payment_response_post()
@@ -1299,7 +1270,7 @@ class App extends REST_Controller
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	}
+	b
 
 	//End Send Bulk SMS Block
 
@@ -1327,16 +1298,16 @@ class App extends REST_Controller
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
-
+		
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
 				);
 			}
-
+	
 			$this->response($data, REST_Controller::HTTP_OK);
-
+		
 	}
 
 	public function church_membership_register_post()
@@ -1543,7 +1514,7 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'pdf|doc';
 		}
 		$config['max_size'] = 0;
-
+		
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('product_file')) {
