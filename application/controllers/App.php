@@ -1310,45 +1310,7 @@ class App extends REST_Controller
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	
-	}
-	//End Send Bulk SMS Block
 
-	public function church_resident_post()
-	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
-			$data = array(
-				'success' => false,
-				'messages' => array()
-			);
-			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
-			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
-			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
-			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
-					$data['messages'][$key] = form_error($key);
-				}
-			}
-			else {
-				$churchResidentData= array(
-					'lastname' => $_POST['rlast_name'],
-					'Firstname' => $_POST['rfirst_name'],
-					'Title' => $_POST['r_title'],
-					'organization_ID' => $_POST['org_id']
-				);
-		
-				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
-				$data = array(
-					'success' => true,
-					'message' => $data
-				);
-			}
-	
-			$this->response($data, REST_Controller::HTTP_OK);
-		
-	}
 
 	public function church_membership_register_post()
 	{
@@ -2224,8 +2186,10 @@ class App extends REST_Controller
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
+
+
 	//Stripe Processing For Billing
-	public function stripe_billing_processing()
+	public function stripe_billing_processing() 
 	{
 		//check whether stripe token is not empty
 		if (!empty($_POST['stripeToken'])) {
@@ -2321,16 +2285,16 @@ class App extends REST_Controller
 			}
 		}
 	}
-	public function payment_success()
-	{
-		$this->load->view('payment_success');
-	}
-	public function payment_error()
-	{
-		$this->load->view('payment_error');
-	}
-	public function help()
-	{
-		$this->load->view('help');
-	}
+		public function payment_success()
+		{
+			$this->load->view('payment_success');
+		}
+		public function payment_error()
+		{
+			$this->load->view('payment_error');
+		}
+		public function help()
+		{
+			$this->load->view('help');
+		}
 } //end of class
