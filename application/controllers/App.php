@@ -1801,39 +1801,39 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				// $config['upload_path'] = './public/images/uploads/feed-imgs';
-				// $config['allowed_types'] = 'gif|jpg|png|jpeg';
-				// $config['encrypt_name'] = true;
-				// $config['max_size'] = 3024;
-				// $this->load->library('upload', $config);
-				// $this->upload->initialize($config);
-				// if (!$this->upload->do_upload('img')) {
-				// 	$error = array(
-				// 		'status' => false,
-				// 		'error' => $this->upload->display_errors()
-				// 	);
+				 $config['upload_path'] = './public/images/uploads/feed-imgs';
+				 $config['allowed_types'] = 'gif|jpg|png|jpeg';
+				 $config['encrypt_name'] = true;
+				 $config['max_size'] = 3024;
+				 $this->load->library('upload', $config);
+				 $this->upload->initialize($config);
+				 if (!$this->upload->do_upload('img')) {
+				 	$error = array(
+				 		'status' => false,
+						'error' => $this->upload->display_errors()
+					);
 
-				// 	// echo json_encode($error);
+				 	// echo json_encode($error);
 
-				// 	$this->response($error, REST_Controller::HTTP_OK);
-				// 	return false;
-				// } else {
-				// 	$data = $this->upload->data();
-				// 	$success = ['status' => true, 'success' => $data['file_name']];
+			 	$this->response($error, REST_Controller::HTTP_OK);
+			 	return false;
+			 } else {
+					$data = $this->upload->data();
+				 	$success = ['status' => true, 'success' => $data['file_name']];
 
 				// 	// echo json_encode($success);
 
-				// 	$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
-				// 	// so run insertion since the validation for the form has been passed correctly
+				 	// so run insertion since the validation for the form has been passed correctly
 
-				// 	$data = $this->MyModel->insert_feed_data($_POST, $img);
-				// }
+					//$data = $this->MyModel->insert_feed_data($_POST, $img);
+				 }
 				$newFeed = array(
 					'category' => $_POST['news_cat'],
 					'title' => $_POST['feed_title'],
 					'message' => $_POST['feed_message'],
-					'image' =>$_POST['img'],
+					'image' =>$img,
 					'merchantemail' => $_POST['merchantemail'],
 					'timestamp' => date('Y-m-d H:i:s'),
 					'likes_count' => 0,
