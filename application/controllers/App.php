@@ -941,7 +941,8 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		 $filename =$this->input->post('photo');
+		  $this->input->post('photo');
+		  $filename =  $this->input->post('photo');
 		 echo "image url is  : $filename";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 		// use google\appengine\api\cloud_storage\CloudStorageTools;
