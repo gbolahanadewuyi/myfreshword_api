@@ -1,14 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once APPPATH . '/libraries/REST_Controller.php';
-
 require_once APPPATH . '/libraries/JWT.php';
-
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
 use Stripe\Stripe;
 use Cloudinary;
 use \Firebase\JWT\JWT;
+use libraries\google\appengine\api\cloud_storage\CloudStorageTools';
 
 class App extends REST_Controller
 
@@ -903,8 +902,6 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-
-			require_once APPPATH . '/libraries/google/appengine/api/cloud_storage/CloudStorageTools.php';
 
 			$my_bucket = "freshword-ci";
 			$upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
@@ -2143,7 +2140,7 @@ class App extends REST_Controller
 
 
 	//Stripe Processing For Billing
-	public function stripe_billing_processing() 
+	public function stripe_billing_processing()
 	{
 		//check whether stripe token is not empty
 		if (!empty($_POST['stripeToken'])) {
@@ -2155,10 +2152,10 @@ class App extends REST_Controller
 			$card_cvc = $_POST['cvc'];
 			$card_exp_month = $_POST['exp_month'];
 			$card_exp_year = $_POST['exp_year'];
-			
+
 			//include Stripe PHP library
 			require_once APPPATH . "third_party/stripe/init.php";
-			
+
 			//set api key
 			$stripe = array(
 				"secret_key" => "YOUR_SECRET_KEY",
@@ -2166,20 +2163,20 @@ class App extends REST_Controller
 			);
 
 			\Stripe\Stripe::setApiKey($stripe['secret_key']);
-			
+
 			//add customer to stripe
 			$customer = \Stripe\Customer::create(array(
 				'email' => $email,
 				'source' => $token
 			));
-			
+
 			//item information
 			$itemName = "Stripe Donation";
 			$itemNumber = "PS123456";
 			$itemPrice = 50;
 			$currency = "usd";
 			$orderID = "SKA92712382139";
-			
+
 			//charge a credit or a debit card
 			$charge = \Stripe\Charge::create(array(
 				'customer' => $customer->id,
@@ -2190,19 +2187,19 @@ class App extends REST_Controller
 					'item_id' => $itemNumber
 				)
 			));
-			
+
 			//retrieve charge details
 			$chargeJson = $charge->jsonSerialize();
 			//check whether the charge is successful
 			if ($chargeJson['amount_refunded'] == 0 && empty($chargeJson['failure_code']) && $chargeJson['paid'] == 1 && $chargeJson['captured'] == 1) {
-				//order details 
+				//order details
 				$amount = $chargeJson['amount'];
 				$balance_transaction = $chargeJson['balance_transaction'];
 				$currency = $chargeJson['currency'];
 				$status = $chargeJson['status'];
 				$date = date("Y-m-d H:i:s");
-			
-				
+
+
 				//insert tansaction data into the database
 				$dataDB = array(
 					'name' => $name,
