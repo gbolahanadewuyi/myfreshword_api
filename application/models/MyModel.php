@@ -2153,7 +2153,7 @@ class MyModel extends CI_Model
 
 	// merchant feed
 
-	public function insert_feed_data($_POST, $img)
+	public function insert_feed_data($data)
 	{
 		$newFeed = array(
 			'category' => $_POST['news_cat'],
