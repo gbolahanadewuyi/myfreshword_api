@@ -1790,7 +1790,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
+			$this->form_validation->set_rules('img', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1806,7 +1806,7 @@ class App extends REST_Controller
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('file')) {
+				if (!$this->upload->do_upload('img')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
