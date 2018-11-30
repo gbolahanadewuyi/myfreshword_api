@@ -941,22 +941,42 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		  $this->input->post('photo');
-		  $filename =  $this->input->post('photo');
-		 echo "image url is  : $filename";
-		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// use google\appengine\api\cloud_storage\CloudStorageTools;
+		$config['upload_path'] = './public/images/profile_photos';
+		$config['overwrite'] = TRUE;
+		$config['file_ext_tolower'] = TRUE;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		$config['max_size'] = 100;
+		$this->load->library('upload', $config);
+		if(!$this->upload->do_upload('photo')){
+             $error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'] ,
+				'error' => $this->upload->display_errors()
+			 );
+			 $this->response($error, REST_Controller::HTTP_OK);
+		}else {
+			$data = $this->upload->data();
+			echo $data;
 
-		  $my_bucket = "freshword-ci";
-		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		 $context = stream_context_create($option);
-	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
+			$this->response($success, REST_Controller::HTTP_OK);
+		}
 
-        //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
+		//   $this->input->post('photo');
+		//   $filename =  $this->input->post('photo');
+		//  echo "image url is  : $filename";
+		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+		// // use google\appengine\api\cloud_storage\CloudStorageTools;
+
+		//   $my_bucket = "freshword-ci";
+		// //    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
+		//   $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+		//  $context = stream_context_create($option);
+	   	// file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
+
+        // //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
 	
-		//  $filecontents = file_get_contents($filepath);
-		// return $filecontents;
+		// //  $filecontents = file_get_contents($filepath);
+		// // return $filecontents;
 		
 
         
