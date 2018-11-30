@@ -1721,13 +1721,13 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
-			$this->form_validation->set_rules('news_cat', 'Category', 'trim|required');
-			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
-			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
-			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', '');
-			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			// $this->form_validation->set_rules('news_cat', 'Category', 'trim|required');
+			// $this->form_validation->set_rules('feed_title', 'Title', 'trim|required');
+			// $this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
+			// $this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
+			// $this->form_validation->set_rules('file', 'Merchant Image', '');
+			// $this->form_validation->set_rules('church_id', 'church id', 'trim|required');
+			// $this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
@@ -1762,25 +1762,25 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					
+					$newFeed = array(
+						'category' => $_POST['news_cat'],
+						'title' => $_POST['feed_title'],
+						'message' => $_POST['feed_message'],
+						'image' => $_POST['file'],
+						'merchantemail' => $_POST['merchantemail'],
+						'timestamp' => date('Y-m-d H:i:s'),
+						'likes_count' => 0,
+						'comments_counts' => 0,
+						'churchid' => $_POST['church_id']
+					);
+	
+					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
+					$data = array(
+						'success' => true,
+						'message' => $data
+					);
 				}
-				$newFeed = array(
-					'category' => $_POST['news_cat'],
-					'title' => $_POST['feed_title'],
-					'message' => $_POST['feed_message'],
-					'image' => $_POST['file'],
-					'merchantemail' => $_POST['merchantemail'],
-					'timestamp' => date('Y-m-d H:i:s'),
-					'likes_count' => 0,
-					'comments_counts' => 0,
-					'churchid' => $_POST['church_id']
-				);
-
-				$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
-				$data = array(
-					'success' => true,
-					'message' => $data
-				);
+				
 				
 			}
 
