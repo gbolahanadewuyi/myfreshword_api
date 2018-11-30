@@ -1757,12 +1757,27 @@ class App extends REST_Controller
 					$success = ['status' => true, 'success' => $data['file_name']];
 
 					// echo json_encode($success);
-
+				
 					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
 					// so run insertion since the validation for the form has been passed correctly
+					$newFeed = array(
+						'category' => $_POST['news_cat'],
+						'title' => $_POST['feed_title'],
+						'message' => $_POST['feed_message'],
+						'image' => $img,
+						'merchantemail' => $_POST['merchantemail'],
+						'timestamp' => date('Y-m-d H:i:s'),
+						'likes_count' => 0,
+						'comments_counts' => 0,
+						'churchid' => $_POST['church_id']
+					);
+					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
+					$data = array(
+						'success' => true,
+						'message' => $data
+					);
 
-					$data = $this->MyModel->insert_feed_data($_POST, $img);
 				}
 			}
 
