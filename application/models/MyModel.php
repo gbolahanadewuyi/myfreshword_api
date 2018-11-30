@@ -2151,38 +2151,35 @@ class MyModel extends CI_Model
 		return $q->num_rows();
 	}
 
-	// merchant feedr
+	// merchant feed
 
-	public function insert_feed_data($data)
+	public function insert_feed_data($data, $img)
 	{
-		// $newFeed = array(
-		// 	'category' => $data['news_cat'],
-		// 	'title' => $data['feed_title'],
-		// 	'message' => $data['feed_message'],
-		// 	'image' => $img,
-		// 	'merchantemail' => $data['merchantemail'],
-		// 	'timestamp' => date('Y-m-d H:i:s'),
-		// 	'likes_count' => 0,
-		// 	'comments_counts' => 0,
-		// 	'churchid' => $data['church_id']
-		// );
-		$query =  $this->db->insert('merchant_feed', $data);
-		// $insert_id = $this->db->insert_id();
-		if ($query == true) {
-			return array(
-				'status' => 200,
-				'message' => 'merchant feed created successfully'
-				
-			);
-		}else {
+		$newFeed = array(
+			'category' => $data['news_cat'],
+			'title' => $data['feed_title'],
+			'message' => $data['feed_message'],
+			'image' => $img,
+			'merchantemail' => $data['merchantemail'],
+			'timestamp' => date('Y-m-d H:i:s'),
+			'likes_count' => 0,
+			'comments_counts' => 0,
+			'churchid' => $data['church_id']
+		);
+		$query = $query = $this->db->insert('merchant_feed', $newFeed);
+		$insert_id = $this->db->insert_id();
+		if ($query != true) {
 			return array(
 				'status' => 404,
-			   'message' => 'Error creating your merchant feed'
-		   // 'last_insert_id' => $insert_id
-	           );
+				'message' => 'Error creating your merchant feed'
+			);
 		}
 
-		
+		return array(
+			'status' => 200,
+			'message' => 'merchant feed created successfully',
+			'last_insert_id' => $insert_id
+		);
 	}
 
 	// Insertion of Pastors listing to DB
