@@ -2153,18 +2153,18 @@ class MyModel extends CI_Model
 
 	// merchant feed
 
-	public function insert_feed_data($data, $img)
+	public function insert_feed_data($_POST, $img)
 	{
 		$newFeed = array(
-			'category' => $data['news_cat'],
-			'title' => $data['feed_title'],
-			'message' => $data['feed_message'],
+			'category' => $_POST['news_cat'],
+			'title' => $_POST['feed_title'],
+			'message' => $_POST['feed_message'],
 			'image' => $img,
-			'merchantemail' => $data['merchantemail'],
+			'merchantemail' => $_POST['merchantemail'],
 			'timestamp' => date('Y-m-d H:i:s'),
 			'likes_count' => 0,
 			'comments_counts' => 0,
-			'churchid' => $data['church_id']
+			'churchid' => $_POST['church_id']
 		);
 		$query = $query = $this->db->insert('merchant_feed', $newFeed);
 		$insert_id = $this->db->insert_id();
