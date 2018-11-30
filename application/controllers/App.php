@@ -942,7 +942,7 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		$config['upload_path'] = './profile_photos/';
+		$config['upload_path'] = './public/images/uploads/feed-imgs';
 		$config['overwrite'] = TRUE;
 		$config['file_ext_tolower'] = TRUE;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
@@ -1825,7 +1825,7 @@ class App extends REST_Controller
 					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $ok['file_name'];
 
 					echo $img;
-					echo $ok;
+				
 
 		
 					// so run insertion since the validation for the form has been passed correctly
