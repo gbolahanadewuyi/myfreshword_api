@@ -1817,14 +1817,15 @@ class App extends REST_Controller
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
 				} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
+					$ok = $this->upload->data();
+					$success = ['status' => true, 'success' => $ok['file_name']];
                      
 					//echo json_encode($success);
 
-					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $ok['file_name'];
 
 					echo $img;
+					echo $ok;
 
 		
 					// so run insertion since the validation for the form has been passed correctly
