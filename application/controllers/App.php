@@ -6,7 +6,7 @@ require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-use Cloudinary;
+// use Cloudinary;
 use \Firebase\JWT\JWT;
 
 class App extends REST_Controller
@@ -898,91 +898,25 @@ class App extends REST_Controller
 		}
 	}
 
-	public function upload_profile_photo_post()
+	public function profile_photo_link_get()  //this returns url for user to use to upload their profile pictures
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/profile_photos';
-			$config['overwrite'] = TRUE;
-			$config['file_ext_tolower'] = TRUE;
-			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			$config['max_size'] = 0;
-			$this->load->library('upload', $config);
 
-			$this->upload->initialize($config);
+			require_once APPPATH . '/libraries/google/appengine/api/cloud_storage/CloudStorageTools.php';
 
-			if (!$this->upload->do_upload('photo')) {
-				$error = array(
-					'status' => false,
-					'uploadpath' => $config['upload_path'] ,
-					'error' => $this->upload->display_errors()
-				);
+			$my_bucket = "freshword-ci";
+			$upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
 
-				// echo json_encode($error);
+			$success = ['status' => true, 'uploadUrl' => $upload_url];
+			$this->response($success, REST_Controller::HTTP_OK);
 
-				$this->response($error, REST_Controller::HTTP_OK);
-			} else {
-				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['full_path']];
-
-				// echo json_encode($success);
-
-				$imgData = array(
-					'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
-				);
-				//$this->MyModel->update_profile_image($response['id'], $imgData);
-				$this->response($success, REST_Controller::HTTP_OK);
-			}
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
 	// this shooud be the response for the payment
-
-	public function upload_profile_picture_post(){
-		$config['upload_path'] = './profile_photos/';
-		$config['overwrite'] = TRUE;
-		$config['file_ext_tolower'] = TRUE;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
-		$config['max_size'] = 100;
-		$this->load->library('upload', $config);
-		if(!$this->upload->do_upload('photo')){
-             $error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'] ,
-				'error' => $this->upload->display_errors()
-			 );
-			 $this->response($error, REST_Controller::HTTP_OK);
-		}else {
-			$data = $this->upload->data();
-			echo $data;
-
-			$this->response($success, REST_Controller::HTTP_OK);
-		}
-
-		//   $this->input->post('photo');
-		//   $filename =  $this->input->post('photo');
-		//  echo "image url is  : $filename";
-		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// // use google\appengine\api\cloud_storage\CloudStorageTools;
-
-		//   $my_bucket = "freshword-ci";
-		// //    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		//   $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		//  $context = stream_context_create($option);
-	   	// file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
-
-        // //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
-	
-		// //  $filecontents = file_get_contents($filepath);
-		// // return $filecontents;
-		
-
-        
-
-	  
-	}
 
 	public function payment_response_post()
 	{
@@ -1291,7 +1225,7 @@ class App extends REST_Controller
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
-	
+
 	}
 	//End Send Bulk SMS Block
 
@@ -1319,16 +1253,16 @@ class App extends REST_Controller
 					'Title' => $_POST['r_title'],
 					'organization_ID' => $_POST['org_id']
 				);
-		
+
 				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
 				$data = array(
 					'success' => true,
 					'message' => $data
 				);
 			}
-	
+
 			$this->response($data, REST_Controller::HTTP_OK);
-		
+
 	}
 
 	public function church_membership_register_post()
@@ -1535,7 +1469,7 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'pdf|doc';
 		}
 		$config['max_size'] = 0;
-		
+
 		$this->load->library('upload', $config);
 		$this->upload->initialize($config);
 		if (!$this->upload->do_upload('product_file')) {
