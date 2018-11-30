@@ -1819,16 +1819,17 @@ class App extends REST_Controller
 				} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
-
-					// echo json_encode($success);
+                     
+					//echo json_encode($success);
 
 					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
+					echo $img;
+
+		
 					// so run insertion since the validation for the form has been passed correctly
 
 					// $data = $this->MyModel->insert_feed_data($_POST, $img);
-				}
-				
 					$newFeed = array(
 						'category' => $_POST['news_cat'],
 						'title' => $_POST['feed_title'],
@@ -1842,6 +1843,9 @@ class App extends REST_Controller
 					);
 
 					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
+				}
+				
+				
 			
 			}
 
