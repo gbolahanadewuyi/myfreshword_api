@@ -941,10 +941,10 @@ class App extends REST_Controller
 	// this shooud be the response for the payment
 
 	public function upload_profile_picture_post(){
-		$config['upload_path'] = './public/images/uploads/profile_photos/';
+		$config['upload_path'] = 'public/images/uploads/profile_photos/';
 		$config['overwrite'] = TRUE;
 		$config['file_ext_tolower'] = TRUE;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images to
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
 		$config['max_size'] = 100;
 		$this->load->library('upload', $config);
 		if(!$this->upload->do_upload('photo')){
