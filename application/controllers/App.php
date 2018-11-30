@@ -1780,8 +1780,7 @@ class App extends REST_Controller
 	public function merchant_feed_post()
 	{
 		$response = $this->MyModel->merchant_auth();
-		if ($response['status'] == 200) { 
-			// $_POST = json_decode(file_get_contents('php://input'), true);
+		if ($response['status'] == 200) {
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1791,7 +1790,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			$this->form_validation->set_rules('img', 'Merchant Image', 'required');
+			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1801,51 +1800,34 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				 $config['upload_path'] = './public/images/uploads/feed-imgs';
-				 $config['allowed_types'] = 'gif|jpg|png|jpeg';
-				 $config['encrypt_name'] = true;
-				 $config['max_size'] = 3024;
-				 $this->load->library('upload', $config);
-				 $this->upload->initialize($config);
-				 if (!$this->upload->do_upload('img')) {
-				 	$error = array(
-				 		'status' => false,
+				$config['upload_path'] = './public/images/uploads/feed-imgs';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['encrypt_name'] = true;
+				$config['max_size'] = 3024;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('file')) {
+					$error = array(
+						'status' => false,
 						'error' => $this->upload->display_errors()
 					);
 
-				 	// echo json_encode($error);
+					// echo json_encode($error);
 
-			 	$this->response($error, REST_Controller::HTTP_OK);
-			 	return false;
-			 } else {
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+				} else {
 					$data = $this->upload->data();
-				 	$success = ['status' => true, 'success' => $data['file_name']];
+					$success = ['status' => true, 'success' => $data['file_name']];
 
-				// 	// echo json_encode($success);
+					// echo json_encode($success);
 
 					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
 
-				 	// so run insertion since the validation for the form has been passed correctly
+					// so run insertion since the validation for the form has been passed correctly
 
-					//$data = $this->MyModel->insert_feed_data($_POST, $img);
-				 }
-				$newFeed = array(
-					'category' => $this->input->post('news_cat'),
-					'title' => $this->input->post('feed_title'),
-					'message' => $this->input->post('feed_message'),
-					'image' =>$img,
-					'merchantemail' => $this->input->post('merchantemail'),
-					'timestamp' => date('Y-m-d H:i:s'),
-					'likes_count' => 0,
-					'comments_counts' => 0,
-					'churchid' => $this->input->post['church_id']
-				);
-
-				$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
-			$data = array(
-				'success' => true,
-				'message' => $data
-			);
+					$data = $this->MyModel->insert_feed_data($_POST, $img);
+				}
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
