@@ -7,7 +7,7 @@ require_once APPPATH . '/libraries/JWT.php';
 use Stripe\Stripe;
 use Cloudinary;
 use \Firebase\JWT\JWT;
-use libraries\google\appengine\api\cloud_storage\CloudStorageTools';
+use libraries\google\appengine\api\cloud_storage\CloudStorageTools;
 
 class App extends REST_Controller
 
