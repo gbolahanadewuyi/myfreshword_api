@@ -2163,7 +2163,8 @@ class MyModel extends CI_Model
 			'merchantemail' => $data['merchantemail'],
 			'timestamp' => date('Y-m-d H:i:s'),
 			'likes_count' => 0,
-			'comments_counts' => 0
+			'comments_counts' => 0,
+			'churchid' => $data['church_id']
 		);
 		$query = $query = $this->db->insert('merchant_feed', $newFeed);
 		$insert_id = $this->db->insert_id();

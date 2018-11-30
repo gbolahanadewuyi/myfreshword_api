@@ -6,7 +6,8 @@ require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-// use Cloudinary;
+use Stripe\Stripe;
+use Cloudinary;
 use \Firebase\JWT\JWT;
 
 class App extends REST_Controller
@@ -169,9 +170,9 @@ class App extends REST_Controller
 				'user_uname' => $_POST['username'],
 				'user_email' => $_POST['email'],
 				'user_mobile' => $_POST['mobile'],
-				'user_pwd' => md5($_POST['password']) ,
+				'user_pwd' => md5($_POST['password']),
 				'user_church_id' => $_POST['church_id'],
-				'user_key' => $key = md5(date('his') . $_POST['email']) ,
+				'user_key' => $key = md5(date('his') . $_POST['email']),
 				'user_accesslevel' => 2,
 				'user_status' => 2,
 				'user_activation_code' => $q
@@ -1199,71 +1200,70 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
+			$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
+			$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			} else {
+				$smsData = array(
+					'mobile_number' => $_POST['mobile_number'],
+					'sender_id' => $_POST['sender_id'],
+					'message_content' => $_POST['message_content']
+				);
+			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
+				$data['Success'] = true;
+				$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
+			}
+
+			$this->response($data, REST_Controller::HTTP_OK);
+		}
+	}
+
+	//End Send Bulk SMS Block
+
+	public function church_resident_post()
+	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
 		);
-		$this->form_validation->set_rules('mobile_number', 'Mobile Number', 'trim|required');
-		$this->form_validation->set_rules('sender_id', 'Sender ID', 'trim|required');
-		$this->form_validation->set_rules('message_content', 'Message Content', 'trim|required');
+		$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
+		$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
+		$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
+		$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
 		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 		if ($this->form_validation->run() === false) {
 			foreach ($_POST as $key => $value) {
 				$data['messages'][$key] = form_error($key);
 			}
 		} else {
-			$smsData = array(
-				'mobile_number' => $_POST['mobile_number'],
-				'sender_id' => $_POST['sender_id'],
-				'message_content' => $_POST['message_content']
+			$churchResidentData = array(
+				'lastname' => $_POST['rlast_name'],
+				'Firstname' => $_POST['rfirst_name'],
+				'Title' => $_POST['r_title'],
+				'organization_ID' => $_POST['org_id']
 			);
-			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
-			$data['Success'] = true;
-			$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
+
+			$data['messages'] = $this->MyModel->create_resident($churchResidentData);
+			$data = array(
+				'success' => true,
+				'message' => $data
+			);
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	}
-	//End Send Bulk SMS Block
-
-	public function church_resident_post()
-	{
-		$_POST = json_decode(file_get_contents('php://input') , true);
-			$data = array(
-				'success' => false,
-				'messages' => array()
-			);
-			$this->form_validation->set_rules('rfirst_name', 'First Name', 'trim|required');
-			$this->form_validation->set_rules('rlast_name', 'Last Name', 'trim|required');
-			$this->form_validation->set_rules('r_title', 'Title', 'trim|required');
-			$this->form_validation->set_rules('org_id', 'Organization ID', 'trim|required');
-			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-			if ($this->form_validation->run() === false) {
-				foreach($_POST as $key => $value) {
-					$data['messages'][$key] = form_error($key);
-				}
-			}
-			else {
-				$churchResidentData= array(
-					'lastname' => $_POST['rlast_name'],
-					'Firstname' => $_POST['rfirst_name'],
-					'Title' => $_POST['r_title'],
-					'organization_ID' => $_POST['org_id']
-				);
-
-				$data['messages'] = $this->MyModel->create_resident($churchResidentData);
-				$data = array(
-					'success' => true,
-					'message' => $data
-				);
-			}
-
-			$this->response($data, REST_Controller::HTTP_OK);
-
-	}
 
 	public function church_membership_register_post()
 	{
@@ -1727,6 +1727,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
+			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
 			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -1787,7 +1788,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
-			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'required');
+			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1950,21 +1951,22 @@ class App extends REST_Controller
 
 	// call back for checking file directly into one
 
-	// public function file_check($str){
-	// 	$allowed_mime_type_arr = array('image/gif','image/jpeg','image/pjpeg','image/png','image/x-png');
-	// 	$mime = get_mime_by_extension($_FILES['file']['name']);
-	// 	if(isset($_FILES['file']['name']) && $_FILES['file']['name']!=""){
-	// 		if(in_array($mime, $allowed_mime_type_arr)){
-	// 			return true;
-	// 		}else{
-	// 			$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
-	// 			return false;
-	// 		}
-	// 	}else{
-	// 		$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
-	// 		return false;
-	// 	}
-	// }
+	public function file_check($str)
+	{
+		$allowed_mime_type_arr = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png');
+		$mime = get_mime_by_extension($_FILES['file']['name']);
+		if (isset($_FILES['file']['name']) && $_FILES['file']['name'] != "") {
+			if (in_array($mime, $allowed_mime_type_arr)) {
+				return true;
+			} else {
+				$this->form_validation->set_message('file_check', 'Please select only jpeg/jpg/png file.');
+				return false;
+			}
+		} else {
+			$this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+			return false;
+		}
+	}
 
 	public function merchant_news_feed_get()
 	{
@@ -2138,4 +2140,115 @@ class App extends REST_Controller
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
+
+
+	//Stripe Processing For Billing
+	public function stripe_billing_processing() 
+	{
+		//check whether stripe token is not empty
+		if (!empty($_POST['stripeToken'])) {
+			//get token, card and user info from the form
+			$token = $_POST['stripeToken'];
+			$name = $_POST['name'];
+			$email = $_POST['email'];
+			$card_num = $_POST['card_num'];
+			$card_cvc = $_POST['cvc'];
+			$card_exp_month = $_POST['exp_month'];
+			$card_exp_year = $_POST['exp_year'];
+			
+			//include Stripe PHP library
+			require_once APPPATH . "third_party/stripe/init.php";
+			
+			//set api key
+			$stripe = array(
+				"secret_key" => "YOUR_SECRET_KEY",
+				"publishable_key" => "YOUR_PUBLISHABLE_KEY"
+			);
+
+			\Stripe\Stripe::setApiKey($stripe['secret_key']);
+			
+			//add customer to stripe
+			$customer = \Stripe\Customer::create(array(
+				'email' => $email,
+				'source' => $token
+			));
+			
+			//item information
+			$itemName = "Stripe Donation";
+			$itemNumber = "PS123456";
+			$itemPrice = 50;
+			$currency = "usd";
+			$orderID = "SKA92712382139";
+			
+			//charge a credit or a debit card
+			$charge = \Stripe\Charge::create(array(
+				'customer' => $customer->id,
+				'amount' => $itemPrice,
+				'currency' => $currency,
+				'description' => $itemNumber,
+				'metadata' => array(
+					'item_id' => $itemNumber
+				)
+			));
+			
+			//retrieve charge details
+			$chargeJson = $charge->jsonSerialize();
+			//check whether the charge is successful
+			if ($chargeJson['amount_refunded'] == 0 && empty($chargeJson['failure_code']) && $chargeJson['paid'] == 1 && $chargeJson['captured'] == 1) {
+				//order details 
+				$amount = $chargeJson['amount'];
+				$balance_transaction = $chargeJson['balance_transaction'];
+				$currency = $chargeJson['currency'];
+				$status = $chargeJson['status'];
+				$date = date("Y-m-d H:i:s");
+			
+				
+				//insert tansaction data into the database
+				$dataDB = array(
+					'name' => $name,
+					'email' => $email,
+					'card_num' => $card_num,
+					'card_cvc' => $card_cvc,
+					'card_exp_month' => $card_exp_month,
+					'card_exp_year' => $card_exp_year,
+					'item_name' => $itemName,
+					'item_number' => $itemNumber,
+					'item_price' => $itemPrice,
+					'item_price_currency' => $currency,
+					'paid_amount' => $amount,
+					'paid_amount_currency' => $currency,
+					'txn_id' => $balance_transaction,
+					'payment_status' => $status,
+					'created' => $date,
+					'modified' => $date
+				);
+				if ($this->db->insert('orders', $dataDB)) {
+					if ($this->db->insert_id() && $status == 'succeeded') {
+						$data['insertID'] = $this->db->insert_id();
+						$this->load->view('payment_success', $data);
+						// redirect('Welcome/payment_success','refresh');
+					} else {
+						echo "Transaction has been failed";
+					}
+				} else {
+					echo "not inserted. Transaction has been failed";
+				}
+			} else {
+				echo "Invalid Token";
+				$statusMsg = "";
+			}
+		}
+	}
+		public function payment_success()
+		{
+			$this->load->view('payment_success');
+		}
+		public function payment_error()
+		{
+			$this->load->view('payment_error');
+		}
+		public function help()
+		{
+			$this->load->view('help');
+		}
 } //end of class
