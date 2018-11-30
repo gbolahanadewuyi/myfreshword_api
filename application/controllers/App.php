@@ -945,20 +945,15 @@ class App extends REST_Controller
 		$config['overwrite'] = TRUE;
 		$config['file_ext_tolower'] = TRUE;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
-		$config['max_size'] = 100;
+		$config['max_size'] = 0;
 		$this->load->library('upload', $config);
-		if(!$this->upload->do_upload('photo')){
-             $error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'] ,
-				'error' => $this->upload->display_errors()
-			 );
-			 $this->response($error, REST_Controller::HTTP_OK);
-		}else {
-			$data = $this->upload->data();
-			echo $data;
+		if($this->upload->do_upload('photo')){
+            $data = array('upload_data' => $this->upload->data());
 
-			$this->response($success, REST_Controller::HTTP_OK);
+			 $this->response($success, REST_Controller::HTTP_OK);
+		}else {
+			
+			$this->response($false, REST_Controller::HTTP_OK);
 		}
 
 		//   $this->input->post('photo');
@@ -1793,6 +1788,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
+			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
 			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
