@@ -1830,18 +1830,18 @@ class App extends REST_Controller
 				// 	$data = $this->MyModel->insert_feed_data($_POST, $img);
 				// }
 				$newFeed = array(
-					'category' => $data['news_cat'],
-					'title' => $data['feed_title'],
-					'message' => $data['feed_message'],
-					'image' => $img,
-					'merchantemail' => $data['merchantemail'],
+					'category' => $_POST['news_cat'],
+					'title' => $_POST['feed_title'],
+					'message' => $_POST['feed_message'],
+					'image' =>$_POST['img'],
+					'merchantemail' => $_POST['merchantemail'],
 					'timestamp' => date('Y-m-d H:i:s'),
 					'likes_count' => 0,
 					'comments_counts' => 0,
-					'churchid' => $data['church_id']
+					'churchid' => $_POST['church_id']
 				);
 
-				$data['messages'] = $this->MyModel->create_resident($newFeed);
+				$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
 			$data = array(
 				'success' => true,
 				'message' => $data
