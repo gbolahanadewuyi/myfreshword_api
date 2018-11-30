@@ -1781,7 +1781,13 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$data = array(
+			$this->input->post('news_cat');
+			$this->input->post('feed_title');
+			 $this->input->post('feed_message');
+			 $this->input->post('file');
+			$this->input->post('merchantemail');
+              $this->input->post('church_id');
+			$data = array (
 				'success' => false,
 				'messages' => array()
 			);
@@ -1830,15 +1836,15 @@ class App extends REST_Controller
 				// }
 				
 					$newFeed = array(
-						'category' => $_POST['news_cat'],
-						'title' => $_POST['feed_title'],
-						'message' => $_POST['feed_message'],
-						'image' => $_POST['file'],
-						'merchantemail' => $_POST['merchantemail'],
+						'category' => $this->input->post('news_cat'),
+						'title' => $this->input->post('feed_title'),
+						'message' => $this->input->post('feed_message'),
+						'image' => $this->input->post('file'),
+						'merchantemail' =>$this->input->post('merchantemail'),
 						'timestamp' => date('Y-m-d H:i:s'),
 						'likes_count' => 0,
 						'comments_counts' => 0,
-						'churchid' => $_POST['church_id']
+						'churchid' => $this->input->post('church_id')
 					);
 
 					$data['messages'] = $this->MyModel->insert_feed_data($data);
