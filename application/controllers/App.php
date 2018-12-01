@@ -941,22 +941,19 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function upload_profile_picture_post(){
-		$config['upload_path'] = './public/images/uploads/feed-imgs';
-		$config['overwrite'] = TRUE;
-		$config['file_ext_tolower'] = TRUE;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images with different format
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
-		if($this->upload->do_upload('photo')){
-            $data = array('upload_data' => $this->upload->data());
-
-			 $this->response($success, REST_Controller::HTTP_OK);
-		}else {
-			
-			$this->response($response, REST_Controller::HTTP_OK);
-		}
-
+	public function upload_profile_picture_post()
+	{   
+		  $image = base64_decode($this->input->post("photo"));
+     $image_name = md5(uniqid(rand(), true));
+      $filename = $image_name . '.' . 'png';
+//rename file name with random number
+     $path = "vehicle_image_upload/".$filename;
+//image uploading folder path
+		   file_put_contents($path . $filename, $image); 
+		   
+		   $filecontents =  file_put_contents($path . $filename, $image); 
+			 
+		   echo $filecontents;
 		//   $this->input->post('photo');
 		//   $filename =  $this->input->post('photo');
 		//  echo "image url is  : $filename";
