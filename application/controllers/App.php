@@ -944,21 +944,22 @@ class App extends REST_Controller
 	public function upload_profile_picture_post()
 
 	{
-		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';   
+		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';   
 		  $image = base64_decode($this->input->post("photo"));
-     $image_name = md5(uniqid(rand(), true));
-      $filename = $image_name . '.' . 'png';
-//rename file name with random number
+		  echo $image;
+//      $image_name = md5(uniqid(rand(), true));
+//       $filename = $image_name . '.' . 'png';
+// //rename file name with random number
 
-	 $path = "freshword-ci/profile_pictures".$filename;
-	 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-	 $context = stream_context_create($option);
-//image uploading folder path
-		   file_put_contents("gs://$path . $filename/", $image, 0, $context); 
+// 	 $path = "freshword-ci/profile_pictures".$filename;
+// 	 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+// 	 $context = stream_context_create($option);
+// //image uploading folder path
+// 		   file_put_contents("gs://$path . $filename/", $image, 0, $context); 
 		   
-		   $filecontents =  file_put_contents($path . $filename, $image); 
+// 		   $filecontents =  file_put_contents($path . $filename, $image); 
 			 
-		   echo $filecontents;
+// 		   echo $filecontents;
 		//   $this->input->post('photo');
 		//   $filename =  $this->input->post('photo');
 		//  echo "image url is  : $filename";
