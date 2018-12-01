@@ -945,7 +945,7 @@ class App extends REST_Controller
 
 	{
 		
-		$my_bucket = "https://console.cloud.google.com/storage/browser/freshword-ci/profile_pictures/?project=techloft-173609";
+		$my_bucket = "techloft-173609.appspot.com";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 		$config['upload_path']  = "gs://${my_bucket}/";
 		$config['overwrite'] = true;
