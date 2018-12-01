@@ -941,7 +941,7 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function do_upload_post()
+	public function do_upload()
 
 	{
 		
@@ -958,19 +958,19 @@ class App extends REST_Controller
 			//    $error = array('error' => $this->upload->display_errors()); 
 			// //    $this->load->view('upload_form', $error); 
 			$error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'],
-				'error' => $this->upload->display_errors()
-			);
+					'status' => false,
+					'uploadpath' => $config['upload_path'],
+					'error' => $this->upload->display_errors()
+				);
+				$this->response($error, REST_Controller::HTTP_OK);
 			}
 			   
 			else { 
-			//    $data = array('upload_data' => $this->upload->data()); 
-			// //    $this->load->view('upload_success', $data); 
-			$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['full_path']];
-            echo json_encode($success);
+			   $data = array('upload_data' => $this->upload->data()); 
+			   echo $upload_data;
 
+			   $this->response($data, REST_Controller::HTTP_OK );
+			//    $this->load->view('upload_success', $data); 
 			} 
 		 
 
