@@ -945,70 +945,36 @@ class App extends REST_Controller
 
 	{
 		
-		$newFileContent = $this->input->post('userfile');
-		$my_bucket = "myfresword-ci";
-		$fp = fopen("gs://${my_bucket}/hello_stream.jpg", 'w');
-		fwrite($fp, $newFileContent);
-		fclose($fp);
-  
-			// $config['upload_path']   = './uploads/'; 
-			// $config['allowed_types'] = 'gif|jpg|png'; 
-			// $config['max_size']      = 100; 
-			// $config['max_width']     = 1024; 
-			// $config['max_height']    = 768;  
-			// $this->load->library('upload', $config);
+		// $newFileContent = $this->input->post('userfile');
+		// $my_bucket = "myfresword-ci";
+		// $fp = fopen("gs://${my_bucket}/", 'w');
+		// fwrite($fp, $newFileContent);
+		// fclose($fp);
 
-			// $this->upload->initialize($config);
-			// if ( ! $this->upload->do_upload('userfile')) {
-			// //    $error = array('error' => $this->upload->display_errors()); 
-			// // //    $this->load->view('upload_form', $error); 
-			// $error = array(
-			// 		'status' => false,
-			// 		'uploadpath' => $config['upload_path'],
-			// 		'error' => $this->upload->display_errors()      
-			// 	);
-			// 	$this->response($error, REST_Controller::HTTP_OK);
-			// }
-			   
-			// else { 
-			//    $data = array('upload_data' => $this->upload->data()); 
-			//    echo $upload_data;
-
-			//    $this->response($data, REST_Controller::HTTP_OK );
-			// //    $this->load->view('upload_success', $data); 
-			// } 
-		 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 		   echo $filecontents;
-		//   $this->input->post('photo');
-		//   $filename =  $this->input->post('photo');
-		//  echo "image url is  : $filename";
-		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// // use google\appengine\api\cloud_storage\CloudStorageTools;
-
-		//   $my_bucket = "freshword-ci";
-		// //    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		//   $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		//  $context = stream_context_create($option);
-	   	// file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
-
-        // //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
+		 require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 	
-		// //  $filecontents = file_get_contents($filepath);
-		// // return $filecontents;
+             $filename = 'https://www.w3schools.com/w3css/img_lights.jpg';
+		  $my_bucket = "freshword-ci";
+		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
+		 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+		  $context = stream_context_create($option);
+	 file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
+
+    //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
+	
+	// 	  $filecontents = file_get_contents($filepath);
+	// 	 return $filecontents;
 	}
+
+
+
+
+
+
+
+
+
+
 
 	public function payment_response_post()
 	{
