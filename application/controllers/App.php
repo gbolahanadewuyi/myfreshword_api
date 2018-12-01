@@ -945,20 +945,53 @@ class App extends REST_Controller
 
 	{
 		
+		$my_bucket = "freshword-ci";
+		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+		$config['upload_path']  = "gs://${my_bucket}/profile_pictures/";
+		$config['overwrite'] = true;
+			$config['file_ext_tolower'] = true;
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+			$config['max_size'] = 0;
+			$this->load->library('upload', $config);
+
+			$this->upload->initialize($config);
+
+			if (!$this->upload->do_upload('photo')) {
+				$error = array(
+					'status' => false,
+					'uploadpath' => $config['upload_path'],
+					'error' => $this->upload->display_errors()
+				);
+
+				// echo json_encode($error);
+
+				$this->response($error, REST_Controller::HTTP_OK);
+			} else {
+				$data = $this->upload->data();
+				$success = ['status' => true, 'success' => $data['full_path']];
+
+				// echo json_encode($success);
+
+				// $imgData = array(
+				// 	'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
+				// );
+				//$this->MyModel->update_profile_image($response['id'], $imgData);
+				$this->response($success, REST_Controller::HTTP_OK);
+			}
 		// $newFileContent = $this->input->post('userfile');
 		// $my_bucket = "myfresword-ci";
 		// $fp = fopen("gs://${my_bucket}/", 'w');
 		// fwrite($fp, $newFileContent);
 		// fclose($fp);
 
-		 require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+	// 	 require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 	
-             $filename = 'https://www.w3schools.com/w3css/img_lights.jpg';
-		  $my_bucket = "freshword-ci";
-		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		  $context = stream_context_create($option);
-	 file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
+    //          $filename = 'https://www.w3schools.com/w3css/img_lights.jpg';
+	// 	  $my_bucket = "freshword-ci";
+	// 	//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
+	// 	 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+	// 	  $context = stream_context_create($option);
+	//  file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
 
     //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
 	
