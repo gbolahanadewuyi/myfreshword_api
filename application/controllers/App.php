@@ -941,7 +941,7 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function do_upload()
+	public function do_upload_post()
 
 	{
 		
