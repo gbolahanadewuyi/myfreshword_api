@@ -2087,8 +2087,8 @@ class MyModel extends CI_Model
 			'prod_tags' => $data['prod_tags'],
 			'prod_description' => $data['prod_description'],
 			'prod_essay' => $data['prod_essay'],
-			'prod_price' => $data['prod_price'],
-			'currency' => $data['prod_currency'],
+			// 'prod_price' => $data['prod_price'],
+			// 'currency' => $data['prod_currency'],
 			'prod_urlname' => $this->replace_hyphens($data['prod_name']),
 			'prod_type' => $this->prod_type($data['prod_tags']),
 			'type_list' => $data['prod_tags']
@@ -2153,32 +2153,35 @@ class MyModel extends CI_Model
 
 	// merchant feed
 
-	public function insert_feed_data($data, $img)
+	public function insert_feed_data($data)
 	{
-		$newFeed = array(
-			'category' => $data['news_cat'],
-			'title' => $data['feed_title'],
-			'message' => $data['feed_message'],
-			'image' => $img,
-			'merchantemail' => $data['merchantemail'],
-			'timestamp' => date('Y-m-d H:i:s'),
-			'likes_count' => 0,
-			'comments_counts' => 0
-		);
-		$query = $query = $this->db->insert('merchant_feed', $newFeed);
-		$insert_id = $this->db->insert_id();
+		// $newFeed = array(
+		// 	'category' => $data['news_cat'],
+		// 	'title' => $data['feed_title'],
+		// 	'message' => $data['feed_message'],
+		// 	'image' => $img,
+		// 	'merchantemail' => $data['merchantemail'],
+		// 	'timestamp' => date('Y-m-d H:i:s'),
+		// 	'likes_count' => 0,
+		// 	'comments_counts' => 0,
+		// 	'churchid' => $data['church_id']
+		// );
+		$query = $query = $this->db->insert('merchant_feed', $data);
+		// $insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
 				'message' => 'Error creating your merchant feed'
 			);
+		}else{
+			return array(
+				'status' => 200,
+				'message' => 'merchant feed created successfully',
+				// 'last_insert_id' => $insert_id
+			);
 		}
 
-		return array(
-			'status' => 200,
-			'message' => 'merchant feed created successfully',
-			'last_insert_id' => $insert_id
-		);
+		
 	}
 
 	// Insertion of Pastors listing to DB

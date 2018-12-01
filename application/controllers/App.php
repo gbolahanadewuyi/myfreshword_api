@@ -941,30 +941,73 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function upload_profile_picture_post(){
-		  $this->input->post('photo');
-		  $filename =  $this->input->post('photo');
-		 echo "image url is  : $filename";
-		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		// use google\appengine\api\cloud_storage\CloudStorageTools;
+	public function do_upload_post()
 
-		  $my_bucket = "freshword-ci";
-		//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
-		  $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-		 $context = stream_context_create($option);
-	   	file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
-
-        //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
-	
-		//  $filecontents = file_get_contents($filepath);
-		// return $filecontents;
+	{
 		
+		$my_bucket = "techloft-173609.appspot.com";
+		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+		$config['upload_path']  = "gs://${my_bucket}/";
+		$config['overwrite'] = true;
+			$config['file_ext_tolower'] = true;
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+			$config['max_size'] = 0;
+			$this->load->library('upload', $config);
 
+			$this->upload->initialize($config);
 
+			if (!$this->upload->do_upload('photo')) {
+				$error = array(
+					'status' => false,
+					'uploadpath' => $config['upload_path'],
+					'error' => $this->upload->display_errors()
+				);
 
+				// echo json_encode($error);
 
+				$this->response($error, REST_Controller::HTTP_OK);
+			} else {
+				$data = $this->upload->data();
+				$success = ['status' => true, 'success' => $data['full_path']];
 
+				// echo json_encode($success);
+
+				// $imgData = array(
+				// 	'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
+				// );
+				//$this->MyModel->update_profile_image($response['id'], $imgData);
+				$this->response($success, REST_Controller::HTTP_OK);
+			}
+		// $newFileContent = $this->input->post('userfile');
+		// $my_bucket = "myfresword-ci";
+		// $fp = fopen("gs://${my_bucket}/", 'w');
+		// fwrite($fp, $newFileContent);
+		// fclose($fp);
+
+	// 	 require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+	
+    //          $filename = 'https://www.w3schools.com/w3css/img_lights.jpg';
+	// 	  $my_bucket = "freshword-ci";
+	// 	//    $upload_url = CloudStorageTools::createUploadUrl('/profile_pictures',  $my_bucket);
+	// 	 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
+	// 	  $context = stream_context_create($option);
+	//  file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0, $context);
+
+    //  $filepath = file_put_contents("gs://${my_bucket}/profile_pictures/", $filename, 0,  $context);
+	
+	// 	  $filecontents = file_get_contents($filepath);
+	// 	 return $filecontents;
 	}
+
+
+
+
+
+
+
+
+
+
 
 	public function payment_response_post()
 	{
@@ -1774,7 +1817,8 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_title', 'Title', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'callback_file_check');
+			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
+			$this->form_validation->set_rules('file', 'Merchant Image', 'required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1801,17 +1845,37 @@ class App extends REST_Controller
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
 				} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
+					$ok = $this->upload->data();
+					$success = ['status' => true, 'success' => $ok['file_name']];
+                     
+					//echo json_encode($success);
 
-					// echo json_encode($success);
+					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $ok['file_name'];
 
-					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					echo $img;
+				
 
+		
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->insert_feed_data($_POST, $img);
+					// $data = $this->MyModel->insert_feed_data($_POST, $img);
+					$newFeed = array(
+						'category' => $_POST['news_cat'],
+						'title' => $_POST['feed_title'],
+						'message' => $_POST['feed_message'],
+						'image' => $img,
+						'merchantemail' => $_POST['merchantemail'],
+						'timestamp' => date('Y-m-d H:i:s'),
+						'likes_count' => 0,
+						'comments_counts' => 0,
+						'churchid' => $_POST['church_id']
+					);
+
+					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
 				}
+				
+				
+			
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
