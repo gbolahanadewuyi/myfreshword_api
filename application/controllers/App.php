@@ -947,7 +947,7 @@ class App extends REST_Controller
      $image_name = md5(uniqid(rand(), true));
       $filename = $image_name . '.' . 'png';
 //rename file name with random number
-     $path = "vehicle_image_upload/".$filename;
+     $path = "./public/images/profile_photos".$filename;
 //image uploading folder path
 		   file_put_contents($path . $filename, $image); 
 		   
