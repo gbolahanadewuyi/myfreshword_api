@@ -1828,7 +1828,7 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					$img =$config['upload_path']  = "gs://${my_bucket}/". $data['file_name'];
+					$img = $config['upload_path'] . $data['file_name'];
 
 					
 				
