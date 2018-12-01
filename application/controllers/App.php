@@ -941,24 +941,51 @@ class App extends REST_Controller
 
 	// this shooud be the response for the payment
 
-	public function upload_profile_picture_post()
+	public function do_upload()
 
 	{
-		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';   
-		  $image = base64_decode($this->input->post("photo"));
-		  echo $image;
-//      $image_name = md5(uniqid(rand(), true));
-//       $filename = $image_name . '.' . 'png';
-// //rename file name with random number
-
-// 	 $path = "freshword-ci/profile_pictures".$filename;
-// 	 $option = [ 'gs' => ['Content-Type' => 'image/jpeg']];
-// 	 $context = stream_context_create($option);
-// //image uploading folder path
-// 		   file_put_contents("gs://$path . $filename/", $image, 0, $context); 
+		
 		   
-// 		   $filecontents =  file_put_contents($path . $filename, $image); 
-			 
+  
+			$config['upload_path']   = './uploads/'; 
+			$config['allowed_types'] = 'gif|jpg|png'; 
+			$config['max_size']      = 100; 
+			$config['max_width']     = 1024; 
+			$config['max_height']    = 768;  
+			$this->load->library('upload', $config);
+			   
+			if ( ! $this->upload->do_upload('userfile')) {
+			//    $error = array('error' => $this->upload->display_errors()); 
+			// //    $this->load->view('upload_form', $error); 
+			$error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'],
+				'error' => $this->upload->display_errors()
+			);
+			}
+			   
+			else { 
+			//    $data = array('upload_data' => $this->upload->data()); 
+			// //    $this->load->view('upload_success', $data); 
+			$data = $this->upload->data();
+				$success = ['status' => true, 'success' => $data['full_path']];
+            echo json_encode($success);
+
+			} 
+		 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 		   echo $filecontents;
 		//   $this->input->post('photo');
 		//   $filename =  $this->input->post('photo');
@@ -976,12 +1003,6 @@ class App extends REST_Controller
 	
 		// //  $filecontents = file_get_contents($filepath);
 		// // return $filecontents;
-		
-
-
-
-
-
 	}
 
 	public function payment_response_post()
