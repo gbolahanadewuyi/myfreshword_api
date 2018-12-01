@@ -2087,8 +2087,8 @@ class MyModel extends CI_Model
 			'prod_tags' => $data['prod_tags'],
 			'prod_description' => $data['prod_description'],
 			'prod_essay' => $data['prod_essay'],
-			'prod_price' => $data['prod_price'],
-			'currency' => $data['prod_currency'],
+			// 'prod_price' => $data['prod_price'],
+			// 'currency' => $data['prod_currency'],
 			'prod_urlname' => $this->replace_hyphens($data['prod_name']),
 			'prod_type' => $this->prod_type($data['prod_tags']),
 			'type_list' => $data['prod_tags']
