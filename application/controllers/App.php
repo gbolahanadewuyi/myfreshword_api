@@ -945,9 +945,9 @@ class App extends REST_Controller
 
 	{
 		
-		$my_bucket = "freshword-ci";
+		$my_bucket = "https://console.cloud.google.com/storage/browser/freshword-ci/profile_pictures/?project=techloft-173609";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		$config['upload_path']  = "gs://${my_bucket}/profile_pictures/";
+		$config['upload_path']  = "gs://${my_bucket}/";
 		$config['overwrite'] = true;
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
