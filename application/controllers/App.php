@@ -945,34 +945,38 @@ class App extends REST_Controller
 
 	{
 		
-		   
+		$newFileContent = $this->input->post('userfile');
+		$my_bucket = "myfresword-ci";
+		$fp = fopen("gs://${my_bucket}/hello_stream.jpg", 'w');
+		fwrite($fp, $newFileContent);
+		fclose($fp);
   
-			$config['upload_path']   = './uploads/'; 
-			$config['allowed_types'] = 'gif|jpg|png'; 
-			$config['max_size']      = 100; 
-			$config['max_width']     = 1024; 
-			$config['max_height']    = 768;  
-			$this->load->library('upload', $config);
+			// $config['upload_path']   = './uploads/'; 
+			// $config['allowed_types'] = 'gif|jpg|png'; 
+			// $config['max_size']      = 100; 
+			// $config['max_width']     = 1024; 
+			// $config['max_height']    = 768;  
+			// $this->load->library('upload', $config);
 
-			$this->upload->initialize($config);
-			if ( ! $this->upload->do_upload('userfile')) {
-			//    $error = array('error' => $this->upload->display_errors()); 
-			// //    $this->load->view('upload_form', $error); 
-			$error = array(
-					'status' => false,
-					'uploadpath' => $config['upload_path'],
-					'error' => $this->upload->display_errors()      
-				);
-				$this->response($error, REST_Controller::HTTP_OK);
-			}
+			// $this->upload->initialize($config);
+			// if ( ! $this->upload->do_upload('userfile')) {
+			// //    $error = array('error' => $this->upload->display_errors()); 
+			// // //    $this->load->view('upload_form', $error); 
+			// $error = array(
+			// 		'status' => false,
+			// 		'uploadpath' => $config['upload_path'],
+			// 		'error' => $this->upload->display_errors()      
+			// 	);
+			// 	$this->response($error, REST_Controller::HTTP_OK);
+			// }
 			   
-			else { 
-			   $data = array('upload_data' => $this->upload->data()); 
-			   echo $upload_data;
+			// else { 
+			//    $data = array('upload_data' => $this->upload->data()); 
+			//    echo $upload_data;
 
-			   $this->response($data, REST_Controller::HTTP_OK );
-			//    $this->load->view('upload_success', $data); 
-			} 
+			//    $this->response($data, REST_Controller::HTTP_OK );
+			// //    $this->load->view('upload_success', $data); 
+			// } 
 		 
 
 
