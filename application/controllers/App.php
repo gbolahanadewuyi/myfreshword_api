@@ -1894,7 +1894,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
-			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
+			// $this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1933,17 +1933,17 @@ class App extends REST_Controller
 					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 						$Pastors_listing = array(
-		                   	'pastors_title' => $data['pastors_title'],
-		                    'pastors_name' => $data['pastors_name'],
-		                    'pastors_bio' => $data['pastors_bio'],
+		                   	'pastors_title' => $_POST['pastors_title'],
+		                    'pastors_name' => $_POST['pastors_name'],
+		                    'pastors_bio' => $_POST['pastors_bio'],
 			                'pastors_avatar_img' => $img,
-			                'merchant_id' => $data['merchant_id']
+			                'merchant_id' => $_POST['merchant_id']
                             );
 							 
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->insert_pastors_bio_data($Pastors_listing);
+					$data['messages'] = $this->MyModel->insert_pastors_bio_data($Pastors_listing);
 				}
 			}
 
