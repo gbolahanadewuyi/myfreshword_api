@@ -970,6 +970,16 @@ class App extends REST_Controller
 				$data = $this->upload->data();
 				$success = ['status' => true, 'success' => $data['full_path']];
 
+				$file = $data['file_name'];
+			$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+			       $profilefeed = array(
+
+				   );
+ 
+				   $data['messages'] = $this->MyModel->insert_profile_data($profilefeed);
+				   
+
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
 		
@@ -1804,8 +1814,7 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$my_bucket = "techloft-173609.appspot.com";
-		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+				$my_bucket = "freshword-ci";
 		$config['upload_path']  = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
@@ -1828,7 +1837,7 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					http://storage.googleapis.com/[BUCKET_NAME]/[OBJECT_NAME]
+					//http://storage.googleapis.com/[BUCKET_NAME]/[OBJECT_NAME]
 					// $img =  CloudStorageTools::getPublicUrl($data['full_path'],false);
 
 				// $img =	"http://storage.googleapis.com/$[my_bucket]/[OBJECT_NAME]";
