@@ -1828,7 +1828,7 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					$img = "http://api.myfreshword.com/${my_bucket}/". $data['file_name'];
+					$img = "https://myfreshword-dot-techloft-173609.appspot.com/${my_bucket}/". $data['file_name'];
 
 					
 				
