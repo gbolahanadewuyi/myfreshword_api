@@ -1901,7 +1901,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
-			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'required');
+			// $this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -2165,7 +2165,8 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './public/images/uploads/profile_photos/';
+				$my_bucket = "freshword-ci";
+				$config['upload_path']  = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
@@ -2186,7 +2187,11 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/profile_photos/' . $data['file_name'];
+					$file = $data['file_name'];
+				 
+			
+
+					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 					// so run insertion since the validation for the form has been passed correctly
 
