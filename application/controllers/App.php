@@ -2013,8 +2013,9 @@ class App extends REST_Controller
 				}
 			} else {
 				if ($_FILES['newsfeed_img']['name'] == "") {
-					$img = '';
-					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
+					$q = $this->MyModel->photo_checkfeed($_POST['id']);
+					$img = $q;
+					$data = $this->MyModel->update_merchant_feed($_POST, $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
 				}
@@ -2049,7 +2050,7 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
+					$data = $this->MyModel->update_merchant_feed($_POST, $img);
 				}
 			}
 

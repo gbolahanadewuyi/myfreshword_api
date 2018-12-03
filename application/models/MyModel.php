@@ -2474,6 +2474,17 @@ class MyModel extends CI_Model
 		}
 	}
 
+	function photo_checkfeed($id)
+	{
+		$query = $this->db->select('image')->where('id', $id)->from('merchant_feed')->get()->row();
+		if ($query == "") {
+			return $img = 'http://www.top-madagascar.com/assets/images/admin/user-admin.png';
+		} else {
+			return $query->display_image;
+		}
+	}
+
+
 	function generate_short_code_($x)
 	{
 		return $randomNum = substr(str_shuffle("0123456789"), 0, $x);
