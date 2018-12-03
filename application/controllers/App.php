@@ -1829,7 +1829,7 @@ class App extends REST_Controller
 					//echo json_encode($success);
 
 					
-					$img = $data['full_path'];
+					$img =  CloudStorageTools::getPublicUrl($data['file_name'],false);
                        
 		 			
 				
