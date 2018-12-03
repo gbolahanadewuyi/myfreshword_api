@@ -1805,7 +1805,7 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$my_bucket = "techloft-173609.appspot.com";
-		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+		// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 		$config['upload_path']  = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
