@@ -1828,8 +1828,9 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					$img = file_get_contents($full_path);
-
+					$imgg = $data['full_path'];
+					$img = file_get_contents($imgg);
+                       
 		 			
 				
 
