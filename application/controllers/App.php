@@ -1828,7 +1828,7 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					$img = $config['upload_path'] . $data['file_name'];
+					$img = "http://api.myfreshword.com/${my_bucket}/". $data['file_name'];
 
 					
 				
