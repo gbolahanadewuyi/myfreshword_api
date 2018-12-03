@@ -2012,12 +2012,12 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				 if ($_FILES['newsfeed_img']['name'] == "") {
-				 	$img = '';
-					$data = $this->MyModel->update_merchant_feed($_POST['church_id'], $img);
+				if ($_FILES['newsfeed_img']['name'] == "") {
+					$img = '';
+					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
-				 }
+				}
 
 				$my_bucket = "freshword-ci";
 				$config['upload_path']  = "gs://${my_bucket}/";
@@ -2048,9 +2048,8 @@ class App extends REST_Controller
 					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 					// so run insertion since the validation for the form has been passed correctly
-					//$_POST['post_id'], $_POST, removed because we would not be needing it
 
-					$data = $this->MyModel->update_merchant_feed($_POST['church_id'], $_POST['merchantemail'], $img);
+					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 				}
 			}
 
