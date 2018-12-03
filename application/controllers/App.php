@@ -2019,7 +2019,8 @@ class App extends REST_Controller
 					return false; //script will end here
 				}
 
-				$config['upload_path'] = './public/images/uploads/feed-imgs';
+				$my_bucket = "freshword-ci";
+				$config['upload_path']  = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
@@ -2040,7 +2041,11 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 
-					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/feed-imgs/' . $data['file_name'];
+					$file = $data['file_name'];
+				 
+			
+
+					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 					// so run insertion since the validation for the form has been passed correctly
 
