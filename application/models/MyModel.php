@@ -2327,7 +2327,7 @@ class MyModel extends CI_Model
 			);
 		}
 
-		$query = $this->db->where('id', $id)->where('merchantemail', $email)->update('merchant_feed', $updateData);
+		$query = $this->db->where('churchid', $_POST['church_id'])->update('merchant_feed', $updateData);
 		if ($query == false) {
 			return array(
 				'status' => 404,
