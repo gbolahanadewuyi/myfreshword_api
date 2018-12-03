@@ -1828,8 +1828,14 @@ class App extends REST_Controller
                      
 					//echo json_encode($success);
 
-					
-					$img =  CloudStorageTools::getPublicUrl($data['full_path'],false);
+					http://storage.googleapis.com/[BUCKET_NAME]/[OBJECT_NAME]
+					// $img =  CloudStorageTools::getPublicUrl($data['full_path'],false);
+
+				// $img =	"http://storage.googleapis.com/$[my_bucket]/[OBJECT_NAME]";
+				 
+			
+
+			$img =	"https://storage.cloud.google.com/${my_bucket}/${file_name}?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
                        
 		 			
 				
