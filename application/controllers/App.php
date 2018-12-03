@@ -1931,12 +1931,19 @@ class App extends REST_Controller
 			
 
 					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-							   
+
+						$Pastors_listing = array(
+		                   	'pastors_title' => $data['pastors_title'],
+		                    'pastors_name' => $data['pastors_name'],
+		                    'pastors_bio' => $data['pastors_bio'],
+			                'pastors_avatar_img' => $img,
+			                'merchant_id' => $data['merchant_id']
+                            );
 							 
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->insert_pastors_bio_data($_POST, $img);
+					$data = $this->MyModel->insert_pastors_bio_data($Pastors_listing);
 				}
 			}
 
