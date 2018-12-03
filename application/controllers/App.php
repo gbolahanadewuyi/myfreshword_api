@@ -2012,7 +2012,7 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['file']['name'] == "") {
+				if ($_FILES['newsfeed_img']['name'] == "") {
 					$img = '';
 					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
