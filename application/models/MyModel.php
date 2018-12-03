@@ -2025,7 +2025,8 @@ class MyModel extends CI_Model
 
 	public function update_image($id, $data)
 	{
-		return $this->db->where('prod_id', $id)->update('ts_products', $data);
+			return $this->db->where('prod_id', $id)->update('ts_products', $data);
+			
 	}
 
 	// upload and update photo for mobile endpoint

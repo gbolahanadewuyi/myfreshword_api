@@ -1498,7 +1498,8 @@ class App extends REST_Controller
 	public function merchant_add_image_post()
 	{
 		$id = $_POST['id'];
-		$config['upload_path'] = './public/images/uploads/products/';
+		$my_bucket = "freshword-ci";
+		$config['upload_path']  = "gs://${my_bucket}/";
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
@@ -1516,13 +1517,19 @@ class App extends REST_Controller
 			$data = $this->upload->data();
 			$success = ['status' => true, 'success' => $data['file_name']];
 
+
 			// echo json_encode($success);
+			$file = $data['file_name'];
+				 
+			
+
+			$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 			$imgData = array(
 				'prod_image' => $data['file_name'],
-				'img_link' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/products/' . $data['file_name']
+				'img_link' => $img
 			);
-			$this->MyModel->update_image($id, $imgData);
+		$data['messages']=$this->MyModel->update_image($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
 		}
 	}
@@ -1894,7 +1901,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
-			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
+			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
