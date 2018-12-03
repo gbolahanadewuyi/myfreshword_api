@@ -1904,7 +1904,8 @@ class App extends REST_Controller
 
 				// this is where i upload the image for the merchant feed
 
-				$config['upload_path'] = './public/images/uploads/pastors-imgs';
+				$my_bucket = "freshword-ci";
+				$config['upload_path']  = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 0;
@@ -1925,8 +1926,13 @@ class App extends REST_Controller
 					$success = ['status' => true, 'success' => $data['file_name']];
 
 					// echo json_encode($success);
+					$file = $data['file_name'];
+				 
+			
 
-					$img = 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/uploads/pastors-imgs/' . $data['file_name'];
+					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+							   
+							 
 
 					// so run insertion since the validation for the form has been passed correctly
 
