@@ -1894,7 +1894,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('pastors_name', 'Pastors Fullname', 'trim|required');
 			$this->form_validation->set_rules('pastors_bio', 'Pastors Bio', 'trim|required');
 			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
-			// $this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
+			$this->form_validation->set_rules('pastors_avatar_img', 'Pastors Image', 'callback_update_file_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
