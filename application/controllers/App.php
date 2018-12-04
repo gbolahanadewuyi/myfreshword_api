@@ -1829,7 +1829,7 @@ class App extends REST_Controller
 				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('file')) {
+				if (!$this->upload->do_upload('newsfeed_img')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
