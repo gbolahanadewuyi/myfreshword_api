@@ -1880,6 +1880,7 @@ class App extends REST_Controller
 	//Pastors Listings
 	public function pastors_listing_post()
 	{
+		$_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$data = array(
