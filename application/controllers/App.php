@@ -944,45 +944,43 @@ class App extends REST_Controller
 	public function do_upload_post()
 
 	{
-		
+
 		$my_bucket = "techloft-173609.appspot.com";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		$config['upload_path']  = "gs://${my_bucket}/";
+		$config['upload_path'] = "gs://${my_bucket}/";
 		$config['overwrite'] = true;
-			$config['file_ext_tolower'] = true;
-			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			$config['max_size'] = 0;
-			$this->load->library('upload', $config);
+		$config['file_ext_tolower'] = true;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		$config['max_size'] = 0;
+		$this->load->library('upload', $config);
 
-			$this->upload->initialize($config);
+		$this->upload->initialize($config);
 
-			if (!$this->upload->do_upload('photo')) {
-				$error = array(
-					'status' => false,
-					'uploadpath' => $config['upload_path'],
-					'error' => $this->upload->display_errors()
-				);
+		if (!$this->upload->do_upload('photo')) {
+			$error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'],
+				'error' => $this->upload->display_errors()
+			);
 
 				// echo json_encode($error);
 
-				$this->response($error, REST_Controller::HTTP_OK);
-			} else {
-				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['full_path']];
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data();
+			$success = ['status' => true, 'success' => $data['full_path']];
 
-				$file = $data['file_name'];
-			$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			$file = $data['file_name'];
+			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
-			       $profilefeed = array(
+			$profilefeed = array();
 
-				   );
- 
-				   $data['messages'] = $this->MyModel->insert_profile_data($profilefeed);
-				   
+			$data['messages'] = $this->MyModel->insert_profile_data($profilefeed);
 
-				$this->response($success, REST_Controller::HTTP_OK);
-			}
-		
+
+			$this->response($success, REST_Controller::HTTP_OK);
+		}
+
 	}
 
 
@@ -1499,7 +1497,7 @@ class App extends REST_Controller
 	{
 		$id = $_POST['id'];
 		$my_bucket = "freshword-ci";
-		$config['upload_path']  = "gs://${my_bucket}/";
+		$config['upload_path'] = "gs://${my_bucket}/";
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 		$config['max_size'] = 2024;
 		$this->load->library('upload', $config);
@@ -1520,16 +1518,16 @@ class App extends REST_Controller
 
 			// echo json_encode($success);
 			$file = $data['file_name'];
-				 
-			
 
-			$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+
+			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 			$imgData = array(
 				'prod_image' => $data['file_name'],
 				'img_link' => $img
 			);
-		$data['messages']=$this->MyModel->update_image($id, $imgData);
+			$data['messages'] = $this->MyModel->update_image($id, $imgData);
 			$this->response($success, REST_Controller::HTTP_OK);
 		}
 	}
@@ -1822,13 +1820,13 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$my_bucket = "freshword-ci";
-		$config['upload_path']  = "gs://${my_bucket}/";
+				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('photo')) {
+				if (!$this->upload->do_upload('file')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
@@ -1841,21 +1839,9 @@ class App extends REST_Controller
 				} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
-                     
-					//echo json_encode($success);
+					$file = $data['file_name'];
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
-					//http://storage.googleapis.com/[BUCKET_NAME]/[OBJECT_NAME]
-					// $img =  CloudStorageTools::getPublicUrl($data['full_path'],false);
-
-				// $img =	"http://storage.googleapis.com/$[my_bucket]/[OBJECT_NAME]";
-
-				$file = $data['file_name'];
-				 
-			
-
-			$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-                       
-		 			
 				
 
 		
@@ -1876,9 +1862,9 @@ class App extends REST_Controller
 
 					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
 				}
-				
-				
-			
+
+
+
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
@@ -1912,7 +1898,7 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$my_bucket = "freshword-ci";
-				$config['upload_path']  = "gs://${my_bucket}/";
+				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 0;
@@ -1934,18 +1920,18 @@ class App extends REST_Controller
 
 					// echo json_encode($success);
 					$file = $data['file_name'];
-				 
-			
 
-					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
-						$Pastors_listing = array(
-		                   	'pastors_title' => $_POST['pastors_title'],
-		                    'pastors_name' => $_POST['pastors_name'],
-		                    'pastors_bio' => $_POST['pastors_bio'],
-			                'pastors_avatar_img' => $img,
-			                'merchant_id' => $_POST['merchant_id']
-                            );
+
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+					$Pastors_listing = array(
+						'pastors_title' => $_POST['pastors_title'],
+						'pastors_name' => $_POST['pastors_name'],
+						'pastors_bio' => $_POST['pastors_bio'],
+						'pastors_avatar_img' => $img,
+						'merchant_id' => $_POST['merchant_id']
+					);
 							 
 
 					// so run insertion since the validation for the form has been passed correctly
@@ -2021,7 +2007,7 @@ class App extends REST_Controller
 				}
 
 				$my_bucket = "freshword-ci";
-				$config['upload_path']  = "gs://${my_bucket}/";
+				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
@@ -2043,10 +2029,10 @@ class App extends REST_Controller
 					// echo json_encode($success);
 
 					$file = $data['file_name'];
-				 
-			
 
-					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -2172,7 +2158,7 @@ class App extends REST_Controller
 				// this is where i upload the image for the merchant feed
 
 				$my_bucket = "freshword-ci";
-				$config['upload_path']  = "gs://${my_bucket}/";
+				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 2024;
 				$this->load->library('upload', $config);
@@ -2194,10 +2180,10 @@ class App extends REST_Controller
 					// echo json_encode($success);
 
 					$file = $data['file_name'];
-				 
-			
 
-					$img =	"https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
 					// so run insertion since the validation for the form has been passed correctly
 
@@ -2280,7 +2266,7 @@ class App extends REST_Controller
 
 
 	//Stripe Processing For Billing
-	public function stripe_billing_processing() 
+	public function stripe_billing_processing()
 	{
 		//check whether stripe token is not empty
 		if (!empty($_POST['stripeToken'])) {
@@ -2376,16 +2362,16 @@ class App extends REST_Controller
 			}
 		}
 	}
-		public function payment_success()
-		{
-			$this->load->view('payment_success');
-		}
-		public function payment_error()
-		{
-			$this->load->view('payment_error');
-		}
-		public function help()
-		{
-			$this->load->view('help');
-		}
+	public function payment_success()
+	{
+		$this->load->view('payment_success');
+	}
+	public function payment_error()
+	{
+		$this->load->view('payment_error');
+	}
+	public function help()
+	{
+		$this->load->view('help');
+	}
 } //end of class
