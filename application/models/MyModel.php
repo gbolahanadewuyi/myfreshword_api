@@ -2025,7 +2025,8 @@ class MyModel extends CI_Model
 
 	public function update_image($id, $data)
 	{
-		return $this->db->where('prod_id', $id)->update('ts_products', $data);
+			return $this->db->where('prod_id', $id)->update('ts_products', $data);
+			
 	}
 
 	// upload and update photo for mobile endpoint
@@ -2187,27 +2188,29 @@ class MyModel extends CI_Model
 	// Insertion of Pastors listing to DB
 	public function insert_pastors_bio_data($data)
 	{
-		$Pastors_listing = array(
-			'pastors_title' => $data['pastors_title'],
-			'pastors_name' => $data['pastors_name'],
-			'pastors_bio' => $data['pastors_bio'],
-			'pastors_avatar_img' => $data['pastors_avatar_img'],
-			'merchant_id' => $data['merchant_id']
-		);
-		$query = $query = $this->db->insert('pastors_listing', $Pastors_listing);
-		$insert_id = $this->db->insert_id();
+		// $Pastors_listing = array(
+		// 	'pastors_title' => $data['pastors_title'],
+		// 	'pastors_name' => $data['pastors_name'],
+		// 	'pastors_bio' => $data['pastors_bio'],
+		// 	'pastors_avatar_img' => $data['pastors_avatar_img'],
+		// 	'merchant_id' => $data['merchant_id']
+		// );
+		$query = $query = $this->db->insert('pastors_listing', $data);
+		// $insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
-				'message' => 'Error creating your merchant feed'
+				'message' => 'Error creating pastor bio data'
+			);
+		}else{
+			return array(
+				'status' => 200,
+				'message' => 'Pastor bio data added successfully',
+				// 'last_insert_id' => $insert_id
 			);
 		}
 
-		return array(
-			'status' => 200,
-			'message' => 'Pastor bio data added successfully',
-			'last_insert_id' => $insert_id
-		);
+		
 	}
 
 	public function insert_feed_image($data)
@@ -2470,6 +2473,17 @@ class MyModel extends CI_Model
 			return $query->display_image;
 		}
 	}
+
+	function photo_checkfeed($id)
+	{
+		$query = $this->db->select('image')->where('id', $id)->from('merchant_feed')->get()->row();
+		if ($query == "") {
+			return $img = 'http://www.top-madagascar.com/assets/images/admin/user-admin.png';
+		} else {
+			return $query->display_image;
+		}
+	}
+
 
 	function generate_short_code_($x)
 	{
