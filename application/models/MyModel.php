@@ -2029,6 +2029,8 @@ class MyModel extends CI_Model
 			
 	}
 
+	
+
 	// upload and update photo for mobile endpoint
 
 	public function upload_profile_image($id, $data)
@@ -2473,17 +2475,6 @@ class MyModel extends CI_Model
 			return $query->display_image;
 		}
 	}
-
-	function photo_checkfeed($id)
-	{
-		$query = $this->db->select('image')->where('id', $id)->from('merchant_feed')->get()->row();
-		if ($query == "") {
-			return $img = 'http://www.top-madagascar.com/assets/images/admin/user-admin.png';
-		} else {
-			return $query->display_image;
-		}
-	}
-
 
 	function generate_short_code_($x)
 	{

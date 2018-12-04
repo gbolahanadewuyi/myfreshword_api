@@ -944,7 +944,7 @@ class App extends REST_Controller
 	public function do_upload_post()
 
 	{
-
+		$id = $_POST['id'];
 		$my_bucket = "techloft-173609.appspot.com";
 		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 		$config['upload_path'] = "gs://${my_bucket}/";
@@ -973,9 +973,12 @@ class App extends REST_Controller
 			$file = $data['file_name'];
 			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
-			$profilefeed = array();
-
-			$data['messages'] = $this->MyModel->insert_profile_data($profilefeed);
+			       $profilefeed = array(
+                    'img_url' => $img
+				   );
+ 
+				   $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+				   
 
 
 			$this->response($success, REST_Controller::HTTP_OK);
@@ -1809,7 +1812,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			$this->form_validation->set_rules('file', 'Merchant Image', 'required');
+			// $this->form_validation->set_rules('file', 'Merchant Image', 'required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1998,10 +2001,9 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['newsfeed_img']['name'] == "") {
-					$q = $this->MyModel->photo_checkfeed($_POST['id']);
-					$img = $q;
-					$data = $this->MyModel->update_merchant_feed($_POST, $img);
+				if ($_FILES['file']['name'] == "") {
+					$img = '';
+					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
 				}
@@ -2036,7 +2038,7 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->update_merchant_feed($_POST, $img);
+					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 				}
 			}
 
