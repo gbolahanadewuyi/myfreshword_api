@@ -1809,7 +1809,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('feed_message', 'Message', 'trim|required');
 			$this->form_validation->set_rules('merchantemail', 'Merchant Email', 'trim|required');
 			$this->form_validation->set_rules('church_id', 'church id', 'trim|required');
-			// $this->form_validation->set_rules('file', 'Merchant Image', 'required');
+			$this->form_validation->set_rules('file', 'Merchant Image', 'required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
@@ -1823,7 +1823,7 @@ class App extends REST_Controller
 				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
-				$config['max_size'] = 3024;
+				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if (!$this->upload->do_upload('file')) {
