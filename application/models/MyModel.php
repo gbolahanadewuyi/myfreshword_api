@@ -2158,17 +2158,6 @@ class MyModel extends CI_Model
 
 	public function insert_feed_data($data)
 	{
-		// $newFeed = array(
-		// 	'category' => $data['news_cat'],
-		// 	'title' => $data['feed_title'],
-		// 	'message' => $data['feed_message'],
-		// 	'image' => $img,
-		// 	'merchantemail' => $data['merchantemail'],
-		// 	'timestamp' => date('Y-m-d H:i:s'),
-		// 	'likes_count' => 0,
-		// 	'comments_counts' => 0,
-		// 	'churchid' => $data['church_id']
-		// );
 		$query = $query = $this->db->insert('merchant_feed', $data);
 		// $insert_id = $this->db->insert_id();
 		if ($query != true) {
@@ -2190,13 +2179,6 @@ class MyModel extends CI_Model
 	// Insertion of Pastors listing to DB
 	public function insert_pastors_bio_data($data)
 	{
-		// $Pastors_listing = array(
-		// 	'pastors_title' => $data['pastors_title'],
-		// 	'pastors_name' => $data['pastors_name'],
-		// 	'pastors_bio' => $data['pastors_bio'],
-		// 	'pastors_avatar_img' => $data['pastors_avatar_img'],
-		// 	'merchant_id' => $data['merchant_id']
-		// );
 		$query = $query = $this->db->insert('pastors_listing', $data);
 		// $insert_id = $this->db->insert_id();
 		if ($query != true) {

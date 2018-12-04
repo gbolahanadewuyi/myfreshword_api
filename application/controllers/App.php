@@ -1917,7 +1917,8 @@ class App extends REST_Controller
 
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-				} else {
+
+					} else {
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 
@@ -1935,7 +1936,6 @@ class App extends REST_Controller
 						'pastors_avatar_img' => $img,
 						'merchant_id' => $_POST['merchant_id']
 					);
-							 
 
 					// so run insertion since the validation for the form has been passed correctly
 
