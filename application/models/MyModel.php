@@ -1245,7 +1245,7 @@ class MyModel extends CI_Model
 
 	public function update_user_profile($id, $data)
 	{
-		$query = $this->db->where('id', $id)->update('ts_user', $data);
+		$query = $this->db->where('user_id', $id)->update('ts_user', $data);
 		if ($query == true) {
 			return array(
 				'status' => 200,
