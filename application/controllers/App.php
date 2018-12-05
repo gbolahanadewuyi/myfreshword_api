@@ -968,11 +968,13 @@ class App extends REST_Controller
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
 			$data = $this->upload->data();
-			$success = ['status' => true, 'success' => $data['full_path']];
+			$success = ['status' => true ];
 
 			$file = $data['file_name'];
 			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 
+
+			  
 			    //    $profilefeed = array(
                 //     'img_url' => $img
 				//    );
@@ -981,7 +983,7 @@ class App extends REST_Controller
 				   
 
 
-			$this->response($success, REST_Controller::HTTP_OK);
+			$this->response($success,$img, REST_Controller::HTTP_OK);
 		}
 
 	}
