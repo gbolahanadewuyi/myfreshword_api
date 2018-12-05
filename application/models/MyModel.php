@@ -2021,7 +2021,7 @@ class MyModel extends CI_Model
 		} else {
 			print_r($query);
 			$churchid = $query['user_church_id'];
-			$find = $this->db->select()->from('ts_church')->where('id', $churchid)->get()->row();
+			$find = $this->db->select()->from('ts_church')->where('user_id', $churchid)->get()->row();
 			
 			return  array('status' => 200, 'message' => $find);
 		}
