@@ -1491,11 +1491,8 @@ class App extends REST_Controller
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_church_data($response['id']);
-			$data = array(
-				'res' => $query,
-				'headerRes' => $response
-			);
-			$this->response($data, REST_Controller::HTTP_OK);
+			
+			$this->response($query, REST_Controller::HTTP_OK);
 		}
 		else {
 			$this->response($response, REST_Controller::HTTP_OK);
@@ -1889,8 +1886,10 @@ class App extends REST_Controller
 	//Pastors Listings
 	public function pastors_listing_post()
 	{
+		
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
+			// $_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1942,9 +1941,8 @@ class App extends REST_Controller
 						'pastors_title' => $_POST['pastors_title'],
 						'pastors_name' => $_POST['pastors_name'],
 						'pastors_bio' => $_POST['pastors_bio'],
-						'merchant_id' =>  $_POST['merchant_id'],
-						'pastors_avatar_img' => $img
-						
+						'pastors_avatar_img' => $img,
+						'merchant_id' => $response['id']
 					);
 
 					// so run insertion since the validation for the form has been passed correctly
