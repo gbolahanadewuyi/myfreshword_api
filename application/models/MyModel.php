@@ -2019,7 +2019,7 @@ class MyModel extends CI_Model
 		if ($query == "") {
 			return array('status' => 400, 'message' => 'Error fetching all churches data');
 		} else {
-			print_r($query);
+			
 			$churchid = $query->user_church_id;
 			$find = $this->db->select()->from('ts_church')->where('id', $churchid)->get()->row();
 			
