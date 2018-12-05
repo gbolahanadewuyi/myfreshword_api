@@ -20,7 +20,7 @@ Class NewsFeedModel extends CI_Model {
   }
 
   function get_all_feed_data(){
-    $q  = $this->db->select('id, title, message, image, timestamp, likes_count, comments_counts')->from($this->feedTable)->order_by('id','desc')->get()->result_array();
+    $q  = $this->db->select('id, title, message, image, timestamp, likes_count, comments_counts, churchid')->from($this->feedTable)->order_by('id','desc')->get()->result_array();
     if($q == true){
       //return array('status'=>200, 'result'=>$q);
       return $q;
