@@ -1942,7 +1942,7 @@ class App extends REST_Controller
 						'pastors_title' => $_POST['pastors_title'],
 						'pastors_name' => $_POST['pastors_name'],
 						'pastors_bio' => $_POST['pastors_bio'],
-						'merchant_id' => $response['id'],
+						'merchant_id' =>  $_POST['merchant_id'],
 						'pastors_avatar_img' => $img
 						
 					);
