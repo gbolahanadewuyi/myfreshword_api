@@ -1357,8 +1357,8 @@ class App extends REST_Controller
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$config['upload_path'] = './public/images/uploads/church_members/';
-			$config['allowed_types'] = 'jpeg|jpg|png';
-			$config['max_size'] = '2048';
+			$config['allowed_types'] = 'gif|jpeg|jpg|png';
+			$config['max_size'] = 0;
 			$config['max_width'] = '300';
 			$config['max_height'] = '300';
 			$this->load->helper(array(
@@ -1380,7 +1380,8 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('nationality', 'Nationality', 'trim|required');
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
 			$this->form_validation->set_rules('address', 'Address', 'trim|required');
-			$this->form_validation->set_rules('member_photo', 'Member Image Photo', 'required|jpg|png|jpeg');
+			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
+			$this->form_validation->set_rules('member_photo', 'Member Image Photo', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -1916,7 +1917,7 @@ class App extends REST_Controller
 				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('pastors_avatar_img')) {
+				if (!$this->upload->do_upload('pastorsimg')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
