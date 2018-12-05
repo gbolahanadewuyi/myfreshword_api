@@ -1916,7 +1916,8 @@ class App extends REST_Controller
 				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('pastorsimg')) {
+				$file = $this->input->post('pastorsimg');
+				if (!$this->upload->do_upload($file)) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
