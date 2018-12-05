@@ -1883,7 +1883,7 @@ class App extends REST_Controller
 		
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input'), true);
+			// $_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
