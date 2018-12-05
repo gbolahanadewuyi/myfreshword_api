@@ -899,95 +899,101 @@ class App extends REST_Controller
 		}
 	}
 
+	public function upload_profile_photo_post()
+	{
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$my_bucket = "techloft-173609.appspot.com";
+			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+			$config['upload_path'] = "gs://${my_bucket}/";
+			$config['overwrite'] = true;
+			$config['file_ext_tolower'] = true;
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+			$config['max_size'] = 0;
+			$this->load->library('upload', $config);
+	
+			$this->upload->initialize($config);
+	
+			if (!$this->upload->do_upload('photo')) {
+				$error = array(
+					'status' => false,
+					'uploadpath' => $config['upload_path'],
+					'error' => $this->upload->display_errors()
+				);
+	
+					// echo json_encode($error);
+	
+				$this->response($error, REST_Controller::HTTP_OK);
+			} else {
+				$data = $this->upload->data();
+				$file = $data['file_name'];
+				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+				$success = ['status' => true, 'success' => $img];
+	
+					//    sss$profilefeed = array(
+					//     'img_url' => $img
+					//    );
+	 
+					//    $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+					   
+	
+	
+				$this->response($success, REST_Controller::HTTP_OK);
+			}
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
+	//this shooud be the response for the payment
+
 	// public function upload_profile_photo_post()
+
 	// {
-	// 	$response = $this->MyModel->header_auth();
-	// 	if ($response['status'] == 200) {
-	// 		$config['upload_path'] = './public/images/profile_photos';
-	// 		$config['overwrite'] = true;
-	// 		$config['file_ext_tolower'] = true;
-	// 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-	// 		$config['max_size'] = 0;
-	// 		$this->load->library('upload', $config);
+	// 	// $id = $_POST['id'];
+	// 	$my_bucket = "techloft-173609.appspot.com";
+	// 	require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+	// 	$config['upload_path'] = "gs://${my_bucket}/";
+	// 	$config['overwrite'] = true;
+	// 	$config['file_ext_tolower'] = true;
+	// 	$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+	// 	$config['max_size'] = 0;
+	// 	$this->load->library('upload', $config);
 
-	// 		$this->upload->initialize($config);
+	// 	$this->upload->initialize($config);
 
-	// 		if (!$this->upload->do_upload('photo')) {
-	// 			$error = array(
-	// 				'status' => false,
-	// 				'uploadpath' => $config['upload_path'],
-	// 				'error' => $this->upload->display_errors()
-	// 			);
+	// 	if (!$this->upload->do_upload('photo')) {
+	// 		$error = array(
+	// 			'status' => false,
+	// 			'uploadpath' => $config['upload_path'],
+	// 			'error' => $this->upload->display_errors()
+	// 		);
 
 	// 			// echo json_encode($error);
 
-	// 			$this->response($error, REST_Controller::HTTP_OK);
-	// 		} else {
-	// 			$data = $this->upload->data();
-	// 			$success = ['status' => true, 'success' => $data['full_path']];
-
-	// 			// echo json_encode($success);
-
-	// 			$imgData = array(
-	// 				'user_photo' => 'https://myfreshword-dot-techloft-173609.appspot.com/public/images/profile_photos/' . $data['file_name']
-	// 			);
-	// 			//$this->MyModel->update_profile_image($response['id'], $imgData);
-	// 			$this->response($success, REST_Controller::HTTP_OK);
-	// 		}
+	// 		$this->response($error, REST_Controller::HTTP_OK);
 	// 	} else {
-	// 		$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-	// 	}
-	// }
-
-	// this shooud be the response for the payment
-
-	public function upload_profile_photo_post()
-
-	{
-		// $id = $_POST['id'];
-		$my_bucket = "techloft-173609.appspot.com";
-		require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		$config['upload_path'] = "gs://${my_bucket}/";
-		$config['overwrite'] = true;
-		$config['file_ext_tolower'] = true;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
-
-		$this->upload->initialize($config);
-
-		if (!$this->upload->do_upload('photo')) {
-			$error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'],
-				'error' => $this->upload->display_errors()
-			);
-
-				// echo json_encode($error);
-
-			$this->response($error, REST_Controller::HTTP_OK);
-		} else {
-			$data = $this->upload->data();
-			$file = $data['file_name'];
-			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-			$success = ['status' => true, 'success' => $img];
+	// 		$data = $this->upload->data();
+	// 		$file = $data['file_name'];
+	// 		$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+	// 		$success = ['status' => true, 'success' => $img];
 
 		
 
 
 			  
-			    //    $profilefeed = array(
-                //     'img_url' => $img
-				//    );
+	// 		    //    $profilefeed = array(
+    //             //     'img_url' => $img
+	// 			//    );
  
-				//    $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+	//hgydyy$data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
 				   
 
 
-			$this->response($success, REST_Controller::HTTP_OK);
-		}
+	// 		$this->response($success, REST_Controller::HTTP_OK);
+	// 	}
 
-	}
+	// }
 
 
 
