@@ -1883,6 +1883,7 @@ class App extends REST_Controller
 		
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1935,7 +1936,7 @@ class App extends REST_Controller
 						'pastors_name' => $_POST['pastors_name'],
 						'pastors_bio' => $_POST['pastors_bio'],
 						'pastors_avatar_img' => $img,
-						'merchant_id' => $_POST['merchant_id']
+						'merchant_id' => $response['id'],
 					);
 
 					// so run insertion since the validation for the form has been passed correctly
