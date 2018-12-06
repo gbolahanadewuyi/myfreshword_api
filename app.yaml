@@ -22,9 +22,8 @@ handlers:
 - url: /
   script: index.php
   http_headers:
-    Access-Control-Allow-Origin: *
-
+    Access-Control-Allow-Origin: '*'
 - url: /(.+)
   script: index.php
   http_headers:
-    Access-Control-Allow-Origin: *
+    Access-Control-Allow-Origin: '*'
