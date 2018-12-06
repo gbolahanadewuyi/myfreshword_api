@@ -1356,25 +1356,9 @@ class App extends REST_Controller
 
 	public function church_membership_register_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input'), true);
+		// $_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-
-			$my_bucket = "techloft-173609.appspot.com";
-			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-			$config['upload_path'] = "gs://${my_bucket}/";
-			$config['allowed_types'] = 'gif|jpeg|jpg|png';
-			$config['max_size'] = 0;
-			$config['max_width'] = '300';
-			$config['max_height'] = '300';
-			$this->load->helper(array(
-				'form',
-				'url'
-			));
-			$this->load->library('upload', $config);
-			$this->upload->initialize($config);
-			$file = $data['file_name'];
-				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1397,6 +1381,37 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
+
+                	$my_bucket = "freshword-ci";
+				$config['upload_path'] = "gs://${my_bucket}/";
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['encrypt_name'] = true;
+				$config['max_size'] = 0;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				$file = $this->input->post('member_photo');
+				if (!$this->upload->do_upload($file)) {
+					$error = array(
+						'status' => false,
+						'error' => $this->upload->display_errors()
+					);
+
+					// echo json_encode($error);
+
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+
+					} else {
+					$data = $this->upload->data();
+					$success = ['status' => true, 'success' => $data['file_name']];
+
+					// echo json_encode($success);
+					$file = $data['file_name'];
+
+
+
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
 				$churchMemberData = array(
 					'first_name' => $_POST['first_name'],
 					'last_name' => $_POST['last_name'],
@@ -1415,10 +1430,12 @@ class App extends REST_Controller
 					'message' => $data
 				);
 			}
-
-			$this->response($data, REST_Controller::HTTP_OK);
-		}
+	 } 
+	 $this->response($data, REST_Controller::HTTP_OK);
+  } else {
+		$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 	}
+}
 
 	// fetch membership bio data
 
