@@ -1381,15 +1381,16 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-
-                	$my_bucket = "freshword-ci";
+				
+					$my_bucket = "freshword-ci";
+					require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['encrypt_name'] = true;
 				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-				$file = $this->input->post('member_photo');
+				// $file = $this->input->post('member_photo');
 				if (!$this->upload->do_upload($file)) {
 					$error = array(
 						'status' => false,
@@ -1933,7 +1934,7 @@ class App extends REST_Controller
 			} else {
 
 				// this is where i upload the image for the merchant feed
-
+				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 				$my_bucket = "freshword-ci";
 				$config['upload_path'] = "gs://${my_bucket}/";
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
