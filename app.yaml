@@ -23,7 +23,6 @@ handlers:
   http_headers:
     Access-Control-Allow-Origin: '*'
   script: index.php
-
 - url: /(.+)
   http_headers:
     Access-Control-Allow-Origin: '*'
