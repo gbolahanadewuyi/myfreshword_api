@@ -2184,7 +2184,7 @@ class MyModel extends CI_Model
 	public function insert_pastors_bio_data($data)
 	{
 		$query = $query = $this->db->insert('pastors_listing', $data);
-		// $insert_id = $this->db->insert_id();
+		$insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
@@ -2194,7 +2194,7 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 200,
 				'message' => 'Pastor bio data added successfully',
-				// 'last_insert_id' => $insert_id
+				'last_insert_id' => $insert_id
 			);
 		}
 

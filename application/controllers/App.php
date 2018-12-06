@@ -904,7 +904,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$my_bucket = "techloft-173609.appspot.com";
+			$my_bucket = "freshword-ci";
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 			$config['upload_path'] = "gs://${my_bucket}/";
 			$config['overwrite'] = true;
