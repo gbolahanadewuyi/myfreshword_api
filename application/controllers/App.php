@@ -2039,16 +2039,16 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['file']['name'] == "") {
+				if ($_FILES['newsfeed_img']['name'] == "") {
 					$img = '';
 					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
 				}
-
+				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 				$my_bucket = "freshword-ci";
 				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
