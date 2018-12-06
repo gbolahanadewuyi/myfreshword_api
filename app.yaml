@@ -25,3 +25,10 @@ handlers:
 - url: /(.+)
   script: index.php
 
+- url: /(.+\.(eot|otf|tt[cf]|woff2?|cur|gif|ico|jpe?g|png|svgz?|webp))
+  static_files: \1
+  upload: (.+\.(eot|otf|tt[cf]|woff2?|cur|gif|ico|jpe?g|png|svgz?|webp))
+  http_headers:
+    # Allow cross-origin access to web fonts and images
+    # You can also replace "*" with a specific host, e.g. https://example.org
+    Access-Control-Allow-Origin: "*"
