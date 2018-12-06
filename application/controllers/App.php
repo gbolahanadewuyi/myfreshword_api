@@ -1359,7 +1359,10 @@ class App extends REST_Controller
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$config['upload_path'] = './public/images/uploads/church_members/';
+
+			$my_bucket = "techloft-173609.appspot.com";
+			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+			$config['upload_path'] = "gs://${my_bucket}/";
 			$config['allowed_types'] = 'gif|jpeg|jpg|png';
 			$config['max_size'] = 0;
 			$config['max_width'] = '300';
@@ -1370,6 +1373,8 @@ class App extends REST_Controller
 			));
 			$this->load->library('upload', $config);
 			$this->upload->initialize($config);
+			$file = $data['file_name'];
+				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -1384,7 +1389,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
 			$this->form_validation->set_rules('address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
-			$this->form_validation->set_rules('member_photo', 'Member Image Photo', 'trim|required');
+			// $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -1402,7 +1407,7 @@ class App extends REST_Controller
 					'nationality' => $_POST['nationality'],
 					'marital_status' => $_POST['marital_status'],
 					'address' => $_POST['address'],
-					'member_photo' => $_POST['member_photo']
+					'member_photo' => $img
 				);
 				$data['messages'] = $this->MyModel->create_church_member($churchMemberData);
 				$data = array(
