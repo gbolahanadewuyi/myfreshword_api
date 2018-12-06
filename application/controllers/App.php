@@ -1948,7 +1948,7 @@ class App extends REST_Controller
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 			
-				if (!$this->upload->do_upload('pastorsimg')) {
+				if(!$this->upload->do_upload('pastorsimg')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
