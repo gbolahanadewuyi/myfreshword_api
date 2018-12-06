@@ -20,10 +20,14 @@ beta_settings:
 
 handlers:
 - url: /
-  http_headers:
-    Access-Control-Allow-Origin: '*'
   script: index.php
+  
 - url: /(.+)
-  http_headers:
-    Access-Control-Allow-Origin: '*'
   script: index.php
+  http_headers:
+    Access-Control-Allow-Origin: "*"
+
+- url: /.*
+  script: index.php
+  http_headers:
+    Access-Control-Allow-Origin: "*"
