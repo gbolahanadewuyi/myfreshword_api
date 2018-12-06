@@ -1642,7 +1642,7 @@ class MyModel extends CI_Model
 		} else {
 			return array('status' => 400, 'message' => 'Error adding Residents');
 		}
-	}
+	} 
 
 	// Create Church Mmembership
 
@@ -2163,7 +2163,7 @@ class MyModel extends CI_Model
 	public function insert_feed_data($data)
 	{
 		$query = $query = $this->db->insert('merchant_feed', $data);
-		// $insert_id = $this->db->insert_id();
+		$insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
@@ -2173,7 +2173,7 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 200,
 				'message' => 'merchant feed created successfully',
-				// 'last_insert_id' => $insert_id
+				'last_insert_id' => $insert_id
 			);
 		}
 
