@@ -1373,6 +1373,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
 			$this->form_validation->set_rules('address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
+			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
 			// $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
@@ -1423,7 +1424,8 @@ class App extends REST_Controller
 					'nationality' => $_POST['nationality'],
 					'marital_status' => $_POST['marital_status'],
 					'address' => $_POST['address'],
-					'member_photo' => $img
+					'member_photo' => $img,
+					'church_id' => $_POST['merchant_id']
 				);
 				$data['messages'] = $this->MyModel->create_church_member($churchMemberData);
 				$data = array(
