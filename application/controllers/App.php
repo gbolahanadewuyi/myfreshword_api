@@ -16,6 +16,8 @@ class App extends REST_Controller
 {
 	public function __construct()
 	{
+		header('Access-Control-Allow-Origin: *');
+    	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		parent::__construct();
 		$this->load->model('MyModel');
 		$this->load->model('MerchantProductModel');
