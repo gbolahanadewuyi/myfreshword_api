@@ -1015,7 +1015,7 @@ class App extends REST_Controller
 				   
 
 
-			$this->response($imageurl, REST_Controller::HTTP_OK);
+			$this->response($success, REST_Controller::HTTP_OK);
 		}
 	}
 
