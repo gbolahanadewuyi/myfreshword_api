@@ -971,7 +971,9 @@ class App extends REST_Controller
 
 		//  echo $imageurl;
 		
-		$config['upload_path'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
+		$config['upload_path'] = \Cloudinary\Uploader::upload($file, 
+		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		 "resource_type" => "image"));
 		$config['overwrite'] = true;
 		$config['file_ext_tolower'] = true;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
