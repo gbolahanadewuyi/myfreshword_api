@@ -5,23 +5,24 @@ require_once APPPATH . '/libraries/REST_Controller.php';
 
 require_once APPPATH . '/libraries/JWT.php';
 
-// require_once APPPATH . '/libraries/HubtelApi.php';
+require_once APPPATH . '/libraries/HubtelApi.php';
 
-use Cloudinary;
-use Stripe\Stripe;
-use \Firebase\JWT\JWT;
+// use Cloudinary;
+// use Stripe\Stripe;
+// use \Firebase\JWT\JWT;
 
 class App extends REST_Controller
 
 {
 	public function __construct()
 	{
-		header('Access-Control-Allow-Origin: *');
-    	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		// header('Access-Control-Allow-Origin: *');
+    	// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		parent::__construct();
 		$this->load->model('MyModel');
 		$this->load->model('MerchantProductModel');
 		$this->load->library('hubtelApi');
+		$this->load->library('cloudinarylib');
 	}
 
 	public function isLoggedin_post()
@@ -906,7 +907,7 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$my_bucket = "techloft-173609.appspot.com";
+			$my_bucket = "freshword-ci";
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 			$config['upload_path'] = "gs://${my_bucket}/";
 			$config['overwrite'] = true;
@@ -950,53 +951,70 @@ class App extends REST_Controller
 
 	//this shooud be the response for the payment
 
-	// public function upload_profile_photo_post()
+	public function do_upload_post()
 
-	// {
-	// 	// $id = $_POST['id'];
-	// 	$my_bucket = "techloft-173609.appspot.com";
-	// 	require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-	// 	$config['upload_path'] = "gs://${my_bucket}/";
-	// 	$config['overwrite'] = true;
-	// 	$config['file_ext_tolower'] = true;
-	// 	$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-	// 	$config['max_size'] = 0;
-	// 	$this->load->library('upload', $config);
+	{
+		// $id = $_POST['id'];
 
-	// 	$this->upload->initialize($config);
+		// $this->load->libaray('cloudinarylib');
 
-	// 	if (!$this->upload->do_upload('photo')) {
-	// 		$error = array(
-	// 			'status' => false,
-	// 			'uploadpath' => $config['upload_path'],
-	// 			'error' => $this->upload->display_errors()
-	// 		);
+		// $file = $this->input->post('photo');
+	
 
-	// 			// echo json_encode($error);
+		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-	// 		$this->response($error, REST_Controller::HTTP_OK);
-	// 	} else {
-	// 		$data = $this->upload->data();
-	// 		$file = $data['file_name'];
-	// 		$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-	// 		$success = ['status' => true, 'success' => $img];
+		// \Cloudinary\Uploader::upload($file, 
+		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		//  "resource_type" => "image"));
+
+		//  $imageurl = $data['image'];
+
+		//  echo $imageurl;
+		
+		$config['upload_path'] = \Cloudinary\Uploader::upload($file, 
+		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		 "resource_type" => "image"));
+		$config['overwrite'] = true;
+		$config['file_ext_tolower'] = true;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		$config['max_size'] = 0;
+		$this->load->library('upload', $config);
+
+		$this->upload->initialize($config);
+
+		if (!$this->upload->do_upload('photo')) {
+			$error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'],
+				'error' => $this->upload->display_errors()
+			);
+
+				// echo json_encode($error);
+
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data();
+			$file = $data['file_name'];
+			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			$success = ['status' => true, 'success' => $img];
 
 		
 
 
 			  
-	// 		    //    $profilefeed = array(
-    //             //     'img_url' => $img
-	// 			//    );
+			    //    $profilefeed = array(
+                //     'img_url' => $img
+				//    );
  
-	//hgydyy$data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+	// $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
 				   
 
 
-	// 		$this->response($success, REST_Controller::HTTP_OK);
-	// 	}
+			$this->response($imageurl, REST_Controller::HTTP_OK);
+		}
+	}
 
-	// }
+	
 
 
 
@@ -1321,7 +1339,9 @@ class App extends REST_Controller
 
 	public function church_resident_post()
 	{
-		$_POST = json_decode(file_get_contents('php://input'), true);
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+		// $_POST = json_decode(file_get_contents('php://input'), true);
 		$data = array(
 			'success' => false,
 			'messages' => array()
@@ -1351,7 +1371,10 @@ class App extends REST_Controller
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
+	}else {
+		$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 	}
+}
 
 
 	public function church_membership_register_post()
@@ -1373,6 +1396,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
 			$this->form_validation->set_rules('address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('marital_status', 'Marital Status', 'trim|required');
+			$this->form_validation->set_rules('merchant_id', 'Merchant ID', 'trim|required');
 			// $this->form_validation->set_rules('member_photo', 'Member Image Photo', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
@@ -1423,7 +1447,8 @@ class App extends REST_Controller
 					'nationality' => $_POST['nationality'],
 					'marital_status' => $_POST['marital_status'],
 					'address' => $_POST['address'],
-					'member_photo' => $img
+					'member_photo' => $img,
+					'church_id' => $_POST['merchant_id']
 				);
 				$data['messages'] = $this->MyModel->create_church_member($churchMemberData);
 				$data = array(
@@ -2037,16 +2062,16 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['file']['name'] == "") {
+				if ($_FILES['newsfeed_img']['name'] == "") {
 					$img = '';
 					$data = $this->MyModel->update_merchant_feed($_POST['post_id'], $_POST, $_POST['merchantemail'], $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
 				}
-
+				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 				$my_bucket = "freshword-ci";
 				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png'; //allowing only images
+				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 				$config['max_size'] = 3024;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
@@ -2167,6 +2192,7 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
+			
 			$this->form_validation->set_rules('organisation', 'Organisation ', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('merchant_name', 'Merchant Name', 'trim|required');
 			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
@@ -2174,10 +2200,10 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
+			// $this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
-			$this->form_validation->set_rules('location', 'Location', 'trim|required');
+			// $this->form_validation->set_rules('location', 'Location', 'trim|required');
 			// $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -2225,9 +2251,7 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->update_merchant_profile($_POST, $img);
-					$this->response($data, REST_Controller::HTTP_OK);
-					return false;
+					$data['messages'] = $this->MyModel->update_merchant_profile($_POST, $img);
 				}
 			}
 

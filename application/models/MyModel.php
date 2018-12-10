@@ -1642,7 +1642,7 @@ class MyModel extends CI_Model
 		} else {
 			return array('status' => 400, 'message' => 'Error adding Residents');
 		}
-	}
+	} 
 
 	// Create Church Mmembership
 
@@ -2163,7 +2163,7 @@ class MyModel extends CI_Model
 	public function insert_feed_data($data)
 	{
 		$query = $query = $this->db->insert('merchant_feed', $data);
-		// $insert_id = $this->db->insert_id();
+		$insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
@@ -2173,7 +2173,7 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 200,
 				'message' => 'merchant feed created successfully',
-				// 'last_insert_id' => $insert_id
+				'last_insert_id' => $insert_id
 			);
 		}
 
@@ -2184,7 +2184,7 @@ class MyModel extends CI_Model
 	public function insert_pastors_bio_data($data)
 	{
 		$query = $query = $this->db->insert('pastors_listing', $data);
-		// $insert_id = $this->db->insert_id();
+		$insert_id = $this->db->insert_id();
 		if ($query != true) {
 			return array(
 				'status' => 404,
@@ -2194,7 +2194,7 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 200,
 				'message' => 'Pastor bio data added successfully',
-				// 'last_insert_id' => $insert_id
+				'last_insert_id' => $insert_id
 			);
 		}
 
@@ -2401,14 +2401,10 @@ class MyModel extends CI_Model
 				// 'password'        => $updateData['password'],//hashing password
 
 				'organisation' => $updateData['organisation'],
-				'location' => $updateData['location'],
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
-				'facebook' => $updateData['facebook'],
-				'twitter' => $updateData['twitter'],
-				'youtube' => $updateData['youtube'],
-				'display_image' => $img
+				 'display_image' => $img
 			);
 		} else {
 			$data = array(
@@ -2418,13 +2414,9 @@ class MyModel extends CI_Model
 				'mobile' => $updateData['mobile'],
 				'password' => $result, //hashing password
 				'organisation' => $updateData['organisation'],
-				'location' => $updateData['location'],
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
-				'facebook' => $updateData['facebook'],
-				'twitter' => $updateData['twitter'],
-				'youtube' => $updateData['youtube'],
 				'display_image' => $img
 			);
 		}
