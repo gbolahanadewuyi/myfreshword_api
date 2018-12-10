@@ -2169,7 +2169,7 @@ class App extends REST_Controller
 	public function merchant_update_profile_post()
 	{
 		$response = $this->MyModel->merchant_auth();
-		if ($response['status'] == 200) {
+		if ($response['status'] == 200){
 			$data = array(
 				'success' => false,
 				'messages' => array()
@@ -2184,7 +2184,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
-			$this->form_validation->set_rules('location', 'Location', 'trim|required');
+			// $this->form_validation->set_rules('location', 'Location', 'trim|required');
 			// $this->form_validation->set_rules('merchant_display_picture', 'Your Profile Display  Image', 'callback_merchant_profile_check');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
@@ -2232,9 +2232,7 @@ class App extends REST_Controller
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->update_merchant_profile($_POST, $img);
-					$this->response($data, REST_Controller::HTTP_OK);
-					return false;
+					$data['messages'] = $this->MyModel->update_merchant_profile($_POST, $img);
 				}
 			}
 
