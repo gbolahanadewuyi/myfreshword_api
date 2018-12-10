@@ -1746,10 +1746,14 @@ class App extends REST_Controller
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
+					'file_link' => $_POST['product_file'],
 					//'file_link'             =>      $_POST['file_link'],
 					'merchant_email' => $_POST['merchant_email'],
 			//   'currency'              =>      $_POST['prod_currency'],
 					'prod_date' => date('Y-m-d H:i:s')
+					
+
+
 				);
 				$query = $this->MyModel->merchant_insert_product($prodData);
 				$data = array('success' => true, 'message' => $query);
