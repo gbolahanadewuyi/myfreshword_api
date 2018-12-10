@@ -22,6 +22,7 @@ class App extends REST_Controller
 		$this->load->model('MyModel');
 		$this->load->model('MerchantProductModel');
 		$this->load->library('hubtelApi');
+		$this->load->library('cloudinarylib');
 	}
 
 	public function isLoggedin_post()
@@ -955,7 +956,7 @@ class App extends REST_Controller
 	{
 		// $id = $_POST['id'];
 
-		$this->load->libaray('cloudinarylib');
+		// $this->load->libaray('cloudinarylib');
 
 		$file = $_POST['photo'];
 	
