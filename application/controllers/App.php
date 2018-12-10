@@ -2174,6 +2174,7 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
+			
 			$this->form_validation->set_rules('organisation', 'Organisation ', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('merchant_name', 'Merchant Name', 'trim|required');
 			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
