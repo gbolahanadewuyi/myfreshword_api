@@ -963,9 +963,9 @@ class App extends REST_Controller
 
 		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-		\Cloudinary\Uploader::upload($file, 
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
-		 "resource_type" => "image"));
+		// \Cloudinary\Uploader::upload($file, 
+		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		//  "resource_type" => "image"));
 
 		//  $imageurl = $data['image'];
 
