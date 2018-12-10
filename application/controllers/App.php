@@ -958,11 +958,11 @@ class App extends REST_Controller
 
 		// $this->load->libaray('cloudinarylib');
 
-		$file = $_POST['photo'];
+		$file = $this->input->post('photo');
 	
 
-		$data['image'] =\Cloudinary\Uploader::upload("$file", 
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "$file", "overwrite" => TRUE, 
+		$data['image'] =\Cloudinary\Uploader::upload($file, 
+		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
 		 "resource_type" => "image"));
 
 		 $imageurl = $data['image'];
