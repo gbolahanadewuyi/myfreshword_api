@@ -2401,14 +2401,10 @@ class MyModel extends CI_Model
 				// 'password'        => $updateData['password'],//hashing password
 
 				'organisation' => $updateData['organisation'],
-				'location' => $updateData['location'],
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
-				'facebook' => $updateData['facebook'],
-				'twitter' => $updateData['twitter'],
-				'youtube' => $updateData['youtube'],
-				'display_image' => $img
+				 'display_image' => $img
 			);
 		} else {
 			$data = array(
@@ -2418,13 +2414,9 @@ class MyModel extends CI_Model
 				'mobile' => $updateData['mobile'],
 				'password' => $result, //hashing password
 				'organisation' => $updateData['organisation'],
-				'location' => $updateData['location'],
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
-				'facebook' => $updateData['facebook'],
-				'twitter' => $updateData['twitter'],
-				'youtube' => $updateData['youtube'],
 				'display_image' => $img
 			);
 		}
