@@ -971,9 +971,8 @@ class App extends REST_Controller
 
 		//  echo $imageurl;
 		
-		$config['upload_path'] = \Cloudinary\Uploader::upload($file, 
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
-		 "resource_type" => "image"));
+		$my_bucket = "freshword-ci";
+		$config['upload_path'] = "gs://${my_bucket}/";
 		$config['overwrite'] = true;
 		$config['file_ext_tolower'] = true;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
@@ -993,9 +992,23 @@ class App extends REST_Controller
 
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
-			$data = $this->upload->data();
+			$data = $this->upload->data(); 
 			$file = $data['file_name'];
-			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+               echo $fileurl;
+
+
+
+
+
+
+		$collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+		print_r($collect);
+	                //    $img = $collect['image'] ;
+		
+		
+			
+			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 			$success = ['status' => true, 'success' => $img];
 
 		
@@ -1010,7 +1023,7 @@ class App extends REST_Controller
 				   
 
 
-			$this->response($imageurl, REST_Controller::HTTP_OK);
+			$this->response($success, REST_Controller::HTTP_OK);
 		}
 	}
 
@@ -1645,7 +1658,7 @@ class App extends REST_Controller
 			foreach ($list as $prod) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $prod->img_link . '" height="75px">';
+				$row[] = '<img src="' . $prod->img_link . '"width: 50px;border-radius: 100%;margin-right: 10px;">';
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
@@ -1692,8 +1705,6 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_tags', 'Category', 'trim|required');//type
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
 			$this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-		//   $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-		//   $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
 			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]');//this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required');//and this is the essay
 			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
@@ -1712,8 +1723,6 @@ class App extends REST_Controller
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
-						//'prod_image'            =>      $_POST['prod_image'],
-					//'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
 					'prod_description' => $_POST['prod_description'],
 					'prod_essay' => $_POST['prod_essay'],
@@ -1722,7 +1731,6 @@ class App extends REST_Controller
 					'prod_cateid' => 1,
 					'prod_subcateid' => 0,
 					'prod_filename' => 0,
-							//   'prod_price'            =>      $_POST['prod_price'],
 					'prod_plan' => 0,
 					'prod_free' => 0,
 					'prod_featured' => 0,
@@ -1733,10 +1741,11 @@ class App extends REST_Controller
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
-					//'file_link'             =>      $_POST['file_link'],
 					'merchant_email' => $_POST['merchant_email'],
-			//   'currency'              =>      $_POST['prod_currency'],
 					'prod_date' => date('Y-m-d H:i:s')
+					
+
+
 				);
 				$query = $this->MyModel->merchant_insert_product($prodData);
 				$data = array('success' => true, 'message' => $query);
@@ -1901,7 +1910,7 @@ class App extends REST_Controller
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 					$file = $data['file_name'];
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file";
 
 				
 
