@@ -1,23 +1,23 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-require_once APPPATH . '/libraries/REST_Controller.php';
+// require_once APPPATH . '/libraries/REST_Controller.php';
 
-require_once APPPATH . '/libraries/JWT.php';
+// require_once APPPATH . '/libraries/JWT.php';
 
 // require_once APPPATH . '/libraries/HubtelApi.php';
 
-use Cloudinary;
-use Stripe\Stripe;
-use \Firebase\JWT\JWT;
+// use Cloudinary;
+// use Stripe\Stripe;
+// use \Firebase\JWT\JWT;
 
 class App extends REST_Controller
 
 {
 	public function __construct()
 	{
-		header('Access-Control-Allow-Origin: *');
-    	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		// header('Access-Control-Allow-Origin: *');
+    	// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		parent::__construct();
 		$this->load->model('MyModel');
 		$this->load->model('MerchantProductModel');
@@ -958,41 +958,43 @@ class App extends REST_Controller
 
 		// $this->load->libaray('cloudinarylib');
 
-		$file = $this->input->post('photo');
+		// $file = $this->input->post('photo');
 	
 
-		$data['image'] =\Cloudinary\Uploader::upload($file, 
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
-		 "resource_type" => "image"));
+		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-		 $imageurl = $data['image'];
+		// \Cloudinary\Uploader::upload($file, 
+		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		//  "resource_type" => "image"));
 
-		 echo $imageurl;
+		//  $imageurl = $data['image'];
+
+		//  echo $imageurl;
 		
-		// $config['upload_path'] = "gs://${my_bucket}/";
-		// $config['overwrite'] = true;
-		// $config['file_ext_tolower'] = true;
-		// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		// $config['max_size'] = 0;
-		// $this->load->library('upload', $config);
+		$config['upload_path'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
+		$config['overwrite'] = true;
+		$config['file_ext_tolower'] = true;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		$config['max_size'] = 0;
+		$this->load->library('upload', $config);
 
-		// $this->upload->initialize($config);
+		$this->upload->initialize($config);
 
-		// if (!$this->upload->do_upload('photo')) {
-		// 	$error = array(
-		// 		'status' => false,
-		// 		'uploadpath' => $config['upload_path'],
-		// 		'error' => $this->upload->display_errors()
-		// 	);
+		if (!$this->upload->do_upload('photo')) {
+			$error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'],
+				'error' => $this->upload->display_errors()
+			);
 
-		// 		// echo json_encode($error);
+				// echo json_encode($error);
 
-		// 	$this->response($error, REST_Controller::HTTP_OK);
-		// } else {
-		// 	$data = $this->upload->data();
-		// 	$file = $data['file_name'];
-		// 	$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-		// 	$success = ['status' => true, 'success' => $img];
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data();
+			$file = $data['file_name'];
+			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			$success = ['status' => true, 'success' => $img];
 
 		
 
@@ -1008,6 +1010,7 @@ class App extends REST_Controller
 
 			$this->response($imageurl, REST_Controller::HTTP_OK);
 		}
+	}
 
 	
 
