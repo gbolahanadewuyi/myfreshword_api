@@ -1,11 +1,11 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-// require_once APPPATH . '/libraries/REST_Controller.php';
+require_once APPPATH . '/libraries/REST_Controller.php';
 
-// require_once APPPATH . '/libraries/JWT.php';
+require_once APPPATH . '/libraries/JWT.php';
 
-// require_once APPPATH . '/libraries/HubtelApi.php';
+require_once APPPATH . '/libraries/HubtelApi.php';
 
 // use Cloudinary;
 // use Stripe\Stripe;
