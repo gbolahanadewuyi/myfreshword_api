@@ -2182,7 +2182,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
+			// $this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
 			// $this->form_validation->set_rules('location', 'Location', 'trim|required');
