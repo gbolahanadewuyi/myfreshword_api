@@ -1000,7 +1000,7 @@ class App extends REST_Controller
 
 
 
-		$collect['ok'] = \Cloudinary\Uploader::upload($fileurl, 
+		$collect['ok'] = \Cloudinary\Uploader::upload($file, 
 		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
 		 "resource_type" => "image"));
 		
