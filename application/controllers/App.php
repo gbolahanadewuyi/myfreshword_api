@@ -994,6 +994,12 @@ class App extends REST_Controller
 		} else {
 			$data = $this->upload->data();
 			$file = $data['full_path'];
+               echo $file;
+
+
+
+
+
 
 		$collect['image'] = \Cloudinary\Uploader::upload($file);
 	                   $img = $collect['image'] ;
