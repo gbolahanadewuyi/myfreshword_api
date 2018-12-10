@@ -1625,7 +1625,7 @@ class App extends REST_Controller
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
 				$row[] = $prod->prod_tags;
-				// $row[] = $prod->prod_uniqid;
+				$row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
 				$row[] = $prod->prod_date;
 
