@@ -963,17 +963,16 @@ class App extends REST_Controller
 
 		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-		// \Cloudinary\Uploader::upload($file, 
-		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
-		//  "resource_type" => "image"));
+		\Cloudinary\Uploader::upload($file, 
+		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		 "resource_type" => "image"));
 
 		//  $imageurl = $data['image'];
 
 		//  echo $imageurl;
 		
-		$config['upload_path'] = \Cloudinary\Uploader::upload($file, 
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
-		 "resource_type" => "image"));
+		$my_bucket = "freshword-ci";
+		$config['upload_path'] = "gs://${my_bucket}/";
 		$config['overwrite'] = true;
 		$config['file_ext_tolower'] = true;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
@@ -995,7 +994,13 @@ class App extends REST_Controller
 		} else {
 			$data = $this->upload->data();
 			$file = $data['file_name'];
-			$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+		$collect['image'] = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+	                   $img = $collect['image'] ;
+		
+		
+			
+			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 			$success = ['status' => true, 'success' => $img];
 
 		
