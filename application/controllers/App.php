@@ -2169,7 +2169,7 @@ class App extends REST_Controller
 	public function merchant_update_profile_post()
 	{
 		$response = $this->MyModel->merchant_auth();
-		if ($response['status'] == 200){
+		if ($response['status'] == 200) {
 			$data = array(
 				'success' => false,
 				'messages' => array()
