@@ -1002,8 +1002,9 @@ class App extends REST_Controller
 
 
 
-		$collect['image'] = \Cloudinary\Uploader::upload($fileurl);
-	                   $img = $collect['image'] ;
+		$collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+		print_r($collect);
+	                //    $img = $collect['image'] ;
 		
 		
 			
@@ -1913,7 +1914,7 @@ class App extends REST_Controller
 					$data = $this->upload->data();
 					$success = ['status' => true, 'success' => $data['file_name']];
 					$file = $data['file_name'];
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file";
 
 				
 
