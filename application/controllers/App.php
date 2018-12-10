@@ -993,9 +993,9 @@ class App extends REST_Controller
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
 			$data = $this->upload->data();
-			$file = $data['file_name'];
+			$file = $data['full_path'];
 
-		$collect['image'] = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+		$collect['image'] = \Cloudinary\Uploader::upload($file);
 	                   $img = $collect['image'] ;
 		
 		
