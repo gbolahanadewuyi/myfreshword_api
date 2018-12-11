@@ -1001,14 +1001,15 @@ class App extends REST_Controller
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
 			$data = $this->upload->data(); 
-			$file = $data['file_name'];
+			// $file = $data['file_name'];
+			$file = $data['full_path'];
 			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
             //    echo $fileurl;
 
 
 
 
-			   $data['image']  =    \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+			   $data['image']  =    \Cloudinary\Uploader::upload($file);
 
 		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 		// print_r($collect);
