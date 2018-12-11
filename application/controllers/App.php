@@ -980,8 +980,9 @@ class App extends REST_Controller
 
 
 		$my_bucket = "freshword-ci";
-		$context = stream_context_create($options);
 		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+		$context = stream_context_create($options);
+
 
 		$config['upload_path'] = ("gs://${my_bucket}/" + $context);
 
