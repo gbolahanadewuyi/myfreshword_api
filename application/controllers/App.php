@@ -1002,7 +1002,7 @@ class App extends REST_Controller
 		} else {
 			$data = $this->upload->data(); 
 			$file = $data['file_name'];
-			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
             //    echo $fileurl;
 
 
