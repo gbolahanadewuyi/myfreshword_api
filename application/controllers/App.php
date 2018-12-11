@@ -976,56 +976,48 @@ class App extends REST_Controller
 		
 		
 
-      $data['image']  =    \Cloudinary\Uploader::upload("https://media.pitchfork.com/photos/5a99e1df50d3cd0aec82f08c/2:1/w_790/Rick-Ross-3.jpg");
+     
 
 
-		// $my_bucket = "freshword-ci";
-		// $config['upload_path'] = "gs://${my_bucket}/";
-		// $config['overwrite'] = true;
-		// $config['file_ext_tolower'] = true;
-		// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		// $config['max_size'] = 0;
-		// $this->load->library('upload', $config);
+		$my_bucket = "freshword-ci";
+		$config['upload_path'] = "gs://${my_bucket}/";
+		$config['overwrite'] = true;
+		$config['file_ext_tolower'] = true;
+		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		$config['max_size'] = 0;
+		$this->load->library('upload', $config);
 
-		// $this->upload->initialize($config);
+		$this->upload->initialize($config);
 
-		// if (!$this->upload->do_upload('photo')) {
-		// 	$error = array(
-		// 		'status' => false,
-		// 		'uploadpath' => $config['upload_path'],
-		// 		'error' => $this->upload->display_errors()
-		// 	);
+		if (!$this->upload->do_upload('photo')) {
+			$error = array(
+				'status' => false,
+				'uploadpath' => $config['upload_path'],
+				'error' => $this->upload->display_errors()
+			);
 
-		// 		// echo json_encode($error);
+				// echo json_encode($error);
 
-		// 	$this->response($error, REST_Controller::HTTP_OK);
-		// } else {
-		// 	$data = $this->upload->data(); 
-		// 	$file = $data['file_name'];
-		// 	$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-        //        echo $fileurl;
-
-
+			$this->response($error, REST_Controller::HTTP_OK);
+		} else {
+			$data = $this->upload->data(); 
+			$file = $data['file_name'];
+			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+            //    echo $fileurl;
 
 
 
+
+			   $data['image']  =    \Cloudinary\Uploader::upload($fileurl);
 
 		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 		// print_r($collect);
-	    //             //    $img = $collect['image'] ;
+	                //    $img = $collect['image'] ;
 		
 		
 			
-		// 	// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-		// 	$success = ['status' => true, 'success' => $img];
-
-		
-
-
-			  
-			    //    $profilefeed = array(
-                //     'img_url' => $img
-				//    );
+			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+			// $success = ['status' => true, 'success' => $img];
  
 	// $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
 				   
@@ -1035,7 +1027,7 @@ class App extends REST_Controller
 		
 	}
 
-	
+}
 
 
 
