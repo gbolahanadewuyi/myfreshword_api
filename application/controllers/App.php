@@ -21,6 +21,7 @@ class App extends REST_Controller
 		parent::__construct();
 		$this->load->model('MyModel');
 		$this->load->model('MerchantProductModel');
+		$this->load->model('MerchantFeedModel');
 		$this->load->library('hubtelApi');
 		$this->load->library('cloudinarylib');
 	}
