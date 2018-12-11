@@ -1658,7 +1658,7 @@ class App extends REST_Controller
 			foreach ($list as $prod) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $prod->img_link . '" height="75px">';
+				$row[] = '<img src="' . $prod->img_link . '"width: 50px;border-radius: 100%;margin-right: 10px;">';
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
@@ -1752,8 +1752,6 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('prod_tags', 'Category', 'trim|required');//type
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
 			$this->form_validation->set_rules('prod_preacher', 'Preacher / Speaker / Author', 'trim|required');
-		//   $this->form_validation->set_rules('prod_price', 'Price', 'trim|required');
-		//   $this->form_validation->set_rules('prod_currency', 'Currency', 'trim|required');
 			$this->form_validation->set_rules('prod_description', 'Topic', 'trim|required|max_length[160]');//this is the theme
 			$this->form_validation->set_rules('prod_essay', 'Description', 'trim|required');//and this is the essay
 			$this->form_validation->set_rules('prod_church', 'Church Name', 'trim|required');//should be an hidden input
@@ -1772,8 +1770,6 @@ class App extends REST_Controller
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
-						//'prod_image'            =>      $_POST['prod_image'],
-					//'img_link'              =>      $this->MyModel->imgPlus($_POST['prod_image']),
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
 					'prod_description' => $_POST['prod_description'],
 					'prod_essay' => $_POST['prod_essay'],
@@ -1782,7 +1778,6 @@ class App extends REST_Controller
 					'prod_cateid' => 1,
 					'prod_subcateid' => 0,
 					'prod_filename' => 0,
-							//   'prod_price'            =>      $_POST['prod_price'],
 					'prod_plan' => 0,
 					'prod_free' => 0,
 					'prod_featured' => 0,
@@ -1793,10 +1788,7 @@ class App extends REST_Controller
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
-					'file_link' => $_POST['product_file'],
-					//'file_link'             =>      $_POST['file_link'],
 					'merchant_email' => $_POST['merchant_email'],
-			//   'currency'              =>      $_POST['prod_currency'],
 					'prod_date' => date('Y-m-d H:i:s')
 					
 
