@@ -1816,8 +1816,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $member->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $member->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
 				$data[] = $row;
 			}
 
