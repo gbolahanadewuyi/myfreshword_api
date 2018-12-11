@@ -1008,7 +1008,7 @@ class App extends REST_Controller
 
 
 
-			   $data['image']  =    \Cloudinary\Uploader::upload($fileurl);
+			   $data['image']  =    \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 
 		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 		// print_r($collect);
