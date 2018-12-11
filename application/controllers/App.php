@@ -974,45 +974,50 @@ class App extends REST_Controller
 
 		//  echo $imageurl;
 		
-		$my_bucket = "freshword-ci";
-		$config['upload_path'] = "gs://${my_bucket}/";
-		$config['overwrite'] = true;
-		$config['file_ext_tolower'] = true;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
+		
 
-		$this->upload->initialize($config);
-
-		if (!$this->upload->do_upload('photo')) {
-			$error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'],
-				'error' => $this->upload->display_errors()
-			);
-
-				// echo json_encode($error);
-
-			$this->response($error, REST_Controller::HTTP_OK);
-		} else {
-			$data = $this->upload->data(); 
-			$file = $data['file_name'];
-			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-               echo $fileurl;
+      $data['image']  =    \Cloudinary\Uploader::upload("http://www.example.com/sample.jpg");
 
 
+		// $my_bucket = "freshword-ci";
+		// $config['upload_path'] = "gs://${my_bucket}/";
+		// $config['overwrite'] = true;
+		// $config['file_ext_tolower'] = true;
+		// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		// $config['max_size'] = 0;
+		// $this->load->library('upload', $config);
+
+		// $this->upload->initialize($config);
+
+		// if (!$this->upload->do_upload('photo')) {
+		// 	$error = array(
+		// 		'status' => false,
+		// 		'uploadpath' => $config['upload_path'],
+		// 		'error' => $this->upload->display_errors()
+		// 	);
+
+		// 		// echo json_encode($error);
+
+		// 	$this->response($error, REST_Controller::HTTP_OK);
+		// } else {
+		// 	$data = $this->upload->data(); 
+		// 	$file = $data['file_name'];
+		// 	$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+        //        echo $fileurl;
 
 
 
 
-		$collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
-		print_r($collect);
-	                //    $img = $collect['image'] ;
+
+
+		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
+		// print_r($collect);
+	    //             //    $img = $collect['image'] ;
 		
 		
 			
-			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-			$success = ['status' => true, 'success' => $img];
+		// 	// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+		// 	$success = ['status' => true, 'success' => $img];
 
 		
 
@@ -1026,8 +1031,8 @@ class App extends REST_Controller
 				   
 
 
-			$this->response($success, REST_Controller::HTTP_OK);
-		}
+			$this->response($data, REST_Controller::HTTP_OK);
+		
 	}
 
 	
@@ -1721,8 +1726,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
 				$data[] = $row;
 			}
 
@@ -1767,8 +1772,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
 				$data[] = $row;
 			}
 
@@ -1816,8 +1821,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $member->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $member->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
 				$data[] = $row;
 			}
 
