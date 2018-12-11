@@ -1691,6 +1691,53 @@ class App extends REST_Controller
 		}
 	}
 
+	public function get_merchant_feeds_post()
+	{
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$this->load->helper('url');
+			$query = $this->MyModel->merchant_email($response['id']);
+			$list = $this->MerchantFeedModel->get_datatables($query->email);
+			$data = array();
+			$no = $_POST['start'];
+			foreach ($list as $feed) {
+				$no++;
+				$row = array();
+				$row[] = '<img src="' . $feed->image . '" height="75px">';
+				$row[] = $feed->category;
+				$row[] = $feed->title;
+				$row[] = $feed->message;
+				$row[] = $feed->likes_count;
+				$row[] = $feed->comments_counts;
+			
+
+				// if($payee->network == 'MTN'):
+
+				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
+				$row[] = '
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+				$data[] = $row;
+			}
+
+			$output = array(
+				"draw" => $_POST['draw'],
+				"recordsTotal" => $this->MerchantFeedModel->count_all($query->email),
+				"recordsFiltered" => $this->MerchantFeedModel->count_filtered($query->email),
+				"data" => $data,
+			);
+
+			// output to json format
+
+			$this->response($output, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
+
 	// and then we finally post the data needed as well
 	// Here we will go through our form validaitons to avoid same data being posted twice
 
