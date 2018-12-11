@@ -984,7 +984,8 @@ class App extends REST_Controller
 		$context = stream_context_create($options);
 
 
-		$config['upload_path'] = ("gs://${my_bucket}/" + $context);
+		$config['upload_path'] = "gs://${my_bucket}/";
+
 
 		
 		$config['overwrite'] = true;
@@ -1008,11 +1009,12 @@ class App extends REST_Controller
 		} else {
 			$data = $this->upload->data(); 
 			// $file = $data['file_name'];
-			$file = $data['full_path'];
+			$file = $data['file_name'];
+			$path = $data['file_path'];
 			echo $file;
 			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
             //    echo $fileurl;
-
+			file_put_contents("${path}/", $file, 0, $context);
 
 
 
