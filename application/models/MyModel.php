@@ -277,7 +277,7 @@ class MyModel extends CI_Model
 
 	public function merchant_email($id)
 	{
-		return $this->db->select('email')->from('ts_merchant')->where('id', $id)->get()->row();
+		return $this->db->select('email, id')->from('ts_merchant')->where('id', $id)->get()->row();
 	}
 
 	public function logout()
