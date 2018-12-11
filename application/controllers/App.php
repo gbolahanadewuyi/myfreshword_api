@@ -976,7 +976,7 @@ class App extends REST_Controller
 		
 		
 
-      $data['image']  =    \Cloudinary\Uploader::upload("http://www.example.com/sample.jpg");
+      $data['image']  =    \Cloudinary\Uploader::upload("https://media.pitchfork.com/photos/5a99e1df50d3cd0aec82f08c/2:1/w_790/Rick-Ross-3.jpg");
 
 
 		// $my_bucket = "freshword-ci";
