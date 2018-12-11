@@ -23,6 +23,7 @@ class App extends REST_Controller
 		$this->load->model('MerchantProductModel');
 		$this->load->model('MerchantFeedModel');
 		$this->load->model('MerchantPastorModel');
+		$this->load->model('MerchantMembersModel');
 		$this->load->library('hubtelApi');
 		$this->load->library('cloudinarylib');
 	}
@@ -1775,6 +1776,55 @@ class App extends REST_Controller
 				"draw" => $_POST['draw'],
 				"recordsTotal" => $this->MerchantPastorModel->count_all($query->id),
 				"recordsFiltered" => $this->MerchantPastorModel->count_filtered($query->id),
+				"data" => $data,
+			);
+
+			// output to json format
+
+			$this->response($output, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
+	
+
+	public function get_churchmemberslisting_post()
+	{
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$this->load->helper('url');
+			$query = $this->MyModel->merchant_email($response['id']);
+			$list = $this->MerchantMembersModel->get_datatables($query->id);
+			$data = array();
+			$no = $_POST['start'];
+			foreach ($list as $pastor) {
+				$no++;
+				$row = array();
+				$row[] = '<img src="' . $member->member_photo . '" height="75px">';
+				$row[] = $member->first_name;
+				$row[] = $member->last_name;
+				$row[] = $member->email;
+				$row[] = $member->mobile_number;
+				$row[] = $member->address;
+			
+			
+
+				// if($payee->network == 'MTN'):
+
+				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
+				$row[] = '
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i> </a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+				$data[] = $row;
+			}
+
+			$output = array(
+				"draw" => $_POST['draw'],
+				"recordsTotal" => $this->MerchantMembersModel->count_all($query->id),
+				"recordsFiltered" => $this->MerchantMembersModel->count_filtered($query->id),
 				"data" => $data,
 			);
 
