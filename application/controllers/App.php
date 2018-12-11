@@ -980,7 +980,12 @@ class App extends REST_Controller
 
 
 		$my_bucket = "freshword-ci";
-		$config['upload_path'] = "gs://${my_bucket}/";
+		$context = stream_context_create($options);
+		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+
+		$config['upload_path'] = ("gs://${my_bucket}/" + $context);
+
+		
 		$config['overwrite'] = true;
 		$config['file_ext_tolower'] = true;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
@@ -1003,13 +1008,14 @@ class App extends REST_Controller
 			$data = $this->upload->data(); 
 			// $file = $data['file_name'];
 			$file = $data['full_path'];
+			echo $file;
 			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
             //    echo $fileurl;
 
 
 
 
-			   $data['image']  =    \Cloudinary\Uploader::upload($file);
+			//    $data['image']  =    \Cloudinary\Uploader::upload($file);
 
 		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 		// print_r($collect);
