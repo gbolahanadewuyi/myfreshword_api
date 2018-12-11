@@ -1800,7 +1800,7 @@ class App extends REST_Controller
 			$list = $this->MerchantMembersModel->get_datatables($query->id);
 			$data = array();
 			$no = $_POST['start'];
-			foreach ($list as $pastor) {
+			foreach ($list as $member) {
 				$no++;
 				$row = array();
 				$row[] = '<img src="' . $member->member_photo . '" height="75px">';
