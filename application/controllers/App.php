@@ -917,34 +917,36 @@ class App extends REST_Controller
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 			$config['max_size'] = 0;
+
 			$this->load->library('upload', $config);
-	
+
 			$this->upload->initialize($config);
-	
+			$this->upload->set_content_type('image/jpeg');
+
 			if (!$this->upload->do_upload('photo')) {
 				$error = array(
 					'status' => false,
 					'uploadpath' => $config['upload_path'],
 					'error' => $this->upload->display_errors()
 				);
-	
+
 					// echo json_encode($error);
-	
+
 				$this->response($error, REST_Controller::HTTP_OK);
 			} else {
 				$data = $this->upload->data();
 				$file = $data['file_name'];
 				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 				$success = ['status' => true, 'success' => $img];
-	
+
 					//    sss$profilefeed = array(
 					//     'img_url' => $img
 					//    );
-	 
+
 					//    $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
-					   
-	
-	
+
+
+
 				$this->response($success, REST_Controller::HTTP_OK);
 			}
 		} else {
@@ -962,21 +964,21 @@ class App extends REST_Controller
 		// $this->load->libaray('cloudinarylib');
 
 		// $file = $this->input->post('photo');
-	
+
 
 		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-		// \Cloudinary\Uploader::upload($file, 
-		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE, 
+		// \Cloudinary\Uploader::upload($file,
+		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE,
 		//  "resource_type" => "image"));
 
 		//  $imageurl = $data['image'];
 
 		//  echo $imageurl;
-		
-		
 
-     
+
+
+
 
 
 		$my_bucket = "freshword-ci";
@@ -987,7 +989,7 @@ class App extends REST_Controller
 		$config['upload_path'] = "gs://${my_bucket}/";
 
 
-		
+
 		$config['overwrite'] = true;
 		$config['file_ext_tolower'] = true;
 		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
@@ -1007,7 +1009,7 @@ class App extends REST_Controller
 
 			$this->response($error, REST_Controller::HTTP_OK);
 		} else {
-			$data = $this->upload->data(); 
+			$data = $this->upload->data();
 			// $file = $data['file_name'];
 			$file = $data['file_name'];
 			$path = $data['file_path'];
@@ -1023,18 +1025,18 @@ class App extends REST_Controller
 		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
 		// print_r($collect);
 	                //    $img = $collect['image'] ;
-		
-		
-			
+
+
+
 			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
 			// $success = ['status' => true, 'success' => $img];
- 
+
 	// $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
-				   
+
 
 
 			$this->response($data, REST_Controller::HTTP_OK);
-		
+
 	}
 
 }
@@ -1428,7 +1430,7 @@ class App extends REST_Controller
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				
+
 					$my_bucket = "freshword-ci";
 					require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
 				$config['upload_path'] = "gs://${my_bucket}/";
@@ -1479,7 +1481,7 @@ class App extends REST_Controller
 					'message' => $data
 				);
 			}
-	 } 
+	 }
 	 $this->response($data, REST_Controller::HTTP_OK);
   } else {
 		$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
@@ -1566,7 +1568,7 @@ class App extends REST_Controller
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$query = $this->MyModel->get_church_data($response['id']);
-			
+
 			$this->response($query, REST_Controller::HTTP_OK);
 		}
 		else {
@@ -1722,7 +1724,7 @@ class App extends REST_Controller
 				$row[] = $feed->message;
 				$row[] = $feed->likes_count;
 				$row[] = $feed->comments_counts;
-			
+
 
 				// if($payee->network == 'MTN'):
 
@@ -1767,8 +1769,8 @@ class App extends REST_Controller
 				$row[] = $pastor->pastors_title;
 				$row[] = $pastor->pastors_name;
 				$row[] = $pastor->pastors_bio;
-			
-			
+
+
 
 				// if($payee->network == 'MTN'):
 
@@ -1793,7 +1795,7 @@ class App extends REST_Controller
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
 	}
-	
+
 
 	public function get_churchmemberslisting_post()
 	{
@@ -1816,8 +1818,8 @@ class App extends REST_Controller
 				$row[] = $member->email;
 				$row[] = $member->mobile_number;
 				$row[] = $member->address;
-			
-			
+
+
 
 				// if($payee->network == 'MTN'):
 
@@ -1895,7 +1897,7 @@ class App extends REST_Controller
 					'type_list' => $_POST['prod_tags'],
 					'merchant_email' => $_POST['merchant_email'],
 					'prod_date' => date('Y-m-d H:i:s')
-					
+
 
 
 				);
@@ -2052,7 +2054,7 @@ class App extends REST_Controller
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
-					); 
+					);
 
 					// echo json_encode($error);
 
@@ -2064,9 +2066,9 @@ class App extends REST_Controller
 					$file = $data['file_name'];
 					$img = "https://storage.cloud.google.com/${my_bucket}/$file";
 
-				
 
-		
+
+
 					// so run insertion since the validation for the form has been passed correctly
 
 					// $data = $this->MyModel->insert_feed_data($_POST, $img);
@@ -2099,7 +2101,7 @@ class App extends REST_Controller
 	//Pastors Listings
 	public function pastors_listing_post()
 	{
-		
+
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			// $_POST = json_decode(file_get_contents('php://input'), true);
@@ -2128,7 +2130,7 @@ class App extends REST_Controller
 				$config['max_size'] = 0;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
-			
+
 				if(!$this->upload->do_upload('pastorsimg')) {
 					$error = array(
 						'status' => false,
@@ -2353,7 +2355,7 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
-			
+
 			$this->form_validation->set_rules('organisation', 'Organisation ', 'trim|required|is_unique[merchant_feed.title]');
 			$this->form_validation->set_rules('merchant_name', 'Merchant Name', 'trim|required');
 			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
@@ -2501,10 +2503,10 @@ class App extends REST_Controller
 			$card_cvc = $_POST['cvc'];
 			$card_exp_month = $_POST['exp_month'];
 			$card_exp_year = $_POST['exp_year'];
-			
+
 			//include Stripe PHP library
 			require_once APPPATH . "third_party/stripe/init.php";
-			
+
 			//set api key
 			$stripe = array(
 				"secret_key" => "YOUR_SECRET_KEY",
@@ -2512,20 +2514,20 @@ class App extends REST_Controller
 			);
 
 			\Stripe\Stripe::setApiKey($stripe['secret_key']);
-			
+
 			//add customer to stripe
 			$customer = \Stripe\Customer::create(array(
 				'email' => $email,
 				'source' => $token
 			));
-			
+
 			//item information
 			$itemName = "Stripe Donation";
 			$itemNumber = "PS123456";
 			$itemPrice = 50;
 			$currency = "usd";
 			$orderID = "SKA92712382139";
-			
+
 			//charge a credit or a debit card
 			$charge = \Stripe\Charge::create(array(
 				'customer' => $customer->id,
@@ -2536,19 +2538,19 @@ class App extends REST_Controller
 					'item_id' => $itemNumber
 				)
 			));
-			
+
 			//retrieve charge details
 			$chargeJson = $charge->jsonSerialize();
 			//check whether the charge is successful
 			if ($chargeJson['amount_refunded'] == 0 && empty($chargeJson['failure_code']) && $chargeJson['paid'] == 1 && $chargeJson['captured'] == 1) {
-				//order details 
+				//order details
 				$amount = $chargeJson['amount'];
 				$balance_transaction = $chargeJson['balance_transaction'];
 				$currency = $chargeJson['currency'];
 				$status = $chargeJson['status'];
 				$date = date("Y-m-d H:i:s");
-			
-				
+
+
 				//insert tansaction data into the database
 				$dataDB = array(
 					'name' => $name,
