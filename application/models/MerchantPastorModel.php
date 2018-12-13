@@ -5,10 +5,10 @@ class MerchantPastorModel extends CI_Model
 
 	var $table = 'pastors_listing';
 	var $column_order = array(
-		'pastors_title', 'pastors_name',  'pastors_bio', 'pastors_avatar_img', null
+		'pastors_title', 'pastors_name', 'pastors_avatar_img', null
 	); //set column field database for datatable orderable
 
-	var $column_search = array('pastors_title', 'pastors_name',  'pastors_bio', 'pastors_avatar_img'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $column_search = array('pastors_title', 'pastors_name','pastors_avatar_img'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('id' => 'desc'); // default order
 
 

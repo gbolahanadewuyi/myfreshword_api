@@ -1768,7 +1768,7 @@ class App extends REST_Controller
 				$row[] = '<img src="' . $pastor->pastors_avatar_img . '" height="75px">';
 				$row[] = $pastor->pastors_title;
 				$row[] = $pastor->pastors_name;
-				$row[] = $pastor->pastors_bio;
+				
 
 
 
@@ -2181,6 +2181,7 @@ class App extends REST_Controller
 		if ($response['status'] == 200) {
 			$id = (int)$this->get('id');
 			$data = $this->MyModel->get_merchant_feed_id($id);
+			// $data = $this->MyModel->edit_merchantfeed($id);
 			$this->response($data, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
