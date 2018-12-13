@@ -5,10 +5,10 @@ class MerchantMembersModel extends CI_Model
 
 	var $table = 'mfw_church_membership';
 	var $column_order = array(
-		'first_name', 'last_name',  'email', 'mobile_number','address', 'member_photo', null
+		'first_name', 'last_name',  'email', 'mobile_number','date_of_birth', 'member_photo', null
 	); //set column field database for datatable orderable
 
-	var $column_search = array('first_name', 'last_name',  'email', 'mobile_number','address', 'member_photo'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	var $column_search = array('first_name', 'last_name',  'email', 'mobile_number','date_of_birth', 'member_photo'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('id' => 'desc'); // default order
 
 
