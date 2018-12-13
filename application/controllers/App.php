@@ -1776,8 +1776,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit">Edit</i> </a>
+                        <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
 				$data[] = $row;
 			}
 
@@ -1817,7 +1817,7 @@ class App extends REST_Controller
 				$row[] = $member->last_name;
 				$row[] = $member->email;
 				$row[] = $member->mobile_number;
-				$row[] = $member->address;
+				$row[] = $member->date_of_birth;
 
 
 
@@ -1825,8 +1825,8 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-edit"></i>Edit </a>
+                        <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_member(' . "'" . $member->id . "'" . ')"><i class="fa fa-trash"></i>Delete </a>';
 				$data[] = $row;
 			}
 
