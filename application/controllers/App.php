@@ -1682,9 +1682,9 @@ class App extends REST_Controller
 				// if($payee->network == 'MTN'):
 
 				$favicon = $this->MyModel->favicon_show($prod->prod_tags);
-				$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')"><i class="' . $favicon . '"></i> </a>
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+				$row[] = '<a class="btn  btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')"><i class="' . $favicon . '"></i>Preview</a>
+                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-edit"></i>Edit </a>
+                        <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
 				$data[] = $row;
 			}
 
@@ -1934,12 +1934,60 @@ class App extends REST_Controller
 		}
 	}
 
+	public function pastorslisting_edit_get()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$id = (int)$this->get('id');
+			$query = $this->MyModel->edit_pastors($id);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
+	public function churchmembers_edit_get()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$id = (int)$this->get('id');
+			$query = $this->MyModel->edit_members($id);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
 	public function delete_product_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 			$_POST = json_decode(file_get_contents('php://input'), true);
 			$query = $this->MyModel->delete_product($_POST['id'], $_POST['email']);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
+	public function delete_memeber_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			$query = $this->MyModel->delete_member($_POST['id']);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
+	public function delete_pastor_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
+			$query = $this->MyModel->delete_pastor($_POST['id']);
 			$this->response($query, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code

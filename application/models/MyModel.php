@@ -1662,6 +1662,10 @@ class MyModel extends CI_Model
 		}
 	}
 
+	
+
+
+
 	public function merchant_insert_product($data)
 	{
 		$query = $query = $this->db->insert('ts_products', $data);
@@ -2086,6 +2090,16 @@ class MyModel extends CI_Model
 		return $query = $this->db->select('*')->from('ts_products')->where('prod_id', $id)->get()->row();
 	}
 
+	
+
+	public function edit_members($id)
+	{
+		return $query = $this->db->select('*')->from('mfw_church_membership')->where('id', $id)->get()->row();
+	}
+
+
+	
+
 	public function update_ts_products($data)
 	{
 		$update = array(
@@ -2127,6 +2141,38 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 404,
 				'message' => 'error deleting product details'
+			);
+		}
+	}
+
+	public function delete_pastor($id)
+	{
+		$query = $this->db->where('id', $id)->delete('pastors_listing');
+		if ($query == true) {
+			return array(
+				'status' => 200,
+				'message' => 'pastor data deleted successfully'
+			);
+		} else {
+			return array(
+				'status' => 404,
+				'message' => 'error deleting pastor data'
+			);
+		}
+	}
+
+	public function delete_member($id)
+	{
+		$query = $this->db->where('id', $id)->delete('mfw_church_membership');
+		if ($query == true) {
+			return array(
+				'status' => 200,
+				'message' => 'Member data deleted successfully'
+			);
+		} else {
+			return array(
+				'status' => 404,
+				'message' => 'error deleting Member data'
 			);
 		}
 	}
@@ -2197,8 +2243,13 @@ class MyModel extends CI_Model
 				'last_insert_id' => $insert_id
 			);
 		}
-
 		
+	}
+
+
+	public function edit_pastors($id)
+	{
+		return $query = $this->db->select('*')->from('pastors_listing')->where('id', $id)->get()->row();
 	}
 
 	public function insert_feed_image($data)
