@@ -921,7 +921,7 @@ class App extends REST_Controller
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
-			$this->upload->set_content_type('image/jpeg');
+			// $this->upload->set_content_type('image/jpeg');
 
 			if (!$this->upload->do_upload('photo')) {
 				$error = array(
@@ -986,7 +986,7 @@ class App extends REST_Controller
 		$context = stream_context_create($options);
 
 
-		$config['upload_path'] = "gs://${my_bucket}/";
+		$config['upload_path'] = "gs://${my_bucket}/ ";
 
 
 
