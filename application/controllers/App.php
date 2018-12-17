@@ -912,7 +912,8 @@ class App extends REST_Controller
 		if ($response['status'] == 200) {
 			$my_bucket = "freshword-ci";
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-			$config['upload_path'] = "gs://${my_bucket}/";
+			$postbody = array('bucket'=>'freshword-ci','Content-Type' => 'image/jpeg');
+		     $config['upload_path'] = "gs://${postbody}/";
 			$config['overwrite'] = true;
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
@@ -921,7 +922,7 @@ class App extends REST_Controller
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
-			$this->upload->set_content_type('image/jpeg');
+			// $this->upload->set_content_type('image/jpeg');
 
 			if (!$this->upload->do_upload('photo')) {
 				$error = array(
@@ -986,7 +987,7 @@ class App extends REST_Controller
 		$context = stream_context_create($options);
 
 
-		$config['upload_path'] = "gs://${my_bucket}/";
+		$config['upload_path'] = "gs://${my_bucket}/ ";
 
 
 
@@ -1710,12 +1711,12 @@ class App extends REST_Controller
 			foreach ($list as $prod) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $prod->img_link . '"width: 50px;border-radius: 100%;margin-right: 10px;">';
+				// $row[] = '<img src="' . $prod->img_link . '"width: 50px;border-radius: 100%;margin-right: 10px;">';
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
 				$row[] = $prod->prod_church;
 				$row[] = $prod->prod_tags;
-				$row[] = $prod->prod_uniqid;
+				// $row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
 				$row[] = $prod->prod_date;
 
@@ -2012,7 +2013,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public function delete_memeber_post()
+	public function delete_member_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
