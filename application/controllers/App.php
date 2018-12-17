@@ -1819,7 +1819,7 @@ class App extends REST_Controller
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i>Edit</a>
+                        <a class="btn  btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="editpastorsModal" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-edit"></i>Edit</a>
                         <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_pastor(' . "'" . $pastor->id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
 				$data[] = $row;
 			}
