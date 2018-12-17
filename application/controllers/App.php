@@ -1733,7 +1733,7 @@ class App extends REST_Controller
 				$row[] = '
                         <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i> </a>
                         <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
-				$data[] = $row;te
+				$data[] = $row;
 			}
 
 			$output = array(
