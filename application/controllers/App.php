@@ -914,12 +914,16 @@ class App extends REST_Controller
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options);
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+			   $config['file_name'] = $_POST['photo'];
+			   $file = $config['file_name'];
+			   echo $file;
+
 		     $config['upload_path'] = "gs://${my_bucket}/";
 			$config['overwrite'] = true;
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 			$config['max_size'] = 0;
-		  $config['image_type']	= 'image/jpeg';
+		//   $config['image_type']	= 'image/jpeg';
 		    $config['is_image'] = true;
 
 			$this->load->library('upload', $config);
@@ -951,7 +955,7 @@ class App extends REST_Controller
 
 
 
-				$this->response($success, REST_Controller::HTTP_OK);
+				$this->response($data, REST_Controller::HTTP_OK);
 			}
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
