@@ -920,7 +920,7 @@ class App extends REST_Controller
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 			$config['max_size'] = 0;
 		  $config['image_type']	= 'image/jpeg';
-		//    $config['is_image'] = true;
+		    $config['is_image'] = true;
 
 			$this->load->library('upload', $config);
 
