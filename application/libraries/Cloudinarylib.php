@@ -20,7 +20,7 @@ class Cloudinarylib {
         require 'cloudinary/src/Api.php';
 
         // configure Cloudinary API connection
-        \Cloudinary::config(array(
+       \Cloudinary::config(array(
             "cloud_name" => "techloft-company-ltd",
             "api_key" => "435321285129958", /*874837483274837*/
             "api_secret" => "r2WYn1VgH7K4_YYj_O3R2852-CY" /* a676b67565c6767a6767d6767f676fe1 */
