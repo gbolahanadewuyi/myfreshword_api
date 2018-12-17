@@ -914,11 +914,7 @@ class App extends REST_Controller
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options);
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-			   $config['file_name'] = $_POST['photo'];
-			   $file = $config['file_name'];
-			   echo $file;
-
-		     $config['upload_path'] = "gs://${my_bucket}/";
+		     $config['upload_path'] = "https://res.cloudinary.com/techloft-company-ltd/image/upload/v1544534961/product_files/";
 			$config['overwrite'] = true;
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
