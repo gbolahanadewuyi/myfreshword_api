@@ -911,13 +911,16 @@ class App extends REST_Controller
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$my_bucket = "freshword-ci";
+			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+			$context = stream_context_create($options);
 			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-			$postbody = array('bucket'=>'freshword-ci','Content-Type' => 'image/jpeg');
-		     $config['upload_path'] = "gs://${postbody}/";
+		     $config['upload_path'] = "gs://${my_bucket}/";
 			$config['overwrite'] = true;
 			$config['file_ext_tolower'] = true;
 			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
 			$config['max_size'] = 0;
+		  $config['image_type']	= 'image/jpeg';
+		//    $config['is_image'] = true;
 
 			$this->load->library('upload', $config);
 
@@ -1674,7 +1677,7 @@ class App extends REST_Controller
 				// $row[] = '<img src="' . $prod->img_link . '"width: 50px;border-radius: 100%;margin-right: 10px;">';
 				$row[] = $prod->prod_name;
 				$row[] = $prod->prod_preacher;
-				$row[] = $prod->prod_church;
+				// $row[] = $prod->prod_church;
 				$row[] = $prod->prod_tags;
 				// $row[] = $prod->prod_uniqid;
 				$row[] = $prod->prod_download_count;
@@ -2413,7 +2416,7 @@ class App extends REST_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			// $this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
+			$this->form_validation->set_rules('organisation_info', 'Organisation Summary', 'trim|required');
 			$this->form_validation->set_rules('org_address', 'Address', 'trim|required');
 			$this->form_validation->set_rules('org_country', 'Country', 'trim|required');
 			// $this->form_validation->set_rules('location', 'Location', 'trim|required');
