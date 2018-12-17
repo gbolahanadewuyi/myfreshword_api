@@ -179,7 +179,7 @@ class CI_Upload {
 	 *
 	 * @var	bool
 	 */
-	public $is_image = FALSE;
+	public $is_image = TRUE;
 
 	/**
 	 * Image width
