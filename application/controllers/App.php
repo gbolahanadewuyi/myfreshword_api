@@ -1352,9 +1352,49 @@ class App extends REST_Controller
 					'sender_id' => $_POST['sender_id'],
 					'message_content' => $_POST['message_content']
 				);
-			// $data['Bulksms'] = $this->MyModel->send_code($smsData['mobile'], $smsData['approval_code']);
+
+				$smsData = array_shift($smsData);
+
 				$data['Success'] = true;
-				$data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
+				//Set Time Zone as this is very important to ensure your messages are delievered on time
+				date_default_timezone_set('Africa/Accra');
+
+				// Account details
+				$clientId = '5ac33950c8e46';
+				$applicationSecret = '5bcf90580c9db6811e8d3d1e49b9dd6d';
+
+				// Prepare data for POST request
+				$url = 'https://app.helliomessaging.com/api/v2/sms';
+				$currentTime = date('YmdH');
+				$hashedAuthKey = sha1($clientId . $applicationSecret . $currentTime);
+				$senderId = $smsData['sender_id']; //Change this to your sender ID e.g. HellioSMS
+				$msisdn = $smsData['mobile_number']; //Change this to the recipient you wish to send the message to
+				$message = $smsData['message_content']; //The message to be send here
+				$params = [
+					'clientId' => $clientId,
+					'authKey' => $hashedAuthKey,
+					'senderId' => $senderId,
+					'msisdn' => $msisdn,
+					'message' => $message
+				];
+
+				// Send the POST request with cURL
+				$ch = curl_init($url);
+				$payload = json_encode($params);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'Content-Type: application/json',
+					'Content-Length: ' . strlen($payload)
+				));
+
+				// Process your response here
+				$result = curl_exec($ch);
+				echo var_export($result, true);
+				curl_close($ch);
+
+				// $data['Messages'] = $this->MyModel->sendbulksms_message($smsData);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
@@ -1683,9 +1723,11 @@ class App extends REST_Controller
 				// if($payee->network == 'MTN'):
 
 				$favicon = $this->MyModel->favicon_show($prod->prod_tags);
-				$row[] = '<a class="btn  btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')"><i class="' . $favicon . '"></i>Preview</a>
-                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-edit"></i>Edit </a>
-                        <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
+				$row[] = '<div class="btn-group" role="group" aria-label="action button group">
+							<a type="button" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')" class="btn btn-primary">View</a>
+							<a type="button" class="btn btn-info" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')">Edit</a>
+							<a type="button" class="btn btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')">Delete</a>
+						</div>';
 				$data[] = $row;
 			}
 
