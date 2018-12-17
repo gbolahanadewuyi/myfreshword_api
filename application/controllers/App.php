@@ -1722,9 +1722,11 @@ class App extends REST_Controller
 				// if($payee->network == 'MTN'):
 
 				$favicon = $this->MyModel->favicon_show($prod->prod_tags);
-				$row[] = '<a class="btn  btn-primary" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')"><i class="' . $favicon . '"></i>Preview</a>
-                        <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-edit"></i>Edit </a>
-                        <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
+				$row[] = '<div class="btn-group" role="group" aria-label="action button group">
+							<a type="button" href="javascript:void(0)" title="Preview" onclick="preview_product(' . "'" . $prod->prod_id . "'" . ')" class="btn btn-primary">View</a>
+							<a type="button" class="btn btn-info" href="javascript:void(0)" title="Edit" onclick="edit_product(' . "'" . $prod->prod_id . "'" . ')">Edit</a>
+							<a type="button" class="btn btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_product(' . "'" . $prod->prod_id . "'" . ')">Delete</a>
+						</div>';
 				$data[] = $row;
 			}
 
