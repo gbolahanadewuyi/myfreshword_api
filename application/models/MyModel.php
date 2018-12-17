@@ -2455,6 +2455,7 @@ class MyModel extends CI_Model
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
+				'org_info' => $updateData['organisation_info'],
 				 'display_image' => $img
 			);
 		} else {
@@ -2468,6 +2469,7 @@ class MyModel extends CI_Model
 				'merchant_name' => $updateData['merchant_name'],
 				'address' => $updateData['org_address'],
 				'country' => $updateData['org_country'],
+				'org_info' => $updateData['organisation_info'],
 				'display_image' => $img
 			);
 		}
