@@ -2281,6 +2281,58 @@ class MyModel extends CI_Model
 		);
 	}
 
+	public function update_churchmember($id, $data, $img)
+	{
+		if ($img == "") {
+			$updateData = array(
+				'first_name' => $data['first_name'],
+				'last_name' => $data['last_name'],
+				'mobile_number' => $data['mobile_number'],
+				'date_of_birth' => $data['date_of_birth'],
+				'gender' => $data['gender'],
+				'nationality' => $data['nationality'],
+				'address' => $data['address'],
+				'marital_status' => $data['marital_status'],
+				'email' => $data['email']
+			
+				
+
+				
+
+
+				// 'image'             => $img,
+			);
+		} else {
+			$updateData = array(
+				'first_name' => $data['first_name'],
+				'last_name' => $data['last_name'],
+				'mobile_number' => $data['mobile_number'],
+				'date_of_birth' => $data['date_of_birth'],
+				'gender' => $data['gender'],
+				'nationality' => $data['nationality'],
+				'address' => $data['address'],
+				'marital_status' => $data['marital_status'],
+				'email' => $data['email'],
+
+				'member_photo' => $img,
+
+			);
+		}
+
+		$query = $this->db->where('id', $id)->update('mfw_church_membership', $updateData);
+		if ($query == false) {
+			return array(
+				'status' => 404,
+				'message' => 'Error updating updating member data'
+			);
+		}
+
+		return array(
+			'status' => 201,
+			'message' => 'member data updated successfully'
+		);
+	}
+
 
 	public function edit_pastors($id)
 	{

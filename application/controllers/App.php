@@ -1483,7 +1483,7 @@ class App extends REST_Controller
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				// $file = $this->input->post('member_photo');
-				if (!$this->upload->do_upload('member_photo')) {
+				if (!$this->upload->do_upload('')) {
 					$error = array(
 						'status' => false,
 						'error' => $this->upload->display_errors()
@@ -1517,7 +1517,7 @@ class App extends REST_Controller
 					'address' => $_POST['address'],
 					'member_photo' => $img,
 					'church_id' => $_POST['merchant_id']
-				);
+				);member_photo
 				$data['messages'] = $this->MyModel->create_church_member($churchMemberData);
 				$data = array(
 					'success' => true,
@@ -1527,6 +1527,77 @@ class App extends REST_Controller
 	 }
 	 $this->response($data, REST_Controller::HTTP_OK);
   } else {
+		$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+	}
+}
+
+public function update_churchmember_post()
+{
+	$response = $this->MyModel->merchant_auth();
+	if ($response['status'] == 200) {
+		$data = array(
+			'success' => false,
+			'messages' => array()
+		);
+		$this->form_validation->set_rules('first_name', 'first name', 'trim|required');
+		$this->form_validation->set_rules('last_name', 'last name', 'trim|required');
+		$this->form_validation->set_rules('mobile_number', 'mobile number', 'trim|required');
+		$this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required');
+		$this->form_validation->set_rules('gender', 'gender', 'trim|required');
+		$this->form_validation->set_rules('nationality', 'nationality', 'trim|required');
+		$this->form_validation->set_rules('address', 'address', 'trim|required');
+		$this->form_validation->set_rules('marital_status', 'marital status', 'trim|required');
+		$this->form_validation->set_rules('email', 'email', 'trim|required');
+		
+		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		if ($this->form_validation->run() === false) {
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		} else {
+			if ($_FILES['member_photo']['name'] == "") {
+				$img = '';
+				$data = $this->MyModel->update_churchmember($_POST['pastor_id'], $_POST, $img);
+				$this->response($data, REST_Controller::HTTP_OK);
+				return false; //script will end here
+			}
+			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+			$my_bucket = "freshword-ci";
+			$config['upload_path'] = "gs://${my_bucket}/";
+			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+			$config['max_size'] = 3024;
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('member_photo')) {
+				$error = array(
+					'status' => false,
+					'error' => $this->upload->display_errors()
+				);
+
+				// echo json_encode($error);
+
+				$this->response($error, REST_Controller::HTTP_OK);
+				return false;
+			} else {
+				$data = $this->upload->data();
+				$success = ['status' => true, 'success' => $data['file_name']];
+
+				// echo json_encode($success);
+
+				$file = $data['file_name'];
+
+
+
+				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+				// so run insertion since the validation for the form has been passed correctly
+
+				$data = $this->MyModel->update_churchmember($_POST['member_id'], $_POST, $img);
+			}
+		}
+
+		$this->response($data, REST_Controller::HTTP_OK);
+	} else {
 		$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 	}
 }
