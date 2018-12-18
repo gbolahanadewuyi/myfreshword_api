@@ -972,9 +972,7 @@ class App extends REST_Controller
 
 		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
 
-		// \Cloudinary\Uploader::upload($file,
-		// array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE,
-		//  "resource_type" => "image"));
+
 
 		//  $imageurl = $data['image'];
 
@@ -984,7 +982,18 @@ class App extends REST_Controller
         $my_bucket = "myfreshword-ci";
 		$file_name = $_FILES['photo']['name'];
 		$temp_name = $_FILES['photo']['tmp_name'];
+		echo $temp_name;
+		echo $file_name;
+
+		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+		$context = stream_context_create($options); 
+
+		file_put_contents("gs://${my_bucket}/", $temp_name, 0 , $context);
+
 		move_uploaded_file($temp_name, "gs://${my_bucket}/${file_name}.jpg");
+		\Cloudinary\Uploader::upload($temp_name,
+		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE,
+		 "resource_type" => "image"));
 
 
 
