@@ -917,63 +917,24 @@ class App extends REST_Controller
 			$temp_name = $_FILES['photo']['tmp_name'];
 	
 			$image = file_get_contents($_FILES['photo']['tmp_name']);
-			echo $temp_name;
-			echo $file_name;
-			echo $image;
+			// echo $temp_name;
+			// echo $file_name;
+			// echo $image;
 	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
 			$fileName = "gs://${my_bucket}/$sname.jpg";
-			$file = "gs://${my_bucket}/$sname+'ok'.jpg";
-			// file_put_contents("gs://${my_bucket}/gman.jpg", $temp_name, 0 , $context);
 			file_put_contents($fileName, $image, 0, $context);
-	
-			move_uploaded_file($temp_name, $file);
-			// $my_bucket = "freshword-ci";
-			// $options = ['gs' => ['Content-Type' => 'image/jpeg']];
-			// $context = stream_context_create($options);
-			// require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-		    //  $config['upload_path'] = "gs://${my_bucket}/";   
-			// $config['overwrite'] = true;
-			// $config['file_ext_tolower'] = true;
-			// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			// $config['max_size'] = 0;
-	        // // $config['image_type']	= 'image/jpeg';
-		    // $config['is_image'] = true;
+			// move_uploaded_file($temp_name, $file);
+			 $publicurl = "https://storage.cloud.google.com/techloft-173609.appspot.com/$sname.jpg?organizationId=96831556031&_ga=2.78025300.-1152930877.1539685883&_gac=1.195684760.1544093648.EAIaIQobChMIrdLot4SL3wIV15TVCh0lUwrgEAAYASAAEgJ5rPD_BwE";
+			// $profilefeed = array(
+			//     'img_url' => $img
+			//   );
 
-			// $this->load->library('upload', $config);
+				 // $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+                 	$success = ['status' => true, 'success' => $publicurl];
+			 	$this->response($success, REST_Controller::HTTP_OK);
 
-			// $this->upload->initialize($config);
-			// // $this->upload->set_content_type('image/jpeg');
-
-			// if (!$this->upload->do_upload('photo')) {
-			// 	$error = array(
-			// 		'status' => false,
-			// 		'uploadpath' => $config['upload_path'],
-			// 		'error' => $this->upload->display_errors()
-			// 	);
-
-			// 		// echo json_encode($error);
-
-			// 	$this->response($error, REST_Controller::HTTP_OK);
-			// } else {
-			// 	$data = $this->upload->data();
-			// 	$file = $data['file_name'];
-				 // $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-				 
-				 $publicurl = "https://00e9e64bacd76fbb962761cd97f0947ce88af389f3b12997de-apidata.googleusercontent.com/download/storage/v1/b/techloft-173609.appspot.com/o/$sname.jpg?qk=AD5uMEv6jzS63sEDejNpRjo1_kgAwQiCU_ZFCfEOP6237zVe0e6TkCxwFk68k6Agk94nlZKKPjBJ2tBg4rlpfMaXCV2-S1HIe-j1VXIu1ujhTqzowWOEpeHhaR1zmAohjf7O0SIvcksbhaPcJ2_e7j5xbJQ6NnfIbSE3kgoRAHr3XzVqvY1d4-0ORqJeozvwR3cr3XxUipdFmNuLeqdY-LBpSLimS1eFsXbdqzCspbY8QxSnfveBtoyzqQoA1tqBIPtp1ou8Qr4UaAwnU3sYYUrFJ8fvV5PLRi61zQeqkbUySF8FumNkHVq0P1Bulxo1Cm8ahvSuEDIonee3zSO6x4uVf6x51Y2NV-apAYpOxoBRezdoblgYSHDXGo19BdTGjICtQOA2aC5Op_yxtjlJnBgNWbHI7yLHaYcLS5fW3VvDub4XWOiqluAwncGWrJDAJnBRT8SfB0yaMvZ0Q6WIJpOP-mRLwrs9FBzZsehE3NjHtjxvZrIEgaSBJeQnsQNqhm9PtWGqrARtY-eog70sGMzBZQI8GembgfCqrFd1wl1FwNXP4RCDLPfInbWyDmJ6wOowMxOu6rb36nMtzfNML-ZHI1M61Gyeydz67arXrTPacab0vgcvFYV2uirOABSTCmBhIYlFWtgE9Gx2jndgJ4FZna6lAVWyl63tv4tmfHenxZV_zKJWDfWadIwc_xcTsWooW2MSEDH1Qp1B4is3lwgNQ0HnE6JcMgYRD-qm3PnJBh-yxms_NMbQx5qh6mbr5d2bMuoqf8f8eIes2Cw8U9_js7-h1g4vSA";
-			// 	$success = ['status' => true, 'success' => $img];
-
-			// 		//    sss$profilefeed = array(
-			// 		//     'img_url' => $img
-			// 		//    );
-
-			// 		//    $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
-
-
-
-			 	$this->response($publicurl, REST_Controller::HTTP_OK);
-			// }
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
