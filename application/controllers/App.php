@@ -1517,7 +1517,7 @@ class App extends REST_Controller
 					'address' => $_POST['address'],
 					'member_photo' => $img,
 					'church_id' => $_POST['merchant_id']
-				);member_photo
+				);
 				$data['messages'] = $this->MyModel->create_church_member($churchMemberData);
 				$data = array(
 					'success' => true,
