@@ -1468,10 +1468,10 @@ public function church_group_name_post ()
 				'merchant_id' => $_POST['merchant_id']
 			);
 			$data['messages'] = $this->MyModel->create_merchant_group($merchantgroup);
-			$data = array(
-				'success' => true,
-				'message' => $data
-			);
+			// $data = array(
+			// 	'success' => true,
+			// 	'message' => $data
+			// );
 		}
 
  $this->response($data, REST_Controller::HTTP_OK);
