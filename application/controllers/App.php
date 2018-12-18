@@ -927,13 +927,13 @@ class App extends REST_Controller
 			file_put_contents($fileName, $image, 0, $context);
 			// move_uploaded_file($temp_name, $file);
 			 $publicurl = "https://storage.cloud.google.com/techloft-173609.appspot.com/$sname.jpg?organizationId=96831556031&_ga=2.78025300.-1152930877.1539685883&_gac=1.195684760.1544093648.EAIaIQobChMIrdLot4SL3wIV15TVCh0lUwrgEAAYASAAEgJ5rPD_BwE";
-			// $profilefeed = array(
-			//     'img_url' => $img
-			//   );
+			 $profilefeed = array(
+			     'img_url' => $publicurl
+			   );
 
-				 // $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
+				  $data['messages'] = $this->MyModel->update_user_profile($sname, $profilefeed);
                  	$success = ['status' => true, 'success' => $publicurl];
-			 	$this->response($success, REST_Controller::HTTP_OK);
+			 	$this->response($data, REST_Controller::HTTP_OK);
 
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
