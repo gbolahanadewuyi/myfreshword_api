@@ -979,47 +979,50 @@ class App extends REST_Controller
 		//  $imageurl = $data['image'];
 
 		//  echo $imageurl;
+		
+            
+        $my_bucket = "myfreshword-ci";
+		$file_name = $_FILES['photo']['name'];
+		$temp_name = $_FILES['photo']['tmp_name'];
+		move_uploaded_file($temp_name, "gs://${my_bucket}/${file_name}.jpg");
 
 
 
+		// $my_bucket = "freshword-ci";
+		// $options = ['gs' => ['Content-Type' => 'image/jpeg']];
+		// $context = stream_context_create($options);
+
+
+		// $config['upload_path'] = "gs://${my_bucket}/ ";
 
 
 
-		$my_bucket = "freshword-ci";
-		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
-		$context = stream_context_create($options);
+		// $config['overwrite'] = true;
+		// $config['file_ext_tolower'] = true;
+		// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+		// $config['max_size'] = 0;
+		// $this->load->library('upload', $config);
 
+		// $this->upload->initialize($config);
 
-		$config['upload_path'] = "gs://${my_bucket}/ ";
+		// if (!$this->upload->do_upload('photo')) {
+		// 	$error = array(
+		// 		'status' => false,
+		// 		'uploadpath' => $config['upload_path'],
+		// 		'error' => $this->upload->display_errors()
+		// 	);
 
+		// 		// echo json_encode($error);
 
-
-		$config['overwrite'] = true;
-		$config['file_ext_tolower'] = true;
-		$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		$config['max_size'] = 0;
-		$this->load->library('upload', $config);
-
-		$this->upload->initialize($config);
-
-		if (!$this->upload->do_upload('photo')) {
-			$error = array(
-				'status' => false,
-				'uploadpath' => $config['upload_path'],
-				'error' => $this->upload->display_errors()
-			);
-
-				// echo json_encode($error);
-
-			$this->response($error, REST_Controller::HTTP_OK);
-		} else {
-			$data = $this->upload->data();
-			// $file = $data['file_name'];
-			$file = $data['file_name'];
-			$path = $data['file_path'];
-			echo $file;
-			$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
-			//    echo $fileurl;
+		// 	$this->response($error, REST_Controller::HTTP_OK);
+		// } else {
+		// 	$data = $this->upload->data();
+		// 	// $file = $data['file_name'];
+		// 	$file = $data['file_name'];
+		// 	$path = $data['file_path'];
+		// 	echo $file;
+		// 	$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
+		// 	//    echo $fileurl;
 
 
 
@@ -1038,11 +1041,11 @@ class App extends REST_Controller
 
 
 
-			$this->response($data, REST_Controller::HTTP_OK);
+			$this->response($temp_name, REST_Controller::HTTP_OK);
 
 	}
 
-}
+
 
 
 
