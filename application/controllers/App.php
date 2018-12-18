@@ -182,7 +182,8 @@ class App extends REST_Controller
 				'user_key' => $key = md5(date('his') . $_POST['email']),
 				'user_accesslevel' => 2,
 				'user_status' => 2,
-				'user_activation_code' => $q
+				'user_activation_code' => $q,
+				'image_url' => 'https://via.placeholder.com/150'
 			);
 			$data = $this->MyModel->create_user($data);
 			$this->MyModel->send_code($_POST['mobile'], $q);
@@ -1443,6 +1444,41 @@ class App extends REST_Controller
 	}
 }
 
+
+
+
+public function church_group_name_post ()
+{
+	// $_POST = json_decode(file_get_contents('php://input'), true);
+	$response = $this->MyModel->merchant_auth();
+	if ($response['status'] == 200) {
+		$data = array(
+			'success' => false,
+			'messages' => array()
+		);
+		$this->form_validation->set_rules('group_name', 'group name', 'trim|required');
+		$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+		if ($this->form_validation->run() === false) {
+			foreach ($_POST as $key => $value) {
+				$data['messages'][$key] = form_error($key);
+			}
+		} else {
+			$merchantgroup = array(
+				'group_name' => $_POST['group_name'],
+				'merchant_id' => $_POST['merchant_id']
+			);
+			$data['messages'] = $this->MyModel->create_merchant_group($merchantgroup);
+			$data = array(
+				'success' => true,
+				'message' => $data
+			);
+		}
+
+ $this->response($data, REST_Controller::HTTP_OK);
+} else {
+	$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+}
+}
 
 	public function church_membership_register_post()
 	{

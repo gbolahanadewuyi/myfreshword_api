@@ -1662,6 +1662,22 @@ class MyModel extends CI_Model
 		}
 	}
 
+
+	public function create_merchant_group($data)
+	{
+		$query = $this->db->insert('merchant_group', $data);
+		if ($query == true) {
+			return array(
+				'status' => 200,
+				'message' => 'Group created successfully'
+			);
+		} else {
+			return array(
+				'status' => 400,
+				'message' => 'Error adding Group'
+			);
+		}
+	}
 	
 
 
@@ -2293,7 +2309,9 @@ class MyModel extends CI_Model
 				'nationality' => $data['nationality'],
 				'address' => $data['address'],
 				'marital_status' => $data['marital_status'],
-				'email' => $data['email']
+				'email' => $data['email'],
+				'member_group'=>$data['group_name']
+
 			
 				
 
@@ -2313,7 +2331,7 @@ class MyModel extends CI_Model
 				'address' => $data['address'],
 				'marital_status' => $data['marital_status'],
 				'email' => $data['email'],
-
+				'member_group'=>$data['group_name'],
 				'member_photo' => $img,
 
 			);
