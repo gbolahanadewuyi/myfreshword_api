@@ -2266,6 +2266,72 @@ class App extends REST_Controller
 		}
 	}
 
+
+
+	public function update_pastor_post()
+	{
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('pastors_title', 'Category', 'trim|required');
+			$this->form_validation->set_rules('pastors_name', 'Title', 'trim|required');
+			$this->form_validation->set_rules('pastors_bio', 'Message', 'trim|required');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			} else {
+				if ($_FILES['pastorsimg']['name'] == "") {
+					$img = '';
+					$data = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
+					$this->response($data, REST_Controller::HTTP_OK);
+					return false; //script will end here
+				}
+				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
+				$my_bucket = "freshword-ci";
+				$config['upload_path'] = "gs://${my_bucket}/";
+				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
+				$config['max_size'] = 3024;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('pastorsimg')) {
+					$error = array(
+						'status' => false,
+						'error' => $this->upload->display_errors()
+					);
+
+					// echo json_encode($error);
+
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+				} else {
+					$data = $this->upload->data();
+					$success = ['status' => true, 'success' => $data['file_name']];
+
+					// echo json_encode($success);
+
+					$file = $data['file_name'];
+
+
+
+					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
+
+					// so run insertion since the validation for the form has been passed correctly
+
+					$data = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
+				}
+			}
+
+			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
+
 	// so basically this gets the row data to dsiplay in the
 
 	public function merchant_feed_get()
@@ -2517,6 +2583,8 @@ class App extends REST_Controller
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
+
+	
 
 	public function merchant_profile_check($str)
 	{
