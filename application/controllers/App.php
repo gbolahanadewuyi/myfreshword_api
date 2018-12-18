@@ -928,7 +928,7 @@ class App extends REST_Controller
 			// move_uploaded_file($temp_name, $file);
 			 $publicurl = "https://storage.cloud.google.com/techloft-173609.appspot.com/$sname.jpg?organizationId=96831556031&_ga=2.78025300.-1152930877.1539685883&_gac=1.195684760.1544093648.EAIaIQobChMIrdLot4SL3wIV15TVCh0lUwrgEAAYASAAEgJ5rPD_BwE";
 			 $profilefeed = array(
-			     'img_url' => $publicurl
+			     'image_url' => $publicurl
 			   );
 
 				  $data['messages'] = $this->MyModel->update_user_profile($sname, $profilefeed);
