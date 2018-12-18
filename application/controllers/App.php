@@ -979,7 +979,7 @@ class App extends REST_Controller
 		//  echo $imageurl;
 		
             
-        $my_bucket = "myfreshword-ci";
+        $my_bucket = "techloft-173609.appspot.com ";
 		$file_name = $_FILES['photo']['name'];
 		$temp_name = $_FILES['photo']['tmp_name'];
 		echo $temp_name;
@@ -990,9 +990,9 @@ class App extends REST_Controller
 
 		file_put_contents("gs://${my_bucket}/", $temp_name, 0 , $context);
 
-		move_uploaded_file($temp_name, "gs://${my_bucket}/${file_name}.jpg");
+		move_uploaded_file($temp_name, "gs://${my_bucket}/");
 		\Cloudinary\Uploader::upload($temp_name,
-		array("folder" => "media_library/folders/all/profile_pictures", "public_id" => "testing", "overwrite" => TRUE,
+		array( "overwrite" => TRUE,
 		 "resource_type" => "image"));
 
 
