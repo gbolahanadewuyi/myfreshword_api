@@ -2428,7 +2428,7 @@ public function update_churchmember_post()
 
 					// so run insertion since the validation for the form has been passed correctly
 
-					$data = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
+					$data['messages'] = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
 				}
 			}
 
