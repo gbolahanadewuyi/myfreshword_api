@@ -990,8 +990,8 @@ class App extends REST_Controller
 
 		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 		$context = stream_context_create($options); 
-		$fileName = "gs://${my_bucket}/";
-		$file = "gs://${my_bucket}/";
+		$fileName = "gs://${my_bucket}/$image";
+		$file = "gs://${my_bucket}/$temp_name";
 		// file_put_contents("gs://${my_bucket}/gman.jpg", $temp_name, 0 , $context);
 		file_put_contents($fileName, $image, 0, $context);
 
