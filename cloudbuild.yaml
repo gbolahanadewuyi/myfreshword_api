@@ -10,6 +10,7 @@ steps:
     cd myfreshword_api
     ls -a
     git checkout dev
+    gitmsg=$(git log -1)
     rm -rf .git/
     echo Y|gcloud app deploy app.yaml
-    curl -X POST --data-urlencode "payload={\"channel\": \"#deploybot\", \"username\": \"deploybot\", \"text\": \"Myfreshword API has been deployed with branch dev.\", \"icon_emoji\": \":package:\"}" https://hooks.slack.com/services/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
+    curl -X POST --data-urlencode "payload={\"channel\": \"#deploybot\", \"username\": \"deploybot\", \"text\": \"*Myfreshword API* deployed with branch *dev*. \n$gitmsg \", \"icon_emoji\": \":package:\"}" https://hooks.slack.com/services/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
