@@ -979,7 +979,7 @@ class App extends REST_Controller
 		//  echo $imageurl;
 		
             
-        $my_bucket = "techloft-173609.appspot.com ";
+        $my_bucket = "techloft-173609.appspot.com";
 		$file_name = $_FILES['photo']['name'];
 		$temp_name = $_FILES['photo']['tmp_name'];
 		echo $temp_name;
