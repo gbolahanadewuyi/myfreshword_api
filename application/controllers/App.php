@@ -987,13 +987,14 @@ class App extends REST_Controller
 
 		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 		$context = stream_context_create($options); 
-
-		file_put_contents("gs://${my_bucket}/", $temp_name, 0 , $context);
+		$fileName = "gs://${my_bucket}/gman.jpg";
+		// file_put_contents("gs://${my_bucket}/gman.jpg", $temp_name, 0 , $context);
+		file_put_contents($fileName, $temp_name, 0, $context);
 
 		move_uploaded_file($temp_name, "gs://${my_bucket}/");
-		\Cloudinary\Uploader::upload($temp_name,
-		array( "overwrite" => TRUE,
-		 "resource_type" => "image"));
+		// \Cloudinary\Uploader::upload($temp_name,
+		// array( "overwrite" => TRUE,
+		//  "resource_type" => "image"));
 
 
 
@@ -1569,7 +1570,7 @@ public function update_churchmember_post()
 		} else {
 			if ($_FILES['member_photo']['name'] == "") {
 				$img = '';
-				$data = $this->MyModel->update_churchmember($_POST['pastor_id'], $_POST, $img);
+				$data = $this->MyModel->update_churchmember($_POST['member_id'], $_POST, $img);
 				$this->response($data, REST_Controller::HTTP_OK);
 				return false; //script will end here
 			}
