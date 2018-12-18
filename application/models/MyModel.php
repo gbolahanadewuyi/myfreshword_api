@@ -2267,9 +2267,9 @@ class MyModel extends CI_Model
 	{
 		if ($img == "") {
 			$updateData = array(
-				'category' => $data['pastors_title'],
-				'title' => $data['pastors_name'],
-				'message' => $data['pastors_bio']
+				'pastors_title' => $data['pastors_title'],
+				'pastors_name' => $data['pastors_name'],
+				'pastors_bio' => $data['pastors_bio']
 
 				// 'image'             => $img,
 			);
