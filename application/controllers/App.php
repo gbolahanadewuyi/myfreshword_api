@@ -982,16 +982,20 @@ class App extends REST_Controller
         $my_bucket = "techloft-173609.appspot.com";
 		$file_name = $_FILES['photo']['name'];
 		$temp_name = $_FILES['photo']['tmp_name'];
+
+		$image = file_get_contents($_FILES['photo']['tmp_name']);
 		echo $temp_name;
 		echo $file_name;
+		echo $image;
 
 		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 		$context = stream_context_create($options); 
 		$fileName = "gs://${my_bucket}/gman.jpg";
+		$file = "gs://${my_bucket}/badman.jpg";
 		// file_put_contents("gs://${my_bucket}/gman.jpg", $temp_name, 0 , $context);
-		file_put_contents($fileName, $temp_name, 0, $context);
+		file_put_contents($fileName, $image, 0, $context);
 
-		move_uploaded_file($temp_name, "gs://${my_bucket}/");
+		move_uploaded_file($temp_name, $file);
 		// \Cloudinary\Uploader::upload($temp_name,
 		// array( "overwrite" => TRUE,
 		//  "resource_type" => "image"));
