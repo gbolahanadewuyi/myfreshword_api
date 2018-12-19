@@ -89,7 +89,7 @@ class MyModel extends CI_Model
 
 	public function mobile_login($user_mobile, $password)
 	{
-		$q = $this->db->select('user_pwd,user_id,user_status,user_uname,user_mobile,user_church_id')->from('ts_user')->where('user_mobile', $user_mobile)->get()->row();
+		$q = $this->db->select('user_pwd,user_id,user_status,user_uname,user_mobile,user_church_id,image_url')->from('ts_user')->where('user_mobile', $user_mobile)->get()->row();
 		if ($q == "") {
 			return array(
 				'status' => 204,
@@ -538,7 +538,7 @@ class MyModel extends CI_Model
 
 		$pin = $this->generate_short_code();
 
-		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord" . "&To=$phone" . "&Content=" . urlencode("myFreshWord secret code $pin") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
+		$url = "https://api.hubtel.com/v1/messages/send?" . "From=MyFreshWord" . "&To=$phone" . "&Content=" . urlencode("myFreshWord secret code $pin") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -1978,7 +1978,7 @@ class MyModel extends CI_Model
 
 		// $pin = $this->generate_short_code();
 
-		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord" . "&To=$phone" . "&Content=" . urlencode("Your temporary password : $newpass , please do well to change your password after logging in .Thank You") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
+		$url = "https://api.hubtel.com/v1/messages/send?" . "From=MyFreshWord" . "&To=$phone" . "&Content=" . urlencode("Your temporary password : $newpass , please do well to change your password after logging in .Thank You") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -1997,7 +1997,7 @@ class MyModel extends CI_Model
 
 	public function send_reset_code($phone, $resetcode)
 	{
-		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord" . "&To=$phone" . "&Content=" . urlencode("Your account reset code : $resetcode") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
+		$url = "https://api.hubtel.com/v1/messages/send?" . "From=MyFreshWord" . "&To=$phone" . "&Content=" . urlencode("Your account reset code : $resetcode") . "&ClientId=dgsfkiil" . "&ClientSecret=czywtkzd" . "&RegisteredDelivery=true";
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -2688,7 +2688,7 @@ class MyModel extends CI_Model
 
 	function send_message_($phone, $message)
 	{
-		$url = "https://api.hubtel.com/v1/messages/send?" . "From=myFreshWord"
+		$url = "https://api.hubtel.com/v1/messages/send?" . "From=MyFreshWord"
 
 		// dynamic
 
