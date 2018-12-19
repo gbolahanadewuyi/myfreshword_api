@@ -183,7 +183,7 @@ class App extends REST_Controller
 				'user_accesslevel' => 2,
 				'user_status' => 2,
 				'user_activation_code' => $q,
-				'image_url' => 'https://via.placeholder.com/150'
+				'image_url' => '../assets/img/user-img.png'
 			);
 			$data = $this->MyModel->create_user($data);
 			$this->MyModel->send_code($_POST['mobile'], $q);
