@@ -17,7 +17,7 @@ class MyModel extends CI_Model
 	public function check_auth_client()
 	{
 
-		// this is where i am returning the header  user id and authentication id as well
+		// this is where i am returning the header  userid and authentication id as well
 
 		$client_service = $this->input->get_request_header('User-ID', true);
 		$auth_key = $this->input->get_request_header('Authorization', true);
