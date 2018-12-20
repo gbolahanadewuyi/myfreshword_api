@@ -926,6 +926,12 @@ class App extends REST_Controller
 			$context = stream_context_create($options); 
 			$fileName = "gs://${my_bucket}/$sname.jpg";
 			file_put_contents($fileName, $image, 0, $context);
+			$publicUrl = CloudStorageTools::getPublicUrl($fileName, false);
+              
+			 echo $publicUrl;
+     
+			 $url = file_get_contents($fileName);
+
 			// move_uploaded_file($temp_name, $file);
 			 $publicurl = "https://storage.cloud.google.com/techloft-173609.appspot.com/$sname.jpg?organizationId=96831556031&_ga=2.78025300.-1152930877.1539685883&_gac=1.195684760.1544093648.EAIaIQobChMIrdLot4SL3wIV15TVCh0lUwrgEAAYASAAEgJ5rPD_BwE";
 			 $profilefeed = array(
