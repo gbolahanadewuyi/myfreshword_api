@@ -2270,54 +2270,43 @@ public function update_churchmember_post()
 				}
 			} else {
 
-				// this is where i upload the image for the merchant feed
+				$firstid = $_POST['church_id'];
+				$secondid = $_POST['feed_title'];
+;               $my_bucket = "freshword-ci/merchant_feeds";
 
-				$my_bucket = "freshword-ci";
-				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['encrypt_name'] = true;
-				$config['max_size'] = 0;
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('newsfeed_img')) {
-					$error = array(
-						'status' => false,
-						'error' => $this->upload->display_errors()
+             if(empty($_FILES)){
+                    $error = array(
+						   'status'=> false,
+						   'error' => 'you did not select an image to upload'
 					);
-
-					// echo json_encode($error);
-
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-				} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
-					$file = $data['file_name'];
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file";
+		  } else {
+			// $file_name = $_FILES['member_photo']['name'];
+			$temp_name = $_FILES['newsfeed_img']['tmp_name'];
+	
+			$image = file_get_contents($_FILES['newsfeed_img']['tmp_name']);
+	
+			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+			$context = stream_context_create($options); 
+			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+			file_put_contents($fileName, $image, 0, $context);
 
-
-
-
-					// so run insertion since the validation for the form has been passed correctly
-
-					// $data = $this->MyModel->insert_feed_data($_POST, $img);
-					$newFeed = array(
-						'category' => $_POST['news_cat'],
-						'title' => $_POST['feed_title'],
-						'message' => $_POST['feed_message'],
-						'image' => $img,
-						'merchantemail' => $_POST['merchantemail'],
-						'timestamp' => date('Y-m-d H:i:s'),
-						'likes_count' => 0,
-						'comments_counts' => 0,
-						'churchid' => $_POST['church_id']
-					);
-
-					$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
-				}
-
-
-
+			 $img = "https://storage.googleapis.com/freshword-ci/merchant_feeds/$firstid.$secondid.jpg";
+			 $newFeed = array(
+				'category' => $_POST['news_cat'],
+				'title' => $_POST['feed_title'],
+				'message' => $_POST['feed_message'],
+				'image' => $img,
+				'merchantemail' => $_POST['merchantemail'],
+				'timestamp' => date('Y-m-d H:i:s'),
+				'likes_count' => 0,
+				'comments_counts' => 0,
+				'churchid' => $_POST['church_id']
+			);
+		  }
+				  
+				$data['messages'] = $this->MyModel->insert_feed_data($newFeed);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
