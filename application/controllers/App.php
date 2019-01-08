@@ -1518,8 +1518,9 @@ public function church_group_name_post()
                     //using merchant ID and member firstname to identify memeber images
 				$firstid = $_POST['merchant_id'];
 				$secondid = $_POST['first_name'];
-;                $my_bucket = "freshword-ci/merchant_members";
-             if(empty($_FILE)){
+;               $my_bucket = "freshword-ci/merchant_members";
+
+             if(empty($_FILES)){
                     $error = array(
 						   'status'=> false,
 						   'error' => 'you did not select an image to upload'
