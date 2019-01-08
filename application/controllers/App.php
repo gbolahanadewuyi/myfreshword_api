@@ -186,7 +186,7 @@ class App extends REST_Controller
 				'image_url' => '../assets/img/user-img.png'
 			);
 			$data = $this->MyModel->create_user($data);
-			$this->MyModel->send_code($_POST['mobile'], $q);
+			$this->MyModel->send_ code($_POST['mobile'], $q);
 
 			// $this->mail_user($_POST['email'], 'Registration', 'Click link to confirm and activate account thank you: ' .'http://192.168.1.3/themeportal/authenticate/login/'.$key);
 
@@ -2050,9 +2050,9 @@ public function update_churchmember_post()
 					return false;
 		  } else {
 			// $file_name = $_FILES['member_photo']['name'];
-			$temp_name = $_FILES['photo']['tmp_name'];
+			$temp_name = $_FILES['image_file']['tmp_name'];
 	
-			$image = file_get_contents($_FILES['photo']['tmp_name']);
+			$image = file_get_contents($_FILES['image_file']['tmp_name']);
 	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
@@ -2087,7 +2087,8 @@ public function update_churchmember_post()
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
 					'merchant_email' => $_POST['merchant_email'],
-					'prod_date' => date('Y-m-d H:i:s')
+					'prod_date' => date('Y-m-d H:i:s'),
+					'img_link'=> $img
 
 
 
