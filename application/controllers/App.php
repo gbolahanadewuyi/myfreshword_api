@@ -1538,8 +1538,7 @@ public function church_group_name_post()
 			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
 			file_put_contents($fileName, $image, 0, $context);
 
-			 $img = "https://storage.googleapis.com/techloft-173609.appspot.com/$firstid.$secondid.jpg";
-
+			 $img = "https://storage.googleapis.com/freshword-ci/merchant_members/$firstid.$secondid.jpg";
 				$churchMemberData = array(
 					'first_name' => $_POST['first_name'],
 					'last_name' => $_POST['last_name'],

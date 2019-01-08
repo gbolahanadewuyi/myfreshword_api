@@ -2040,7 +2040,7 @@ class MyModel extends CI_Model
 
 	public function get_subscription_packages()
 	{
-		$query = $this->db->select('')->get()->row();
+		$query = $this->db->select('')->from('ts_subscriptioncategories')->get()->row();
 		if ($query == "") {
 			return array(
 				'status' => 400,
