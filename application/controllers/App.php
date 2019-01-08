@@ -1591,45 +1591,34 @@ public function update_churchmember_post()
 				$data['messages'][$key] = form_error($key);
 			}
 		} else {
-			if ($_FILES['member_photo']['name'] == "") {
+			$firstid = $response['id'];
+			$secondid = $_POST['first_name'];
+;           $my_bucket = "freshword-ci/merchant_members";
+
+			if (empty($_FILES)) {
 				$img = '';
 				$data = $this->MyModel->update_churchmember($_POST['member_id'], $_POST, $img);
 				$this->response($data, REST_Controller::HTTP_OK);
 				return false; //script will end here
+			}else{
+				$temp_name = $_FILES['member_photo']['tmp_name'];
+	
+				$image = file_get_contents($_FILES['member_photo']['tmp_name']);
+		
+				$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+				$context = stream_context_create($options); 
+				$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+				file_put_contents($fileName, $image, 0, $context);
+	
+				 $img = "https://storage.googleapis.com/freshword-ci/merchant_members/$firstid.$secondid.jpg";
+	
 			}
-			require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-			$my_bucket = "freshword-ci";
-			$config['upload_path'] = "gs://${my_bucket}/";
-			$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-			$config['max_size'] = 3024;
-			$this->load->library('upload', $config);
-			$this->upload->initialize($config);
-			if (!$this->upload->do_upload('member_photo')) {
-				$error = array(
-					'status' => false,
-					'error' => $this->upload->display_errors()
-				);
-
-				// echo json_encode($error);
-
-				$this->response($error, REST_Controller::HTTP_OK);
-				return false;
-			} else {
-				$data = $this->upload->data();
-				$success = ['status' => true, 'success' => $data['file_name']];
-
-				// echo json_encode($success);
-
-				$file = $data['file_name'];
+			
 
 
+			// so run insertion since the validation for the form has been passed correctly
 
-				$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-
-				// so run insertion since the validation for the form has been passed correctly
-
-				$data = $this->MyModel->update_churchmember($_POST['member_id'], $_POST, $img);
-			}
+			$data = $this->MyModel->update_churchmember($_POST['member_id'], $_POST, $img);
 		}
 
 		$this->response($data, REST_Controller::HTTP_OK);
