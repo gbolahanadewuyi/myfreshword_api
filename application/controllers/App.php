@@ -186,7 +186,7 @@ class App extends REST_Controller
 				'image_url' => '../assets/img/user-img.png'
 			);
 			$data = $this->MyModel->create_user($data);
-			$this->MyModel->send_ code($_POST['mobile'], $q);
+			$this->MyModel->send_code($_POST['mobile'], $q);
 
 			// $this->mail_user($_POST['email'], 'Registration', 'Click link to confirm and activate account thank you: ' .'http://192.168.1.3/themeportal/authenticate/login/'.$key);
 
