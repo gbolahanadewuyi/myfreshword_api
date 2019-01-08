@@ -1528,7 +1528,7 @@ public function church_group_name_post()
 	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
-			$fileName = "gs://${my_bucket}/$sname.jpg";
+			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
 			file_put_contents($fileName, $image, 0, $context);
 
 			 $img = "https://storage.googleapis.com/techloft-173609.appspot.com/$firstid.$secondid.jpg";
