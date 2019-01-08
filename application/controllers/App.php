@@ -2037,6 +2037,32 @@ public function update_churchmember_post()
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
+				$firstid = $response['id'];
+				$secondid = $_POST['prod_name'];
+;               $my_bucket = "freshword-ci/merchant_products";
+
+             if(empty($_FILES)){
+                    $error = array(
+						   'status'=> false,
+						   'error' => 'you did not select an image to upload'
+					);
+					$this->response($error, REST_Controller::HTTP_OK);
+					return false;
+		  } else {
+			// $file_name = $_FILES['member_photo']['name'];
+			$temp_name = $_FILES['photo']['tmp_name'];
+	
+			$image = file_get_contents($_FILES['photo']['tmp_name']);
+	
+			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+			$context = stream_context_create($options); 
+			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+			file_put_contents($fileName, $image, 0, $context);
+
+			 $img = "https://storage.googleapis.com/freshword-ci/merchant_products/$firstid.$secondid.jpg";
+		  }
+
+
 				$prodData = array(
 					'prod_name' => $_POST['prod_name'],
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
