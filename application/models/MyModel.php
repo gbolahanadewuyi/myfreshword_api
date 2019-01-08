@@ -2019,7 +2019,7 @@ class MyModel extends CI_Model
 		}
 	}
 
-	// search data by email
+	// sdearch data by email
 
 	public function get_merchant_profile($id)
 	{
@@ -2028,6 +2028,23 @@ class MyModel extends CI_Model
 			return array(
 				'status' => 400,
 				'message' => 'Error fetching merchant profile data'
+			);
+		} else {
+			return array(
+				'status' => 200,
+				'message' => $query
+			);
+		}
+	}
+
+
+	public function get_subscription_packages()
+	{
+		$query = $this->db->select('')->get()->row();
+		if ($query == "") {
+			return array(
+				'status' => 400,
+				'message' => 'Error fetching subscription  data'
 			);
 		} else {
 			return array(
