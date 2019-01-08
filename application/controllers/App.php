@@ -1520,7 +1520,7 @@ public function church_group_name_post()
 				$secondid = $_POST['first_name'];
 
 
-                $my_bucket = "freshword-ci/merchant_members/";
+                $my_bucket = "freshword-ci";
 			$file_name = $_FILES['member_photo']['name'];
 			$temp_name = $_FILES['member_photo']['tmp_name'];
 	
