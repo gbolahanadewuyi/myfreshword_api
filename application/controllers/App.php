@@ -2360,51 +2360,44 @@ public function update_churchmember_post()
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
+						  
+				$firstid = $response['id'];
+				$secondid = $_POST['pastors_name'];
+;               $my_bucket = "freshword-ci/merchant_pastors";
 
-				// this is where i upload the image for the merchant feed
-				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-				$my_bucket = "freshword-ci";
-				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['encrypt_name'] = true;
-				$config['max_size'] = 0;
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-
-				if(!$this->upload->do_upload('pastorsimg')) {
-					$error = array(
-						'status' => false,
-						'error' => $this->upload->display_errors()
+             if(empty($_FILES)){
+                    $error = array(
+						   'status'=> false,
+						   'error' => 'you did not select an image to upload'
 					);
-
-					// echo json_encode($error);
-
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
+		  } else {
+			$temp_name = $_FILES['pastorsimg']['tmp_name'];
+	
+			$image = file_get_contents($_FILES['pastorsimg']['tmp_name']);
+	
+			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+			$context = stream_context_create($options); 
+			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+			file_put_contents($fileName, $image, 0, $context);
 
-					} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
+			 $img = "https://storage.googleapis.com/freshword-ci/merchant_pastors/$firstid.$secondid.jpg";
+		
+		  }
 
-					// echo json_encode($success);
-					$file = $data['file_name'];
+			
+				$Pastors_listing = array(
+					'pastors_title' => $_POST['pastors_title'],
+					'pastors_name' => $_POST['pastors_name'],
+					'pastors_bio' => $_POST['pastors_bio'],
+					'pastors_avatar_img' => $img,
+					'merchant_id' => $response['id']
+				);
 
+				// so run insertion since the validation for the form has been passed correctly
 
-
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-
-					$Pastors_listing = array(
-						'pastors_title' => $_POST['pastors_title'],
-						'pastors_name' => $_POST['pastors_name'],
-						'pastors_bio' => $_POST['pastors_bio'],
-						'pastors_avatar_img' => $img,
-						'merchant_id' => $response['id']
-					);
-
-					// so run insertion since the validation for the form has been passed correctly
-
-					$data['messages'] = $this->MyModel->insert_pastors_bio_data($Pastors_listing);
-				}
+				$data['messages'] = $this->MyModel->insert_pastors_bio_data($Pastors_listing);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
@@ -2432,45 +2425,33 @@ public function update_churchmember_post()
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['pastorsimg']['name'] == "") {
+				$firstid = $response['id'];
+				$secondid = $_POST['pastors_name'];
+;               $my_bucket = "freshword-ci/merchant_pastors";
+				if (empty($_FILES)) {
 					$img = '';
 					$data = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
+				}else{
+
+
+					$temp_name = $_FILES['pastorsimg']['tmp_name'];
+	
+					$image = file_get_contents($_FILES['pastorsimg']['tmp_name']);
+			
+					$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+					$context = stream_context_create($options); 
+					$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+					file_put_contents($fileName, $image, 0, $context);
+		
+					 $img = "https://storage.googleapis.com/freshword-ci/merchant_pastors/$firstid.$secondid.jpg";
+
+
 				}
-				require_once 'google/appengine/api/cloud_storage/CloudStorageTools.php';
-				$my_bucket = "freshword-ci";
-				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-				$config['max_size'] = 3024;
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('pastorsimg')) {
-					$error = array(
-						'status' => false,
-						'error' => $this->upload->display_errors()
-					);
+				// so run insertion since the validation for the form has been passed correctly
 
-					// echo json_encode($error);
-
-					$this->response($error, REST_Controller::HTTP_OK);
-					return false;
-				} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
-
-					// echo json_encode($success);
-
-					$file = $data['file_name'];
-
-
-
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-
-					// so run insertion since the validation for the form has been passed correctly
-
-					$data['messages'] = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
-				}
+				$data['messages'] = $this->MyModel->update_pastor($_POST['pastor_id'], $_POST, $img);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
