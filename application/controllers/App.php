@@ -2651,48 +2651,36 @@ public function update_churchmember_post()
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				if ($_FILES['merchant_display_picture']['name'] == "") {
+				$firstid = $response['id'];
+			$secondid = $_POST['merchant_name'];
+;           $my_bucket = "freshword-ci/merchant_profile";
+				if(empty($_FILES)) {
 					$q = $this->MyModel->photo_check($_POST['id']);
 					$img = $q;
 					$data = $this->MyModel->update_merchant_profile($_POST, $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false;
+				}else {
+
+                	$temp_name = $_FILES['merchant_display_picture']['tmp_name'];
+	
+				$image = file_get_contents($_FILES['merchant_display_picture']['tmp_name']);
+		
+				$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+				$context = stream_context_create($options); 
+				$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+				file_put_contents($fileName, $image, 0, $context);
+	
+				 $img = "https://storage.googleapis.com/freshword-ci/merchant_profile/$firstid.$secondid.jpg";
+
 				}
 
-				// this is where i upload the image for the merchant feed
-
-				$my_bucket = "freshword-ci";
-				$config['upload_path'] = "gs://${my_bucket}/";
-				$config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-				$config['max_size'] = 2024;
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				if (!$this->upload->do_upload('merchant_display_picture')) {
-					$error = array(
-						'status' => false,
-						'error' => $this->upload->display_errors()
-					);
-
-					// echo json_encode($error);
-
-					$this->response($error, REST_Controller::HTTP_OK);
-					return false;
-				} else {
-					$data = $this->upload->data();
-					$success = ['status' => true, 'success' => $data['file_name']];
-
-					// echo json_encode($success);
-
-					$file = $data['file_name'];
+				
 
 
+				// so run insertion since the validation for the form has been passed correctly
 
-					$img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-
-					// so run insertion since the validation for the form has been passed correctly
-
-					$data['messages'] = $this->MyModel->update_merchant_profile($_POST, $img);
-				}
+				$data['messages'] = $this->MyModel->update_merchant_profile($_POST, $img);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
