@@ -1519,23 +1519,22 @@ public function church_group_name_post()
 				$firstid = $_POST['merchant_id'];
 				$secondid = $_POST['first_name'];
 ;                $my_bucket = "freshword-ci/merchant_members";
-          if($_FILES['member_photo']['name'] == ""){
+             if(empty($_FILE)){
                     $error = array(
 						   'status'=> false,
-						   'error' => 'you did not select an image'
+						   'error' => 'you did not select an image to upload'
 					);
 					$this->response($error, REST_Controller::HTTP_OK);
 					return false;
-		  } else{
-			$file_name = $_FILES['member_photo']['name'];
-
+		  } else {
+			// $file_name = $_FILES['member_photo']['name'];
 			$temp_name = $_FILES['member_photo']['tmp_name'];
 	
 			$image = file_get_contents($_FILES['member_photo']['tmp_name']);
 	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
-			$fileName = "gs://${my_bucket}/members/$firstid.$secondid.jpg";
+			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
 			file_put_contents($fileName, $image, 0, $context);
 
 			 $img = "https://storage.googleapis.com/techloft-173609.appspot.com/$firstid.$secondid.jpg";
