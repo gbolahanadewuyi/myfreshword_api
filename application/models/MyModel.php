@@ -581,7 +581,7 @@ class MyModel extends CI_Model
 	}
 	
 	function verifyEmail($key){
-		$q = $this->db->select('user_id')->from('ts_user')->where('user_key', $key)->get()->row();
+		$q = $this->db->select('user_id,user_status')->from('ts_user')->where('user_key', $key)->get()->row();
 		if ($q == "") {
 			return array(
 				'status' => 204,
