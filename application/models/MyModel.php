@@ -544,9 +544,7 @@ class MyModel extends CI_Model
         
         //sending confirmEmail($receiver) function calling link to the user, inside message body
         $message = 'Dear User,<br><br> Please click on the below activation link to verify your email address<br><br>
-        <a href=\'http://www.localhost/codeigniter/Signup_Controller/confirmEmail/'.md5($receiver).'\'>http://www.localhost/codeigniter/Signup_Controller/confirmEmail/'. md5($receiver) .'</a><br><br>Thanks';
-        
-        
+        <a href=\'https://myfreshword-dot-techloft-173609.appspot.com/App/confirmEmail/'.md5(date('his').($receiver)).'\'>https://myfreshword-dot-techloft-173609.appspot.com/App/confirmEmail/'. md5(date('his').($receiver)) .'</a><br><br>Thanks';
         
         //config email settings
         $config['protocol'] = 'smtp';
@@ -580,7 +578,15 @@ class MyModel extends CI_Model
         }
         
        
+	}
+	
+	function verifyEmail($key){
+        $data = array('user_status' => 1);
+        $this->db->where('md5(email)',$key);
+        return $this->db->update('ts_user', $data);    //update status as 1 to make active user
     }
+    
+
 
 	public function send_code($phone, $pin)
 	{

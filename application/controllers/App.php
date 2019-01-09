@@ -198,6 +198,18 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
+	function confirmEmail($hashcode){
+        if($this->MyModel->verifyEmail($hashcode)){
+            $this->session->set_flashdata('verify', '<div class="alert alert-success text-center">Email address is confirmed. Please login to the system</div>');
+            redirect('www.google.com');
+        }else{
+            $this->session->set_flashdata('verify', '<div class="alert alert-danger text-center">Email address is not confirmed. Please try to re-register.</div>');
+            redirect('www.facebook.com');
+        }
+    }
+    
+
+
 	public function activate_account_post()
 	{
 		$_POST = json_decode(file_get_contents('php://input'), true);
