@@ -1728,6 +1728,19 @@ public function update_churchmember_post()
 		}
 	}
 
+	//get subsciption packages
+	public function subscription_modules_get() {
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$query = $this->MyModel->get_subscription_modules();
+
+			$this->response($query, REST_Controller::HTTP_OK);
+		}
+		else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
+
 	// this has to be sequential now we need to return values here to proceed to the next endpoint
 	// this will be looped twice to the end point
 
