@@ -581,9 +581,27 @@ class MyModel extends CI_Model
 	}
 	
 	function verifyEmail($key){
-        $data = array('user_status' => 1);
-        $this->db->where('user_key',$key);
-        return $this->db->update('ts_user', $data);    //update status as 1 to make active user
+		$q = $this->db->select('user_id')->from('ts_user')->where('user_key', $key)->get()->row();
+		if ($q == "") {
+			return array(
+				'status' => 204,
+				'message' => 'Error activating account'
+			);
+		} else
+			if ($q->user_status == 1) {
+			return array(
+				'status' => 200,
+				'message' => 'Account already active..'
+			);
+		} else {
+			$data = array('user_status' => 1);
+			$this->db->where('user_id', $q->user_id)->update('ts_user', $data);
+			return array(
+				'status' => 200,
+				'message' => 'Account activated successfully.'
+			);
+		}
+       
     }
     
 

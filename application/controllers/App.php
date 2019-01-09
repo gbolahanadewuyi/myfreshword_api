@@ -198,7 +198,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	function confirmEmail($hashcode){
+	function confirmEmail_post($hashcode){
         if($this->MyModel->verifyEmail($hashcode)){
             $this->session->set_flashdata('verify', '<div class="alert alert-success text-center">Email address is confirmed. Please login to the system</div>');
             redirect('www.google.com');
