@@ -539,8 +539,8 @@ class MyModel extends CI_Model
 	}
 
 	public function sendEmail($receiver){
-        $from = "Techloft";    //senders email address
-        $subject = 'gwopz4adz@gmail.com';  //email subject
+        $from = "gwopz4adz@gmail.com";    //senders email address
+        $subject = 'Email Verification';  //email subject
         
         //sending confirmEmail($receiver) function calling link to the user, inside message body
         $message = 'Dear User,<br><br> Please click on the below activation link to verify your email address<br><br>
