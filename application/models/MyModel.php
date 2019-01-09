@@ -538,6 +538,50 @@ class MyModel extends CI_Model
 		return $pin;
 	}
 
+	public function sendEmail($receiver){
+        $from = "Techloft";    //senders email address
+        $subject = 'gwopz4adz@gmail.com';  //email subject
+        
+        //sending confirmEmail($receiver) function calling link to the user, inside message body
+        $message = 'Dear User,<br><br> Please click on the below activation link to verify your email address<br><br>
+        <a href=\'http://www.localhost/codeigniter/Signup_Controller/confirmEmail/'.md5($receiver).'\'>http://www.localhost/codeigniter/Signup_Controller/confirmEmail/'. md5($receiver) .'</a><br><br>Thanks';
+        
+        
+        
+        //config email settings
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_port'] = '465';
+        $config['smtp_user'] = $from;
+        $config['smtp_pass'] = 'gman2014';  //sender's password
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'iso-8859-1';
+        $config['wordwrap'] = 'TRUE';
+        $config['newline'] = "\r\n"; 
+        
+        $this->load->library('email', $config);
+		$this->email->initialize($config);
+        //send email
+        $this->email->from($from);
+        $this->email->to($receiver);
+        $this->email->subject($subject);
+        $this->email->message($message);
+        
+        if($this->email->send()){
+			//for testing
+            echo "sent to: ".$receiver."<br>";
+			echo "from: ".$from. "<br>";
+			echo "protocol: ". $config['protocol']."<br>";
+			echo "message: ".$message;
+            return true;
+        }else{
+            echo "email send failed";
+            return false;
+        }
+        
+       
+    }
+
 	public function send_code($phone, $pin)
 	{
 
