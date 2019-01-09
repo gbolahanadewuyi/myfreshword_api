@@ -2037,14 +2037,30 @@ class MyModel extends CI_Model
 		}
 	}
 
-
+	
 	public function get_subscription_packages()
 	{
-		$query = $this->db->select('sub_type, sub_price')->from('subscription_modules')->get()->row();
+		$query = $this->db->select('')->from('subscription_modules')->get()->row();
 		if ($query == "") {
 			return array(
 				'status' => 400,
 				'message' => 'Error fetching subscription  data'
+			);
+		} else {
+			return array(
+				'status' => 200,
+				'message' => $query
+			);
+		}
+	}
+
+	public function get_subscription_modules()
+	{
+		$query = $this->db->select('sub_type, sub_price')->from('subscription_modules')->get()->result();
+		if ($query == "") {
+			return array(
+				'status' => 400,
+				'message' => 'Error fetching subscription packages'
 			);
 		} else {
 			return array(
