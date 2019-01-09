@@ -582,7 +582,7 @@ class MyModel extends CI_Model
 	
 	function verifyEmail($key){
         $data = array('user_status' => 1);
-        $this->db->where('md5(email)',$key);
+        $this->db->where('user_key',$key);
         return $this->db->update('ts_user', $data);    //update status as 1 to make active user
     }
     
