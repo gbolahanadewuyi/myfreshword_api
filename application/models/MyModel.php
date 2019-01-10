@@ -298,7 +298,7 @@ class MyModel extends CI_Model
 
 	// this is to check the connection with the api key once the user  has successfully logged in
 
-	public function auth()
+	public function auth($users_id, $token)
 	{
 
 		$users_id  = $this->input->get_request_header('User-ID', TRUE);
@@ -398,8 +398,21 @@ class MyModel extends CI_Model
 
 	public function audio_all_data()
 	{
-		return $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link !=', " ")->where('prod_image !=', " ")->where('file_link !=', " ")->get()->result();
+	   $q = $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link !=', " ")->where('prod_image !=', " ")->where('file_link !=', " ")->get()->result();
+		 if ($q == true) {
+			return array(
+				'status' => 201,
+				'message' => 'no data'
+			);
+		} else {
+			return array(
+				'status' => 204,
+				'message' => 'data',
+				'result'=> $q
+			);
+		}
 	}
+
 
 	public function book_all_data()
 	{
