@@ -121,7 +121,8 @@ function get_speaker_data($query){
   // }
 
   function get_speaher_id($id){
-    return $this->db->select('*')->from('pastors_lisitng')->where('id',$id)->order_by('id','desc')->get()->row();
+    // return $this->db->select('*')->from('pastors_lisitng')->where('id',$id)->order_by('id','desc')->get()->row();
+    return $this->db->select("concat(pastors_listing.pastors_title,' ',pastors_listing.name) AS 'name' , pastors_listing.id, pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation", FALSE)->from('pastors_listing')->join('ts_merchant','pastors_listing.merchant_id = ts_merchant.id','Left')->where('id',$id)->order_by('id','desc')->get()->result_array();
   }
 
 
