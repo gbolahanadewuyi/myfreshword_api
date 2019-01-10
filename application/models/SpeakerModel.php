@@ -121,7 +121,7 @@ function get_speaker_data($query){
   // }
 
   function get_speaher_id($id){
-    return $this->db->select('*')->from($this->speakerTable)->where('id',$id)->order_by('id','desc')->get()->row();
+    return $this->db->select('*')->from('pastors_lisitng')->where('id',$id)->order_by('id','desc')->get()->row();
   }
 
 
@@ -133,7 +133,14 @@ function get_speaker_data($query){
 
   function search_speaker($search_term){
     $search_term="%".$search_term."%";
-    $sql="SELECT * FROM $this->speakerTable WHERE name LIKE ? ";
+    // $sql="SELECT * FROM $this->speakerTable WHERE name LIKE ? ";
+     $sql = "SELECT concat(pastors_listing.pastors_title,'',pastors_listing.name) as name, pastors_listing.id pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation
+     from pastors_listing 
+     left join ts_merchant on pastors_listing.merchant_id = ts_merchant.id
+     WHERE name like ?";
+
+     
+
     $query=$this->db->query($sql,array($search_term));
     $res=$query->result_array();//so basically we are going to return an array of the results
      if(count($res) > 0){
