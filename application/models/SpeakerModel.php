@@ -122,7 +122,7 @@ function get_speaker_data($query){
 
   function get_speaher_id($id){
     // return $this->db->select('*')->from('pastors_lisitng')->where('id',$id)->order_by('id','desc')->get()->row();
-    return $this->db->select("concat(pastors_listing.pastors_title,' ',pastors_listing.name) AS 'name' , pastors_listing.id, pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation", FALSE)->from('pastors_listing')->join('ts_merchant','pastors_listing.merchant_id = ts_merchant.id','Left')->where('id',$id)->order_by('id','desc')->get()->result_array();
+    return $this->db->select("concat(pastors_listing.pastors_title,' ',pastors_listing.name) AS 'name' , pastors_listing.id, pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation", FALSE)->from('pastors_listing')->join('ts_merchant','pastors_listing.merchant_id = ts_merchant.id','Left')->where('pastors_listing.id',$id)->order_by('pastors_listing.id','desc')->get()->result_array();
   }
 
 
@@ -138,7 +138,7 @@ function get_speaker_data($query){
      $sql = "SELECT concat(pastors_listing.pastors_title,'',pastors_listing.name) as name, pastors_listing.id pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation
      from pastors_listing 
      left join ts_merchant on pastors_listing.merchant_id = ts_merchant.id
-     WHERE name like ?";
+     WHERE name like '?'";
 
      
 
