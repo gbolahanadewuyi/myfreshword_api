@@ -19,11 +19,17 @@ Class SpeakerModel extends CI_Model {
     }
 
 function get_speaker_data($query){
-      $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array returns id of the speaker
+  $this->db->select('pastors_listing.pastors_title, pastors_listing.pastors_name, pastors_listing.pastors_bio, pastors_listing.pastors_avatar_img, ts_merchant.organisation');
+  $this->db->from('pastors_listing');
+  $this->db->join('ts_merchant','pastors_listing.merchant_id = ts_merchant.id','Left');
+  $q=$this->db->get();
 
+      // $q = $this->db->select('*')->from($this->speakerTable)->get()->result_array();//getting object array returns id of the speaker
+      // $b =$q->merchant_id;
+      // $c = $this->db->select('organization')->from('ts_merchant')->where('id',$b)->get()->row();
       $que = $this->db->select('*')->from($this->speakerFollowers)->where('ts_users_id', $query)->get()->result_array();//returns speaker_id
 
-
+              
 
       $arrObject = array();
       //$arr_2 = array();
@@ -42,7 +48,7 @@ function get_speaker_data($query){
         $arrObject[]= array_merge($res, $a);
       }
        //krsort($arrObject);
-      return array('status'=>200, 'result'=> $arrObject);
+      return array('status'=>200, 'result'=> $arrObject,);
 
       // if($q != ""){
       // }
