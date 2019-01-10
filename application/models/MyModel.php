@@ -298,11 +298,11 @@ class MyModel extends CI_Model
 
 	// this is to check the connection with the api key once the user  has successfully logged in
 
-	public function auth($users_id, $token)
+	public function auth()
 	{
 
-		// $users_id  = $this->input->get_request_header('User-ID', TRUE);
-		// $token     = $this->input->get_request_header('Authorization', TRUE);
+		$users_id  = $this->input->get_request_header('User-ID', TRUE);
+		 $token     = $this->input->get_request_header('Authorization', TRUE);
 		// $users_id =  $this->get('userid', TRUE);
 		// $token    =  $this->get('token', TRUE);
 
