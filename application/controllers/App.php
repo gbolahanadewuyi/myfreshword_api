@@ -2036,7 +2036,7 @@ public function update_churchmember_post()
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
 
-			$_POST = json_decode(file_get_contents('php://input'), true);
+			// $_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array('success' => false, 'messages' => array());
 			$this->form_validation->set_rules('prod_tags', 'Category', 'trim|required');//type
 			$this->form_validation->set_rules('prod_name', 'Title', 'trim|required|is_unique[ts_products.prod_name]');
