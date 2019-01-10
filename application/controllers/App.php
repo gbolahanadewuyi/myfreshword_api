@@ -431,7 +431,7 @@ class App extends REST_Controller
 
 	public function all_product_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		$response = $this->MyModel->auth();
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->audio_all_data(); //this is pulling all data not just audio
 			$this->response($resp, REST_Controller::HTTP_OK);
@@ -1947,7 +1947,7 @@ public function update_churchmember_post()
 			foreach ($list as $pastor) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $pastor->photo . '" height="75px">';
+				$row[] = '<img src="' . $pastor->photo . '" height="75px" . class="img-circle">';
 				$row[] = $pastor->pastors_title;
 				$row[] = $pastor->name;
 				
