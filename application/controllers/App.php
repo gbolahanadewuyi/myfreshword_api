@@ -431,7 +431,7 @@ class App extends REST_Controller
 
 	public function all_product_get()
 	{
-		$response = $this->MyModel->auth();
+		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->audio_all_data(); //this is pulling all data not just audio
 			$this->response($resp, REST_Controller::HTTP_OK);
