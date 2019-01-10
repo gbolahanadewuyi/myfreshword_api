@@ -1947,9 +1947,9 @@ public function update_churchmember_post()
 			foreach ($list as $pastor) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $pastor->pastors_avatar_img . '" height="75px">';
+				$row[] = '<img src="' . $pastor->photo . '" height="75px">';
 				$row[] = $pastor->pastors_title;
-				$row[] = $pastor->pastors_name;
+				$row[] = $pastor->name;
 				
 
 
@@ -2103,9 +2103,10 @@ public function update_churchmember_post()
 					'prod_uid' => 1,
 					'prod_type' => $this->MyModel->prod_type($_POST['prod_tags']),
 					'type_list' => $_POST['prod_tags'],
+					 'file_link'=> $_POST['product_file'],
 					'merchant_email' => $_POST['merchant_email'],
 					'prod_date' => date('Y-m-d H:i:s'),
-					'img_link'=> $img
+					'img_link'=> $img,
 
 
 
@@ -2395,9 +2396,9 @@ public function update_churchmember_post()
 			
 				$Pastors_listing = array(
 					'pastors_title' => $_POST['pastors_title'],
-					'pastors_name' => $_POST['pastors_name'],
-					'pastors_bio' => $_POST['pastors_bio'],
-					'pastors_avatar_img' => $img,
+					'name' => $_POST['pastors_name'],
+					'bio' => $_POST['pastors_bio'],
+					'photo' => $img,
 					'merchant_id' => $response['id']
 				);
 
