@@ -442,12 +442,12 @@ class App extends REST_Controller
 
 	public function product_by_id_get()
 	{
-		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		// $response = $this->MyModel->auth($this-get('userid'), $this->get('token'));
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$id = $this->uri->segment(2);
+			$id = $this->uri->segment(3);
 			$resp = $this->MyModel->product_id($id);
-			$this->response($id, REST_Controller::HTTP_OK);
+			$this->response($resp, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
