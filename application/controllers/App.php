@@ -415,7 +415,7 @@ class App extends REST_Controller
 
 	public function user_profile_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) { //if header is passed
 			$resp = $this->MyModel->user_profile_data($response['id']);
 			$this->response($resp, REST_Controller::HTTP_OK);
