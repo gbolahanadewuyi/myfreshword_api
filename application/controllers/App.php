@@ -442,7 +442,8 @@ class App extends REST_Controller
 
 	public function product_by_id_get()
 	{
-		$response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
+		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
 			$resp = $this->MyModel->product_id($this->get('p_id'));
 			$this->response($resp, REST_Controller::HTTP_OK);
