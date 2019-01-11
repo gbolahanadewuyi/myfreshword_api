@@ -2076,7 +2076,7 @@ public function update_churchmember_post()
 	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
-			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
+			$fileName = "gs://${my_bucket}/$imageid.jpg";
 			file_put_contents($fileName, $image, 0, $context);
 
 			 $img = "https://storage.googleapis.com/freshword-ci/merchant_products/$imageid.jpg";
