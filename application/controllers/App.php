@@ -445,7 +445,7 @@ class App extends REST_Controller
 		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$id = $ths->uri->segment(3);
+			$id = $this->uri->segment(2);
 			$resp = $this->MyModel->product_id($id);
 			$this->response($id, REST_Controller::HTTP_OK);
 		} else {
