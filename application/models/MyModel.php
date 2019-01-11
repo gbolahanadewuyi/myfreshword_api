@@ -804,17 +804,18 @@ class MyModel extends CI_Model
 
 	public	function product_id($id)
 	{
-		$q = $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
-		if ($q == "") {
-			return array(
-				'status' => 404,
-				'message' => 'error fetching data',
-			);
-		} else {
+		$q = $this->db->select('*')->from('ts_products')->where('prod_id', $id)->get()->row();
+		if ($q == true) {
 			return array(
 				'status' => 200,
 				'message' => 'success fetching data',
 				'result' => $q
+			);
+		} else {
+			return array(
+				'status' => 404,
+				'message' => 'error fetching data',
+				
 			);
 		}
 	}
