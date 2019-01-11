@@ -445,8 +445,8 @@ class App extends REST_Controller
 		// $response = $this->MyModel->auth($this->get('userid'), $this->get('token'));
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
-			$id = (int)$this->get('p_id');
-			$resp = $this->MyModel->product_id();
+			$id = 155;
+			$resp = $this->MyModel->product_id($id);
 			$this->response($resp, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
