@@ -2057,7 +2057,8 @@ public function update_churchmember_post()
 				}
 			} else {
 				$firstid = $response['id'];
-				$secondid = $_POST['prod_name'];
+				$secondid = md5($_POST['prod_name']);
+				$imageid = $secondid.$firstid;
 ;               $my_bucket = "freshword-ci/merchant_products";
 
              if(empty($_FILES)){
@@ -2078,7 +2079,7 @@ public function update_churchmember_post()
 			$fileName = "gs://${my_bucket}/$firstid.$secondid.jpg";
 			file_put_contents($fileName, $image, 0, $context);
 
-			 $img = "https://storage.googleapis.com/freshword-ci/merchant_products/$firstid.$secondid.jpg";
+			 $img = "https://storage.googleapis.com/freshword-ci/merchant_products/$imageid.jpg";
 		
 		  }
 
