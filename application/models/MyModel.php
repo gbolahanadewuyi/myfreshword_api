@@ -398,17 +398,18 @@ class MyModel extends CI_Model
 
 	public function audio_all_data()
 	{
-	   $q = $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->get()->result();
+	   $q = $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link !=', " ")->where('prod_image !=', " ")->where('file_link !=', " ")->get()->result();
 		 if ($q == true) {
 			return array(
 				'status' => 201,
-				'message' => 'no data'
+				'message' => 'Success fetching data',
+				'result'=> $q
 			);
 		} else {
 			return array(
 				'status' => 204,
-				'message' => 'data',
-				'result'=> $q
+				'message' => 'error fetching data',
+				
 			);
 		}
 	}
