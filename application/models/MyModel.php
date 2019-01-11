@@ -398,20 +398,20 @@ class MyModel extends CI_Model
 
 	public function audio_all_data()
 	{
-	   $q = $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link IS NOT NULL', NULL, false)->where('file_link IS NOT NULL',NULL,false)->get()->result();
-		 if ($q == true) {
-			return array(
-				'status' => 201,
-				'message' => 'Success fetching data',
-				'result'=> $q
-			);
-		} else {
-			return array(
-				'status' => 204,
-				'message' => 'error fetching data',
+	   return $this->db->select()->from('ts_products')->order_by('prod_id', 'desc')->where('img_link IS NOT NULL', NULL, false)->where('file_link IS NOT NULL',NULL,false)->get()->result();
+		//  if ($q == true) {
+		// 	return array(
+		// 		'status' => 201,
+		// 		'message' => 'Success fetching data',
+		// 		'result'=> $q
+		// 	);
+		// } else {
+		// 	return array(
+		// 		'status' => 204,
+		// 		'message' => 'error fetching data',
 				
-			);
-		}
+		// 	);
+		// }
 	}
 
 
@@ -804,13 +804,26 @@ class MyModel extends CI_Model
 
 	public	function product_id($id)
 	{
-		return $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
+		$q = $this->db->select()->from('ts_products')->where('prod_id', $id)->get()->row();
+		if ($q == "") {
+			return array(
+				'status' => 404,
+				'message' => 'error fetching data',
+			);
+		} else {
+			return array(
+				'status' => 200,
+				'message' => 'success fetching data',
+				'result' => $q
+			);
+		}
 	}
 
 
 	public function church_details($id)
 {
 	return $this->db->select()->from('ts_church')->where('id', $id)->get()->row();
+	
 }
 
 
