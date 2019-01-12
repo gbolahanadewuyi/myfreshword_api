@@ -2271,10 +2271,11 @@ public function update_churchmember_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$email = $this->get('email');
-			$data['free_products'] = $this->MyModel->count_free_products($email);
-			$data['premium_products'] = $this->MyModel->count_premium_products($email);
-			$data['total_product_views'] = $this->MyModel->count_product_views($email);
+			$id = $this->uri->segment(3);
+			// $data['free_products'] = $this->MyModel->count_free_products($email);
+			$data['total_members'] = $this->MyModel->total_members($id);
+			// $data['premium_products'] = $this->MyModel->count_premium_products($email);
+			// $data['total_product_views'] = $this->MyModel->count_product_views($email);
 			$this->response($data, REST_Controller::HTTP_OK);
 		} else {
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
