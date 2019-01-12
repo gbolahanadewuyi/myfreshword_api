@@ -2338,7 +2338,7 @@ class MyModel extends CI_Model
 
 	public function total_members($id)
 	{
-		$this->db->select('*')->from('mfw_church_membership')->where('merchant_id', $id);
+		$this->db->select('*')->from('mfw_church_membership')->where('church_id', $id);
 		$q = $this->db->get();
 		return $q->num_rows();
 	}
