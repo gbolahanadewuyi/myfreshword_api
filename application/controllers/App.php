@@ -2614,7 +2614,7 @@ public function update_churchmember_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$email = $this->input->get('email');  
+			$email = $this->uri->segment(3);
 			$config = array();
 			$config["base_url"] = base_url() . "merchant/news_feed";
 			$config["total_rows"] = $this->MyModel->count_merchant_feed($email);
