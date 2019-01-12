@@ -2134,7 +2134,7 @@ public function update_churchmember_post()
 			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 		}
 	}
-
+ 
 	public function product_edit_get()
 	{
 		$response = $this->MyModel->merchant_auth();
@@ -2614,7 +2614,7 @@ public function update_churchmember_post()
 	{
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$email = $this->get('email');  
+			$email = $this->input->get('email');  
 			$config = array();
 			$config["base_url"] = base_url() . "merchant/news_feed";
 			$config["total_rows"] = $this->MyModel->count_merchant_feed($email);
