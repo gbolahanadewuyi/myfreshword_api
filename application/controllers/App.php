@@ -894,46 +894,33 @@ class App extends REST_Controller
 	{
 		$response = $this->MyModel->header_auth();
 		if ($response['status'] == 200) {
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$data = array(
 				'success' => false,
 				'messages' => array()
 			);
-			$this->form_validation->set_rules('username', 'Category', 'trim');
-			$this->form_validation->set_rules('email', 'Email', 'trim');
-			$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
+			$this->form_validation->set_rules('id', 'User Profile ID', 'trim|required|numeric');
+			$this->form_validation->set_rules('username', 'Username', 'trim|required');
+			$this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {
 					$data['messages'][$key] = form_error($key);
 				}
 			} else {
-				$sname = $response['id'];
-;               $my_bucket = "freshword-ci/user_profile";
-				if (empty($_FILES)) {
-					$img = '';
-					$data = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
-					$this->response($data, REST_Controller::HTTP_OK);
-					return false; //script will end here
-				}else{
-					$temp_name = $_FILES['photo']['tmp_name'];
-					$image = file_get_contents($_FILES['phoot']['tmp_name']);
-					$options = ['gs' => ['Content-Type' => 'image/jpeg']];
-					$context = stream_context_create($options); 
-					$fileName = "gs://${my_bucket}/$sname.jpg";
-					file_put_contents($fileName, $image, 0, $context);
-		
-					 $img = "https://storage.googleapis.com/freshword-ci/merchant_pastors/$sname.jpg";
-
-
-				}
-				// so run insertion since the validation for the form has been passed correctly
-
-				$data['messages'] = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
+				$data = array(
+					'user_uname' => $_POST['username'],
+					'user_mobile' => $_POST['mobile'],
+					'user_pwd' => $_POST['password']
+				);
+				$id = $_POST['id'];
+				$data = $this->MyModel->update_user_profile($id, $data);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
 		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
@@ -948,10 +935,17 @@ class App extends REST_Controller
 			$temp_name = $_FILES['photo']['tmp_name'];
 	
 			$image = file_get_contents($_FILES['photo']['tmp_name']);
+			// echo $temp_name;
+			// echo $file_name;
+			// echo $image;
+	
 			$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 			$context = stream_context_create($options); 
 			$fileName = "gs://${my_bucket}/$sname.jpg";
 			file_put_contents($fileName, $image, 0, $context);
+			// $publicUrl = CloudStorageTools::getPublicUrl($fileName, false);
+              
+			//  echo $publicUrl;
      
 			//  $url = file_get_contents($fileName);
 
@@ -970,11 +964,6 @@ class App extends REST_Controller
 		}
 	}
 
-
-	public function update_user_post()
-	{
-		
-	}
 	//this shooud be the response for the payment
 
 	public function do_upload_post()
@@ -1913,12 +1902,12 @@ public function update_churchmember_post()
 			foreach ($list as $feed) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $feed->image . '" height="75px". class="img-rounded">';
+				$row[] = '<img src="' . $feed->image . '" height="75px">';
 				$row[] = $feed->category;
 				$row[] = $feed->title;
-				// $row[] = $feed->message;
-				// $row[] = $feed->likes_count;
-				// $row[] = $feed->comments_counts;
+				$row[] = $feed->message;
+				$row[] = $feed->likes_count;
+				$row[] = $feed->comments_counts;
 
 
 				// if($payee->network == 'MTN'):
@@ -2285,9 +2274,6 @@ public function update_churchmember_post()
 			$id = $this->uri->segment(3);
 			// $data['free_products'] = $this->MyModel->count_free_products($email);
 			$data['total_members'] = $this->MyModel->total_members($id);
-			$data['total_likes']= $this->MyModel->total_likes($id);
-			$data['total_comments']= $this->MyModel->total_comments($id);
-
 			// $data['premium_products'] = $this->MyModel->count_premium_products($email);
 			// $data['total_product_views'] = $this->MyModel->count_product_views($email);
 			$this->response($data, REST_Controller::HTTP_OK);
