@@ -959,7 +959,7 @@ class App extends REST_Controller
 					return false; //script will end here
 				}else{
 					$temp_name = $_FILES['photo']['tmp_name'];
-					$image = file_get_contents($_FILES['phoot']['tmp_name']);
+					$image = file_get_contents($_FILES['photo']['tmp_name']);
 					$options = ['gs' => ['Content-Type' => 'image/jpeg']];
 					$context = stream_context_create($options); 
 					$fileName = "gs://${my_bucket}/$sname.jpg";
