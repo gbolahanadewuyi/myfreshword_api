@@ -980,7 +980,17 @@ class App extends REST_Controller
 		}
 	}
 
-	
+	public function update_user_subscriptiion()
+	{
+		$response = $this->MyModel->mer_auth();
+		if ($response['status'] == 200) {
+			$id = (int)$this->get('id');
+			$query = $this->MyModel->product_preview($id);
+			$this->response($query, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
+	}
 
 
 
@@ -1822,9 +1832,9 @@ public function update_churchmember_post()
 				$row[] = '<img src="' . $feed->image . '" height="75px">';
 				$row[] = $feed->category;
 				$row[] = $feed->title;
-				$row[] = $feed->message;
-				$row[] = $feed->likes_count;
-				$row[] = $feed->comments_counts;
+				// $row[] = $feed->message;
+				// $row[] = $feed->likes_count;
+				// $row[] = $feed->comments_counts;
 
 
 				// if($payee->network == 'MTN'):
