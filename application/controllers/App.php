@@ -890,40 +890,7 @@ class App extends REST_Controller
 		}
 	}
 
-	public function profile_update_post()
-	{
-		$response = $this->MyModel->header_auth();
-		if ($response['status'] == 200) {
-			$_POST = json_decode(file_get_contents('php://input'), true);
-			$data = array(
-				'success' => false,
-				'messages' => array()
-			);
-			$this->form_validation->set_rules('id', 'User Profile ID', 'trim|required|numeric');
-			$this->form_validation->set_rules('username', 'Username', 'trim|required');
-			$this->form_validation->set_rules('mobile', 'Mobile Number', 'trim|required');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required');
-			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
-			if ($this->form_validation->run() === false) {
-				foreach ($_POST as $key => $value) {
-					$data['messages'][$key] = form_error($key);
-				}
-			} else {
-				$data = array(
-					'user_uname' => $_POST['username'],
-					'user_mobile' => $_POST['mobile'],
-					'user_pwd' => $_POST['password']
-				);
-				$id = $_POST['id'];
-				$data = $this->MyModel->update_user_profile($id, $data);
-			}
-
-			$this->response($data, REST_Controller::HTTP_OK);
-		} else {
-			$this->response($response, REST_Controller::HTTP_NOT_FOUND);
-		}
-	}
-
+	
 	public function upload_profile_photo_post()
 	{
 		$response = $this->MyModel->header_auth();
@@ -964,106 +931,56 @@ class App extends REST_Controller
 		}
 	}
 
-	//this shooud be the response for the payment
+	//update user profile
 
-	public function do_upload_post()
-
+	public function profile_update_post()
 	{
-		// $id = $_POST['id'];
-
-		// $this->load->libaray('cloudinarylib');
-
-		// $file = $this->input->post('photo');
-
-
-		// $data['image'] = "https://api.cloudinary.com/v1_1/techloft-company-ltd/image/upload";
-
-
-
-		//  $imageurl = $data['image'];
-
-		//  echo $imageurl;
+		$response = $this->MyModel->header_auth();
+		if ($response['status'] == 200) {
+			$data = array(
+				'success' => false,
+				'messages' => array()
+			);
+			$this->form_validation->set_rules('username', 'Category', 'trim');
+			$this->form_validation->set_rules('email', 'Email', 'trim');
+			$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
+			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
+			if ($this->form_validation->run() === false) {
+				foreach ($_POST as $key => $value) {
+					$data['messages'][$key] = form_error($key);
+				}
+			} else {
+				$sname = $response['id'];
+;               $my_bucket = "freshword-ci/user_profile";
+				if (empty($_FILES)) {
+					$img = '';
+					$data = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
+					$this->response($data, REST_Controller::HTTP_OK);
+					return false; //script will end here
+				}else{
+					$temp_name = $_FILES['photo']['tmp_name'];
+					$image = file_get_contents($_FILES['phoot']['tmp_name']);
+					$options = ['gs' => ['Content-Type' => 'image/jpeg']];
+					$context = stream_context_create($options); 
+					$fileName = "gs://${my_bucket}/$sname.jpg";
+					file_put_contents($fileName, $image, 0, $context);
 		
-            
-        $my_bucket = "techloft-173609.appspot.com";
-		$file_name = $_FILES['photo']['name'];
-		$temp_name = $_FILES['photo']['tmp_name'];
-
-		$image = file_get_contents($_FILES['photo']['tmp_name']);
-		echo $temp_name;
-		echo $file_name;
-		echo $image;
-
-		$options = ['gs' => ['Content-Type' => 'image/jpeg']];
-		$context = stream_context_create($options); 
-		$fileName = "gs://${my_bucket}/gman.jpg";
-		$file = "gs://${my_bucket}/.jpg";
-		// file_put_contents("gs://${my_bucket}/gman.jpg", $temp_name, 0 , $context);
-		file_put_contents($fileName, $image, 0, $context);
-
-		move_uploaded_file($temp_name, $file);
-		// \Cloudinary\Uploader::upload($temp_name,
-		// array( "overwrite" => TRUE,
-		//  "resource_type" => "image"));
+					 $img = "https://storage.googleapis.com/freshword-ci/merchant_pastors/$sname.jpg";
 
 
+				}
+				// so run insertion since the validation for the form has been passed correctly
 
-		// $my_bucket = "freshword-ci";
-		// $options = ['gs' => ['Content-Type' => 'image/jpeg']];
-		// $context = stream_context_create($options);
+				$data['messages'] = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
+			}
 
-
-		// $config['upload_path'] = "gs://${my_bucket}/ ";
-
-
-
-		// $config['overwrite'] = true;
-		// $config['file_ext_tolower'] = true;
-		// $config['allowed_types'] = 'gif|jpg|png|jpeg'; //allowing only images
-		// $config['max_size'] = 0;
-		// $this->load->library('upload', $config);
-
-		// $this->upload->initialize($config);
-
-		// if (!$this->upload->do_upload('photo')) {
-		// 	$error = array(
-		// 		'status' => false,
-		// 		'uploadpath' => $config['upload_path'],
-		// 		'error' => $this->upload->display_errors()
-		// 	);
-
-		// 		// echo json_encode($error);
-
-		// 	$this->response($error, REST_Controller::HTTP_OK);
-		// } else {
-		// 	$data = $this->upload->data();
-		// 	// $file = $data['file_name'];
-		// 	$file = $data['file_name'];
-		// 	$path = $data['file_path'];
-		// 	echo $file;
-		// 	$fileurl = "https://storage.cloud.google.com/${my_bucket}/$file";
-		// 	//    echo $fileurl;
-
-
-
-			//    $data['image']  =    \Cloudinary\Uploader::upload($file);
-
-		// $collect = \Cloudinary\Uploader::upload("gs://${my_bucket}/$file");
-		// print_r($collect);
-	                //    $img = $collect['image'] ;
-
-
-
-			// $img = "https://storage.cloud.google.com/${my_bucket}/$file?organizationId=96831556031&_ga=2.83358422.-1152930877.1539685883";
-			// $success = ['status' => true, 'success' => $img];
-
-	// $data['messages'] = $this->MyModel->update_user_profile($id, $profilefeed);
-
-
-
-			$this->response($temp_name, REST_Controller::HTTP_OK);
-
+			$this->response($data, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
+		}
 	}
+
+	
 
 
 
@@ -2274,6 +2191,8 @@ public function update_churchmember_post()
 			$id = $this->uri->segment(3);
 			// $data['free_products'] = $this->MyModel->count_free_products($email);
 			$data['total_members'] = $this->MyModel->total_members($id);
+			$data['total_likes']= $this->MyModel->total_likes($id);
+			$data['total_comments']= $this->MyModel->total_comments($id);
 			// $data['premium_products'] = $this->MyModel->count_premium_products($email);
 			// $data['total_product_views'] = $this->MyModel->count_product_views($email);
 			$this->response($data, REST_Controller::HTTP_OK);

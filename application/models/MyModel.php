@@ -1360,6 +1360,42 @@ class MyModel extends CI_Model
 		}
 	}
 
+	public function update_user($id, $data, $img)
+	{
+		if ($img == "") {
+			$updateData = array(
+				'user_uname' => $data['username'],
+				'user_mobile' => $data['mobile'],
+				'user_email' => $data['email']
+
+				// 'image'             => $img,
+			);
+		} else {
+			$updateData = array(
+				'user_uname' => $data['username'],
+				'user_mobile' => $data['mobile'],
+				'user_email' => $data['email'],
+				'img_url' => $img
+
+			);
+		}
+
+		$query = $this->db->where('id', $id)->update('ts_user', $updateData);
+		if ($query == false) {
+			return array(
+				'status' => 404,
+				'message' => 'Error updating user data'
+			);
+		}
+
+		return array(
+			'status' => 201,
+			'message' => 'user data updated successfully'
+		);
+	}
+
+	
+
 	public function check_db_with_rest_client($data)
 	{
 		$query = $this->db->select('*')->from('ts_user')->where('user_id', $data['id'])->get()->row();
@@ -2338,10 +2374,26 @@ class MyModel extends CI_Model
 
 	public function total_members($id)
 	{
-		$this->db->select('*')->from('mfw_church_membership')->where('merchant_id', $id);
+		$this->db->select('*')->from('mfw_church_membership')->where('church_id', $id);
 		$q = $this->db->get();
 		return $q->num_rows();
 	}
+
+
+	public function total_likes($id)
+	{
+		$this->db->select(sum('likes_count'))->from('mfw_church_membership')->where('church_id', $id);
+		$q = $this->db->get();
+		return $q->result();
+	}
+
+	public function total_comments($id)
+	{
+		$this->db->select(sum('comments_counts'))->from('mfw_church_membership')->where('church_id', $id);
+		$q = $this->db->get();
+		return $q->result();
+	}
+
 
 	// using email to count qyert
 
