@@ -1380,7 +1380,7 @@ class MyModel extends CI_Model
 			);
 		}
 
-		$query = $this->db->where('id', $id)->update('ts_user', $updateData);
+		$query = $this->db->where('user_id', $id)->update('ts_user', $updateData);
 		if ($query == false) {
 			return array(
 				'status' => 404,
@@ -2382,14 +2382,14 @@ class MyModel extends CI_Model
 
 	public function total_likes($id)
 	{
-		$this->db->select(sum('likes_count'))->from('mfw_church_membership')->where('church_id', $id);
+		$this->db->select_sum('likes_count')->from('merchant_feed')->where('churchid', $id);
 		$q = $this->db->get();
 		return $q->result();
 	}
 
 	public function total_comments($id)
 	{
-		$this->db->select(sum('comments_counts'))->from('mfw_church_membership')->where('church_id', $id);
+		$this->db->select_sum('comments_counts')->from('merchant_feed')->where('churchid', $id);
 		$q = $this->db->get();
 		return $q->result();
 	}
