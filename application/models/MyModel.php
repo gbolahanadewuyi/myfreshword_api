@@ -2384,14 +2384,14 @@ class MyModel extends CI_Model
 	{
 		$this->db->select_sum('likes_count')->from('merchant_feed')->where('churchid', $id);
 		$q = $this->db->get();
-		return $q->likes_count;
+		return $q->row()->likes_count;
 	}
 
 	public function total_comments($id)
 	{
 		$this->db->select_sum('comments_counts')->from('merchant_feed')->where('churchid', $id);
 		$q = $this->db->get();
-		return $q->comments_counts;
+		return $q->row()->comments_counts;
 	}
 
 
