@@ -1197,7 +1197,7 @@ class MyModel extends CI_Model
 			$a = $q->sub_type;
 			$b = $q->sub_price;
 			 $data= array(
-			  'userid' => $user_id,
+			  'userid' => $userid,
 			  'subscriptionType' => $a,
 			  'amountPaid' => $b,
 			  'purchaseDate'=>date('Y-m-d H:i:s'),
