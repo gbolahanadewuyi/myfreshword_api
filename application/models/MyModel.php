@@ -1201,7 +1201,7 @@ class MyModel extends CI_Model
 			  'subscriptionType' => $a,
 			  'amountPaid' => $b,
 			  'purchaseDate'=>date('Y-m-d H:i:s'),
-			  'expired'=>date("Y-m-d H:i:s", strtotime('+1 week')),
+			  'expired'=>date("Y-m-d H:i:s", strtotime('+1 month')),
 			  'subscriptionID'=>$sub_id
 			 );
 			 $c = $this->db->insert('ts_subscription',$data);
