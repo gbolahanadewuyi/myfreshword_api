@@ -757,6 +757,7 @@ class App extends REST_Controller
 	}
 
 
+
 	public function isSubscribed_post()
 	{
 		$response = $this->MyModel->header_auth();
@@ -1683,6 +1684,15 @@ public function update_churchmember_post()
 		else {
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
+	}
+
+	public function user_subscribe_post()
+	{
+			$userid = $this->uri->segment(3);
+			$sub_id = $this->uri->segment(4);
+			$query = $this->MyModel->user_subscribe($sub_id, $userid);
+			$this->response($query, REST_Controller::HTTP_OK);
+
 	}
 
 	// this has to be sequential now we need to return values here to proceed to the next endpoint

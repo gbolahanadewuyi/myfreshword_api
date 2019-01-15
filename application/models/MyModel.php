@@ -1185,6 +1185,47 @@ class MyModel extends CI_Model
 		}
 	}
 
+
+	  public function user_subscribe($sub_id, $userid){
+		  $q = $this->db->select('sub_type, sub_price')->from('subscription_modules')->where('id',$sub_id)->get()->row();
+		   if( $q == ""){
+			return array(
+				'status' => 204,
+				'message' => 'subscription type not recognized'
+			);
+		   }else{
+			$a = $q->sub_type;
+			$b = $q->sub_price;
+			 $data= array(
+			  'userid' => $user_id,
+			  'subscriptionType' => $a,
+			  'amountPaid' => $b,
+			  'purchaseDate'=>date('Y-m-d H:i:s'),
+			  'expired'=>date("Y-m-d H:i:s", strtotime('+1 week')),
+			  'subscriptionID'=>$sub_id
+			 );
+			 $c = $this->db->insert('ts_subscription',$data);
+			 if($c == ""){
+				return array(
+					'status' => 206,
+					'message' => 'Subscription failed'
+				);
+			 }else{
+				return array(
+					'status' => 200,
+					'message' => 'Subscription Successful',
+					 'paid'=> 'true'
+				);
+			 }
+
+		   }
+		   
+		  
+
+		  
+
+	  }
+
 	// user subscriptions management
 
 	public function subscribe($userid, $subscriptionPackage)
