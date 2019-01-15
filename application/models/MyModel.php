@@ -1307,15 +1307,15 @@ class MyModel extends CI_Model
 
 			$query = $this->db->insert('ts_subscription', array(
 				'userid' => $userid,
-				'subscriptionType' => $subscriptionPackage,
-				'amountPaid' => $amountPaid,
+				'subscriptionType' => $a,
+				'amountPaid' => $b,
 				'purchaseDate' => $purchaseDate,
 				'expired' => $expired
 			));
 			return array(
 				'status' => 200,
 				'message' => 'Subscription completed successfully.',
-				'results' => $query
+				'paid' => 'true'
 			);
 		} else {
 			return array(
