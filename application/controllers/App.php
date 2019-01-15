@@ -1690,7 +1690,7 @@ public function update_churchmember_post()
 	{
 			$userid = $this->uri->segment(3);
 			$sub_id = $this->uri->segment(4);
-			$query = $this->MyModel->user_subscribe($sub_id, $userid);
+			$query = $this->MyModel->subscribe($sub_id, $userid);
 			$this->response($query, REST_Controller::HTTP_OK);
 
 	}

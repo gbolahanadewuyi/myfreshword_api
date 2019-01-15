@@ -1228,8 +1228,17 @@ class MyModel extends CI_Model
 
 	// user subscriptions management
 
-	public function subscribe($userid, $subscriptionPackage)
+	public function subscribe($sub_id , $userid)
 	{
+		$q = $this->db->select('sub_type, sub_price')->from('subscription_modules')->where('id',$sub_id)->get()->row();
+		if( $q == ""){
+		 return array(
+			 'status' => 204,
+			 'message' => 'subscription type not recognized'
+		 );
+		}else{
+			$a = $q->sub_type;
+			$b = $q->sub_price;
 
 		// check if user has no valid subscription
 
@@ -1238,12 +1247,13 @@ class MyModel extends CI_Model
 
 			// subscribe user here
 
-			switch ($subscriptionPackage) {
+			switch ($a) {
 				case 'BRONZE':
 
 				// code...
 
-					$amountPaid = '5';
+				
+					$amountPaid = $b;
 					$purchaseDate = date('Y-m-d H:i:s');
 					$expired = date("Y-m-d H:i:s", strtotime('+1 day'));
 					break;
@@ -1252,7 +1262,7 @@ class MyModel extends CI_Model
 
 				// code...
 
-					$amountPaid = '15';
+					$amountPaid = $b;
 					$purchaseDate = date('Y-m-d H:i:s');
 					$expired = date("Y-m-d H:i:s", strtotime('+1 week'));
 					break;
@@ -1261,7 +1271,7 @@ class MyModel extends CI_Model
 
 				// code...
 
-					$amountPaid = '25';
+					$amountPaid = $b;
 					$purchaseDate = date('Y-m-d H:i:s');
 					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
 					break;
@@ -1270,7 +1280,7 @@ class MyModel extends CI_Model
 
 				// code...
 
-					$amountPaid = '50';
+					$amountPaid = $b;
 					$purchaseDate = date('Y-m-d H:i:s');
 					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
 					break;
@@ -1279,7 +1289,7 @@ class MyModel extends CI_Model
 
 				// code...
 
-					$amountPaid = '15';
+					$amountPaid = $b;
 					$purchaseDate = date('Y-m-d H:i:s');
 					$expired = date("Y-m-d H:i:s", strtotime('+1 week'));
 					break;
@@ -1314,6 +1324,7 @@ class MyModel extends CI_Model
 			);
 		}
 	}
+}
 
 	public function isSubscribed($userid)
 	{
