@@ -338,31 +338,38 @@ class MyModel extends CI_Model
 	{
 		$users_id = $this->input->get_request_header('User-ID', true);
 		$token = $this->input->get_request_header('Authorization', true);
-		$q = $this->db->select('expired_at')->from('users_authentication')->where('users_id', $users_id)->where('token', $token)->get()->row();
+		//not selecting expired_at anymore but all the fields. 
+		$q = $this->db->select()->from('users_authentication')->where('users_id', $users_id)->where('token', $token)->get()->row();
 		if ($q == "") {
 			return array(
 				'status' => 401,
 				'message' => 'Unauthorized.'
 			);
 		} else {
-			if ($q->expired_at < date('Y-m-d H:i:s')) {
-				return array(
-					'status' => 401,
-					'message' => 'Your session has been expired.'
-				);
-			} else {
-				$updated_at = date('Y-m-d H:i:s');
-				$expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
-				$this->db->where('users_id', $users_id)->where('token', $token)->update('users_authentication', array(
-					'expired_at' => $expired_at,
-					'updated_at' => $updated_at
-				));
-				return array(
-					'status' => 200,
-					'message' => 'Authorized.',
-					'id' => $users_id
-				);
-			}
+
+			return array(
+						'status' => 200,
+						'message' => 'Authorized.',
+						'id' => $users_id
+					);
+			// if ($q->expired_at < date('Y-m-d H:i:s')) {
+			// 	return array(
+			// 		'status' => 401,
+			// 		'message' => 'Your session has been expired.'
+			// 	);
+			// } else {
+			// 	$updated_at = date('Y-m-d H:i:s');
+			// 	$expired_at = date("Y-m-d H:i:s", strtotime('+12 hours'));
+			// 	$this->db->where('users_id', $users_id)->where('token', $token)->update('users_authentication', array(
+			// 		'expired_at' => $expired_at,
+			// 		'updated_at' => $updated_at
+			// 	));
+			// 	return array(
+			// 		'status' => 200,
+			// 		'message' => 'Authorized.',
+			// 		'id' => $users_id
+			// 	);
+			// }
 		}
 	}
 
@@ -1186,45 +1193,7 @@ class MyModel extends CI_Model
 	}
 
 
-	  public function user_subscribe($sub_id, $userid){
-		  $q = $this->db->select('sub_type, sub_price')->from('subscription_modules')->where('id',$sub_id)->get()->row();
-		   if( $q == ""){
-			return array(
-				'status' => 204,
-				'message' => 'subscription type not recognized'
-			);
-		   }else{
-			$a = $q->sub_type;
-			$b = $q->sub_price;
-			 $data= array(
-			  'userid' => $userid,
-			  'subscriptionType' => $a,
-			  'amountPaid' => $b,
-			  'purchaseDate'=>date('Y-m-d H:i:s'),
-			  'expired'=>date("Y-m-d H:i:s", strtotime('+1 month')),
-			  'subscriptionID'=>$sub_id
-			 );
-			 $c = $this->db->insert('ts_subscription',$data);
-			 if($c == ""){
-				return array(
-					'status' => 206,
-					'message' => 'Subscription failed'
-				);
-			 }else{
-				return array(
-					'status' => 200,
-					'message' => 'Subscription Successful',
-					 'paid'=> 'true'
-				);
-			 }
-
-		   }
-		   
-		  
-
-		  
-
-	  }
+	  
 
 	// user subscriptions management
 

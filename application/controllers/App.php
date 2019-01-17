@@ -24,6 +24,7 @@ class App extends REST_Controller
 		$this->load->model('MerchantFeedModel');
 		$this->load->model('MerchantPastorModel');
 		$this->load->model('MerchantMembersModel');
+		$this->load->model('MerchantGroupModel');
 		$this->load->library('hubtelApi');
 		$this->load->library('cloudinarylib');
 		$this->load->library('email');
@@ -1430,6 +1431,51 @@ public function church_group_name_post()
 	$this->response($response, REST_Controller::HTTP_NOT_FOUND); // BAD_REQUEST (400) being the HTTP response code
 }
 }
+
+public function get_merchant_group_post()
+	{
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$this->load->helper('url');
+			$query = $this->MyModel->merchant_email($response['id']);
+			$list = $this->MerchantGroupModel->get_datatables($query->id);
+			$data = array();
+			$no = $_POST['start'];
+			foreach ($list as $group) {
+				$no++;
+				$row = array();
+				$row[] = $group->group_name;
+				$row[] = $group->number;
+				
+
+
+
+				// if($payee->network == 'MTN'):
+
+				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
+				// $row[] = '
+                //         <a class="btn  btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_pastor(' . "'" . $pastor->id . "'" . ');"><i class="fa fa-edit"></i>Edit</a>
+                //         <a class="btn  btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_pastor(' . "'" . $pastor->id . "'" . ');"><i class="fa fa-trash"></i>Delete</a>';
+				$data[] = $row;
+			}
+
+			$output = array(
+				// "draw" => $_POST['draw'],
+				// "recordsTotal" => $this->MerchantPastorModel->count_all($query->id),
+				// "recordsFiltered" => $this->MerchantPastorModel->count_filtered($query->id),
+				"data" => $data,
+			);
+
+			// output to json format
+
+			$this->response($output, REST_Controller::HTTP_OK);
+		} else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
 
 	public function church_membership_register_post()
 	{
