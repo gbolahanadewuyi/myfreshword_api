@@ -793,15 +793,16 @@ class App extends REST_Controller
 				'prod_uniqid' => $dataPost['prod_uniqid'],
 				'userid' => $dataPost['userid']
 			);
-			$query['insert_query'] = $this->MyModel->addto_library($data);
+			// $query['insert_query'] = $this->MyModel->addto_library($data);
+			$query = $this->MyModel->addto_library($data);
 
 			// }
 
-			$message = array(
-				'status' => 201,
-				'message' => 'Items Added To Library Success'
-			);
-			$this->response($message, REST_Controller::HTTP_CREATED);
+			// $message = array(
+			// 	'status' => 201,
+			// 	'message' => 'Items Added To Library Success'
+			// );
+			$this->response($query, REST_Controller::HTTP_CREATED);
 			return false;
 		}
 
