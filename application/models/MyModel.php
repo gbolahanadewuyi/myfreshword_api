@@ -2524,6 +2524,7 @@ class MyModel extends CI_Model
 				'address' => $data['address'],
 				'marital_status' => $data['marital_status'],
 				'email' => $data['email'],
+				'member_group' => $data['group']
 				// 'member_group'=>$data['group_name']
 
 			
@@ -2546,7 +2547,8 @@ class MyModel extends CI_Model
 				'marital_status' => $data['marital_status'],
 				'email' => $data['email'],
 				// 'member_group'=>$data['group_name'],
-				'member_photo' => $img
+				'member_photo' => $img,
+				'member_group' => $data['group']
 
 			);
 		}
