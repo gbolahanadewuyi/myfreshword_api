@@ -2209,7 +2209,7 @@ class MyModel extends CI_Model
 
 	public function get_subscription_modules()
 	{
-		$query = $this->db->select('sub_type, sub_price')->from('subscription_modules')->get()->result();
+		$query = $this->db->select('ID, sub_type, sub_price')->from('subscription_modules')->get()->result();
 		if ($query == "") {
 			return array(
 				'status' => 400,

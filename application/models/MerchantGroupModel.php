@@ -3,13 +3,13 @@
 class MerchantGroupModel extends CI_Model
 {
 
-	var $table = 'pastors_listing';
-	var $column_order = array(
-		'pastors_title', 'name', 'photo', null
-	); //set column field database for datatable orderable
+	// var $table = 'pastors_listing';
+	// var $column_order = array(
+	// 	'pastors_title', 'name', 'photo', null
+	// ); //set column field database for datatable orderable
 
-	var $column_search = array('pastors_title', 'name','photo'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('id' => 'desc'); // default order
+	// var $column_search = array('pastors_title', 'name','photo'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+	// var $order = array('id' => 'desc'); // default order
   
 
 
@@ -59,7 +59,7 @@ class MerchantGroupModel extends CI_Model
 		// $this->_get_datatables_query();
 		// if ($_POST['length'] != -1)
         //     $this->db->limit($_POST['length'], $_POST['start']);
-          $query  =  $this->db->select("merchant_group.group_name , count(mfw_church_membership.member_group) as 'number'",false)->from('merchant_group')->join('mfw_church_membership' ,'merchant_group.group_name = mfw_church_membership.member_group','left')->where('merchant_group.merchant_id',$user_id)->get()->result();
+          $query  =  $this->db->select("merchant_group.group_name , count(mfw_church_membership.member_group) as 'number'",false)->from('merchant_group')->join('mfw_church_membership' ,'merchant_group.group_name = mfw_church_membership.member_group','left')->where('merchant_group.merchant_id',$user_id)->group_by('group_name')->get()->result();
 		// $this->db->where('merchant_id', $user_id);
 		// $query = $this->db->get();
 		return $query ;
