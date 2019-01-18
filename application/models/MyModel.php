@@ -1819,6 +1819,15 @@ class MyModel extends CI_Model
 			);
 		}
 	}
+	public function get_group_data($id)
+	{
+		$query = $this->db->select('group_name')->from('merchant_group')->where('merchant_id', $id)->get()->result();
+		if ($query == "") {
+			return array('status' => 400, 'message' => 'Error fetching all Group data');
+		} else {
+			return  array('status' => 200, 'message' =>$query);
+		}
+	}
 
 
 	public function create_merchant_group($data)

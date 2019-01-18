@@ -1478,6 +1478,20 @@ public function get_merchant_group_post()
 		}
 	}
 
+	public function church_group_get() {
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+			$query = $this->MyModel->get_group_data($response['id']);
+			$data = array(
+				'res' => $query
+			);
+			$this->response($data, REST_Controller::HTTP_OK);
+		}
+		else {
+			$this->response($response, REST_Controller::HTTP_OK);
+		}
+	}
+
 	public function church_membership_register_post()
 	{
 		// $_POST = json_decode(file_get_contents('php://input'), true);
