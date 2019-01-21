@@ -1269,7 +1269,7 @@ class MyModel extends CI_Model
 					break;
 			}
 
-			$query = $this->db->insert('ts_subscription', array(
+			$query = $this->db->insert('merchant_transactions', array(
 				'userid' => $userid,
 				'subscriptionType' => $a,
 				'amountPaid' => $b,
@@ -1281,7 +1281,7 @@ class MyModel extends CI_Model
 				  $data = array(
                    'sub_id' => $sub_id
 				  );
-				$this->db->where('id', $userid)->update('ts_user', $data);
+				$this->db->where('id', $userid)->update('ts_merchant', $data);
 			  
 			return array(
 				'status' => 200,
