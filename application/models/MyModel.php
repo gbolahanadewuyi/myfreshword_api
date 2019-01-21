@@ -1951,15 +1951,14 @@ class MyModel extends CI_Model
 			);
 		}
 	}
-	public function get_group_data($id)
-	{
-		$query = $this->db->select('group_name')->from('merchant_group')->where('merchant_id', $id)->get()->result();
-		if ($query == "") {
-			return array('status' => 400, 'message' => 'Error fetching all Group data');
-		} else {
-			return  array('status' => 200, 'message' =>$query);
+	
+	function get_group_data($id){
+		$q = $this->db->select('*')->from('merchant_group')->where('merchant_id',$id)->get()->result();
+		if($q == true){
+		  return array('status'=>200, 'result'=>$q);
 		}
-	}
+		return array('status'=>204, 'message'=> 'No Content found');
+	  }
 
 
 	public function create_merchant_group($data)
@@ -2003,6 +2002,14 @@ class MyModel extends CI_Model
 	  $query =  $this->db->select('id')->from('pastors_listing')->where('name',$name)->get()->row();
 	    return $query;
 	}
+
+	function all_pastors($id){
+		$q = $this->db->select('*')->from('pastors_listing')->where('merchant_id',$id)->get()->result();
+		if($q == true){
+		  return array('status'=>200, 'result'=>$q);
+		}
+		return array('status'=>204, 'message'=> 'No Content found');
+	  }
 
 	// add this is to file name and insert data
 

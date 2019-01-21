@@ -1478,14 +1478,30 @@ public function get_merchant_group_post()
 		}
 	}
 
+
+	function pastors_get(){
+		$response = $this->MyModel->merchant_auth();
+		if ($response['status'] == 200) {
+		$q = $this->MyModel->all_pastors($response['id']);//sending response id as a representation of the merchant_id
+		if($q['status'] ==204){
+		  $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+		  return false;
+		}
+		$this->response($q, REST_Controller::HTTP_OK);
+	  }else{
+		$this->response($response, REST_Controller::HTTP_OK);
+	  }
+	}
+
 	public function church_group_get() {
 		$response = $this->MyModel->merchant_auth();
 		if ($response['status'] == 200) {
-			$query = $this->MyModel->get_group_data($response['id']);
-			$data = array(
-				'res' => $query
-			);
-			$this->response($data, REST_Controller::HTTP_OK);
+			$q = $this->MyModel->get_group_data($response['id']);//sending response id as a representation of the merchant_id
+			if($q['status'] ==204){
+			  $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+			  return false;
+			}
+			$this->response($q, REST_Controller::HTTP_OK);
 		}
 		else {
 			$this->response($response, REST_Controller::HTTP_OK);
@@ -1986,6 +2002,23 @@ public function update_churchmember_post()
 			$this->response($response, REST_Controller::HTTP_OK);
 		}
 	}
+
+	function pastors_get(){
+		$church_id = $this->uri->segment(3);
+		$q = $this->MyModel->all_pastors($church_id);
+		if($q['status'] ==204){
+		  $this->response($q, REST_Controller::HTTP_NO_CONTENT);
+		  return false;
+		}
+		$this->response($q, REST_Controller::HTTP_OK);
+	  }
+
+
+
+
+
+
+
 
 
 	public function get_churchmemberslisting_post()
