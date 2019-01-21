@@ -2003,15 +2003,7 @@ public function update_churchmember_post()
 		}
 	}
 
-	function pastors_get(){
-		$church_id = $this->uri->segment(3);
-		$q = $this->MyModel->all_pastors($church_id);
-		if($q['status'] ==204){
-		  $this->response($q, REST_Controller::HTTP_NO_CONTENT);
-		  return false;
-		}
-		$this->response($q, REST_Controller::HTTP_OK);
-	  }
+	
 
 
 
