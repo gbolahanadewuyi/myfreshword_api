@@ -1212,7 +1212,7 @@ class MyModel extends CI_Model
 			// subscribe user here
 
 			switch ($a) {
-				case 'BRONZE':
+				case 'MERCHANT-BRONZE':
 
 				// code...
 
@@ -1222,7 +1222,7 @@ class MyModel extends CI_Model
 					$expired = date("Y-m-d H:i:s", strtotime('+1 day'));
 					break;
 
-				case 'SILVER':
+				case 'MERCHANT-SILVER':
 
 				// code...
 
@@ -1231,7 +1231,7 @@ class MyModel extends CI_Model
 					$expired = date("Y-m-d H:i:s", strtotime('+1 week'));
 					break;
 
-				case 'GOLD':
+				case 'MERCHANT-GOLD':
 
 				// code...
 
@@ -1240,7 +1240,7 @@ class MyModel extends CI_Model
 					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
 					break;
 
-				case 'PLATINUM':
+				case 'MERCHANT-PLATINUM':
 
 				// code...
 
@@ -1249,7 +1249,7 @@ class MyModel extends CI_Model
 					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
 					break;
 
-				case 'CONFERENCE':
+				case 'MERCHANT-CONFERENCE':
 
 				// code...
 
