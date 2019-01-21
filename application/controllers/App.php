@@ -944,7 +944,7 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
-			$this->form_validation->set_rules('username', 'Category', 'trim');
+			$this->form_validation->set_rules('username', 'Username', 'trim');
 			$this->form_validation->set_rules('email', 'Email', 'trim');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
@@ -1756,6 +1756,15 @@ public function update_churchmember_post()
 
 	}
 
+	public function merchant_subscribe_post()
+	{
+			$userid = $this->uri->segment(3);
+			$sub_id = $this->uri->segment(4);
+			$query = $this->MyModel->subscribe($sub_id, $userid);
+			$this->response($query, REST_Controller::HTTP_OK);
+
+	}
+
 	// this has to be sequential now we need to return values here to proceed to the next endpoint
 	// this will be looped twice to the end point
 
@@ -1900,7 +1909,7 @@ public function update_churchmember_post()
 			foreach ($list as $feed) {
 				$no++;
 				$row = array();
-				$row[] = '<img src="' . $feed->image . '" height="75px">';
+				$row[] = '<img src="' . $feed->image . '" height="75px" . class="img-circle photo">';
 				$row[] = $feed->category;
 				$row[] = $feed->title;
 				// $row[] = $feed->message;
@@ -1912,8 +1921,8 @@ public function update_churchmember_post()
 
 				// $favicon = $this->MyModel->favicon_show($prod->prod_tags);
 				$row[] = '
-                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i> </a>
-                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i> </a>';
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-edit"></i>Edit</a>
+                        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Delete" onclick="delete_feed(' . "'" . $feed->id . "'" . ')"><i class="fa fa-trash"></i>Delete</a>';
 				$data[] = $row;
 			}
 
@@ -2084,6 +2093,7 @@ public function update_churchmember_post()
 				$prodData = array(
 					'prod_name' => $_POST['prod_name'],
 					'prod_urlname' => $this->MyModel->replace_hyphens($_POST['prod_name']),
+					'prod_preacher_id'=>$this->MyModel->preacher_id($_POST['prod_preacher']),
 					'prod_preacher' => $_POST['prod_preacher'],
 					'prod_church' => $_POST['prod_church'],
 					'prod_tags' => $_POST['prod_tags'], //here we use value as the same for type_list
@@ -2108,6 +2118,7 @@ public function update_churchmember_post()
 					'merchant_email' => $_POST['merchant_email'],
 					'prod_date' => date('Y-m-d H:i:s'),
 					'img_link'=> $img,
+					
 
 
 
@@ -2427,9 +2438,9 @@ public function update_churchmember_post()
 				'success' => false,
 				'messages' => array()
 			);
-			$this->form_validation->set_rules('pastors_title', 'Category', 'trim|required');
-			$this->form_validation->set_rules('pastors_name', 'Title', 'trim|required');
-			$this->form_validation->set_rules('pastors_bio', 'Message', 'trim|required');
+			$this->form_validation->set_rules('pastors_title', 'Title', 'trim|required');
+			$this->form_validation->set_rules('pastors_name', 'Name', 'trim|required');
+			$this->form_validation->set_rules('pastors_bio', 'bio', 'trim|required');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
 			if ($this->form_validation->run() === false) {
 				foreach ($_POST as $key => $value) {

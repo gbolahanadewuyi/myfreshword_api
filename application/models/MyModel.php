@@ -1192,6 +1192,136 @@ class MyModel extends CI_Model
 		}
 	}
 
+	public function merchant_subscribe($sub_id , $userid)
+	{
+		$q = $this->db->select('sub_type, sub_price')->from('subscription_modules')->where('id',$sub_id)->get()->row();
+		if( $q == ""){
+		 return array(
+			 'status' => 204,
+			 'message' => 'subscription type not recognized'
+		 );
+		}else{
+			$a = $q->sub_type;
+			$b = $q->sub_price;
+
+		// check if user has no valid subscription
+
+		$hasValidSubscription = $this->isMerchantSubscribed($userid);
+		if ($hasValidSubscription['status'] == 204) {
+
+			// subscribe user here
+
+			switch ($a) {
+				case 'BRONZE':
+
+				// code...
+
+				
+					$amountPaid = $b;
+					$purchaseDate = date('Y-m-d H:i:s');
+					$expired = date("Y-m-d H:i:s", strtotime('+1 day'));
+					break;
+
+				case 'SILVER':
+
+				// code...
+
+					$amountPaid = $b;
+					$purchaseDate = date('Y-m-d H:i:s');
+					$expired = date("Y-m-d H:i:s", strtotime('+1 week'));
+					break;
+
+				case 'GOLD':
+
+				// code...
+
+					$amountPaid = $b;
+					$purchaseDate = date('Y-m-d H:i:s');
+					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
+					break;
+
+				case 'PLATINUM':
+
+				// code...
+
+					$amountPaid = $b;
+					$purchaseDate = date('Y-m-d H:i:s');
+					$expired = date("Y-m-d H:i:s", strtotime('+1 month'));
+					break;
+
+				case 'CONFERENCE':
+
+				// code...
+
+					$amountPaid = $b;
+					$purchaseDate = date('Y-m-d H:i:s');
+					$expired = date("Y-m-d H:i:s", strtotime('+1 week'));
+					break;
+
+				default:
+
+				// code...
+
+					return array(
+						'status' => 404,
+						'message' => 'Error enrolling user to Subscription'
+					);
+					break;
+			}
+
+			$query = $this->db->insert('ts_subscription', array(
+				'userid' => $userid,
+				'subscriptionType' => $a,
+				'amountPaid' => $b,
+				'purchaseDate' => $purchaseDate,
+				'expired' => $expired,
+				'subscriptionid'=>$sub_id
+			));
+		
+				  $data = array(
+                   'sub_id' => $sub_id
+				  );
+				$this->db->where('id', $userid)->update('ts_user', $data);
+			  
+			return array(
+				'status' => 200,
+				'message' => 'Subscription completed successfully.',
+				'paid' => 'true'
+			);
+		} else {
+			return array(
+				'status' => 204,
+				'message' => 'Subscription process failed because user already has a valid subscription'
+			);
+		}
+	}
+}
+ 
+ 
+
+	public function isMerchantSubscribed($userid)
+	{
+
+		// Using MySQL NOW() in Codeigniter
+		// $this->db->select('field_name', 'NOW()', FALSE);
+		// The FALSE in the set method prevents the NOW() being escaped
+
+		$now = date('Y-m-d H:i:s');
+		$query = $this->db->select('*')->from('merchant_transactions')->where('userid', $userid)->where('expired >', $now)->get()->row();
+		if ($query == true) {
+			return array(
+				'status' => 200,
+				'message' => 'valid subscription found',
+				'results' => $query
+			);
+		} else {
+			return array(
+				'status' => 204,
+				'message' => 'No valid Subscription package found'
+			);
+		}
+	}
+
 
 	  
 
@@ -1294,6 +1424,8 @@ class MyModel extends CI_Model
 		}
 	}
 }
+ 
+ 
 
 	public function isSubscribed($userid)
 	{
@@ -1850,7 +1982,7 @@ class MyModel extends CI_Model
 
 
 	public function merchant_insert_product($data)
-	{
+	{    
 		$query = $query = $this->db->insert('ts_products', $data);
 		$insert_id = $this->db->insert_id();
 		if ($query == true) {
@@ -1865,6 +1997,11 @@ class MyModel extends CI_Model
 				'message' => 'Error adding product details'
 			);
 		}
+	}
+
+	public function preacher_id($name){
+	  $query =  $this->db->select('id')->from('pastors_listing')->where('name',$name)->get()->row();
+	    return $query;
 	}
 
 	// add this is to file name and insert data
@@ -2636,7 +2773,7 @@ class MyModel extends CI_Model
 		$q = $this->db->get();
 		return $q->num_rows();
 	}
-
+	
 	// count the number of comments in the comment thread
 
 	public function count_merchant_comments($id)
