@@ -1409,7 +1409,8 @@ class MyModel extends CI_Model
 				'subscriptionType' => $a,
 				'amountPaid' => $b,
 				'purchaseDate' => $purchaseDate,
-				'expired' => $expired
+				'expired' => $expired,
+				'subscriptionid'=>$sub_id
 			));
 			return array(
 				'status' => 200,
