@@ -1520,7 +1520,6 @@ class MyModel extends CI_Model
 			$updateData = array(
 				'user_uname' => $data['username'],
 				'user_mobile' => $data['mobile'],
-				'user_email' => $data['email']
 
 				// 'image'             => $img,
 			);
@@ -1528,7 +1527,6 @@ class MyModel extends CI_Model
 			$updateData = array(
 				'user_uname' => $data['username'],
 				'user_mobile' => $data['mobile'],
-				'user_email' => $data['email'],
 				'img_url' => $img
 
 			);
