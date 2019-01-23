@@ -199,7 +199,7 @@ class App extends REST_Controller
 		$this->response($data, REST_Controller::HTTP_OK);
 	}
 
-	function confirmEmail_post($hashcode){
+	function confirmEmail_get($hashcode){
         if($this->MyModel->verifyEmail($hashcode)){
              echo "active";
             redirect('www.google.com'); 
