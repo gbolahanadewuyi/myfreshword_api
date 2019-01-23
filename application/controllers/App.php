@@ -201,9 +201,9 @@ class App extends REST_Controller
 
 	function confirmEmail_get($hashcode){
         if($this->MyModel->verifyEmail($hashcode)){
-			 redirect()->to('https://www.google.com/');
+			 redirect()->to('https://www.google.com/', 'refresh');
         }else{
-            redirect()->to('https://www.facebook.com/');
+            redirect()->to('https://www.facebook.com/','refresh');
 
     }
     
