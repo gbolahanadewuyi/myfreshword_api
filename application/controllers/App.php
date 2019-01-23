@@ -956,7 +956,7 @@ class App extends REST_Controller
 ;               $my_bucket = "freshword-ci/user_profile";
 				if (empty($_FILES)) {
 					$img = '';
-					$data = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
+					$data = $this->MyModel->update_user($response['id'], $_POST, $img);
 					$this->response($data, REST_Controller::HTTP_OK);
 					return false; //script will end here
 				}else{
@@ -973,7 +973,7 @@ class App extends REST_Controller
 				}
 				// so run insertion since the validation for the form has been passed correctly
 
-				$data['messages'] = $this->MyModel->update_user($_POST['user_id'], $_POST, $img);
+				$data['messages'] = $this->MyModel->update_user($$response['id'], $_POST, $img);
 			}
 
 			$this->response($data, REST_Controller::HTTP_OK);
