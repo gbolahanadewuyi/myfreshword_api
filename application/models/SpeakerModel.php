@@ -136,9 +136,9 @@ function get_speaker_data($query){
     $search_term="%".$search_term."%";
     // $sql="SELECT * FROM $this->speakerTable WHERE name LIKE ? ";
      $sql = "SELECT concat(pastors_listing.pastors_title,' ',pastors_listing.name) as name, pastors_listing.id, pastors_listing.bio, pastors_listing.photo, ts_merchant.organisation
-     from pastors_listing 
+     from pastors_listing     
      left join ts_merchant on pastors_listing.merchant_id = ts_merchant.id
-     where name like '_'";
+     where name like '_' ";
 
      
 
