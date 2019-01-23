@@ -944,6 +944,7 @@ class App extends REST_Controller
 				'success' => false,
 				'messages' => array()
 			);
+			$_POST = json_decode(file_get_contents('php://input'), true);
 			$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|is_unique[ts_user.user_uname]');
 			$this->form_validation->set_rules('mobile', 'Mobile', 'trim');
 			$this->form_validation->set_error_delimiters('<span class=" text-danger">', '</span>');
